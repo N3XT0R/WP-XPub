@@ -37,3 +37,39 @@ WP-XPub follows modern coding standards and encourages clean separation of conce
 
 ```php
 do_action('xpub_publish', $post_id);
+```
+
+### 🪝 Extend with Custom Publishers
+You can easily register your own publisher class by hooking into wp_xpub_factory_map.
+
+✅ Example: Register a Custom Publisher
+```php
+add_action('plugins_loaded', function () {
+    add_filter('wp_xpub_factory_map', function ($map) {
+        $map['myplatform'] = \Vendor\Namespace\MyCustomPublisher::class;
+        return $map;
+    });
+});
+```
+🧱 Minimal Example Publisher Class
+```php
+namespace Vendor\Namespace;
+
+use N3XT0R\XPub\Contracts\PublisherInterface;
+
+class MyCustomPublisher implements PublisherInterface
+{
+    public function publish(string $title, string $content): bool
+    {
+        // Add your platform logic here
+        return true;
+    }
+}
+```
+
+Once registered, you can invoke your custom publisher like this:
+```php
+$publisher = \N3XT0R\XPub\Core\PublisherFactory::create('myplatform');
+$publisher->publish('My Title', 'Some content...');
+
+```
