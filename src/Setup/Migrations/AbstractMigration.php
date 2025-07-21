@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Setup\Migrations;
 
-use wpdb;
+use wpdb as WPDB;
 
 abstract class AbstractMigration
 {
@@ -28,19 +28,39 @@ abstract class AbstractMigration
         }
     }
 
-    abstract protected function install(wpdb $wpdb): void;
+    abstract protected function install(WPDB $wpdb): void;
 
-    abstract protected function uninstall(wpdb $wpdb): void;
+    abstract protected function uninstall(WPDB $wpdb): void;
 
     public function executeInstall(): void
     {
         global $wpdb;
-        $this->install($wpdb);
+        $this->transactionalQueries($wpdb, function () use ($wpdb) {
+            $this->install($wpdb);
+        });
     }
 
     public function executeUninstall(): void
     {
         global $wpdb;
-        $this->uninstall($wpdb);
+        $this->transactionalQueries($wpdb, function () use ($wpdb) {
+            $this->uninstall($wpdb);
+        });
+    }
+
+    private function transactionalQueries(WPDB $wpdb, \Closure $closure): void
+    {
+        if (!$wpdb->query('START TRANSACTION')) {
+            $closure();
+            return;
+        }
+
+        try {
+            $closure();
+            $wpdb->query('COMMIT');
+        } catch (\Throwable $e) {
+            $wpdb->query('ROLLBACK');
+            update_option('xpub_admin_notice', 'Migration failed: '.$e->getMessage());
+        }
     }
 }
