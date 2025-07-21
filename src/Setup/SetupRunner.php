@@ -52,12 +52,14 @@ class SetupRunner
 
         foreach ($migrations as $version) {
             $className = self::MIGRATION_NAMESPACE.'Migration_'.$version;
+            if (!class_exists($className)) {
+                error_log("[xPub] Migration class $className not found.");
+                break;
+            }
 
-            if (class_exists($className)) {
-                $migration = new $className();
-                if ($migration instanceof AbstractMigration) {
-                    $migration->executeUninstall();
-                }
+            $migration = new $className();
+            if ($migration instanceof AbstractMigration) {
+                $migration->executeUninstall();
             }
         }
 
