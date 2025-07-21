@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace N3XT0R\XPub\Publishers;
 
 use N3XT0R\XPub\Contracts\PublisherInterface;
