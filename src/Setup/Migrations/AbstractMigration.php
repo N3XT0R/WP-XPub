@@ -50,14 +50,14 @@ abstract class AbstractMigration
 
     private function transactionalQueries(WPDB $wpdb, \Closure $closure): void
     {
-        if (!$wpdb->query('START TRANSACTION')) {
-            $closure();
-            return;
-        }
-
         try {
-            $closure();
-            $wpdb->query('COMMIT');
+            if ($wpdb->has_cap('transactions')) {
+                $wpdb->query('START TRANSACTION');
+                $closure();
+                $wpdb->query('COMMIT');
+            } else {
+                $closure();
+            }
         } catch (\Throwable $e) {
             $wpdb->query('ROLLBACK');
             if (defined('WP_DEBUG') && WP_DEBUG) {
