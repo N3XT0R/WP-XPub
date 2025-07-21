@@ -64,6 +64,7 @@ abstract class AbstractMigration
                 update_option('xpub_admin_notice', 'Migration failed: '.$e->getMessage());
             } else {
                 update_option('xpub_admin_notice', 'A database migration failed. Please check the logs.');
+                error_log('[xPub Migration] '.$e->getMessage());
             }
         }
     }
