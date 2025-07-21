@@ -27,8 +27,8 @@ WP-XPub is a lightweight, extensible auto-publishing plugin for WordPress. It al
 
 ## Requirements
 
-- PHP 8.0+
-- WordPress 5.8+
+- PHP 8.2+
+- WordPress 6.8.2+
 - Optional: Composer (for local development)
 
 ## Development
