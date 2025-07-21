@@ -60,7 +60,11 @@ abstract class AbstractMigration
             $wpdb->query('COMMIT');
         } catch (\Throwable $e) {
             $wpdb->query('ROLLBACK');
-            update_option('xpub_admin_notice', 'Migration failed: '.$e->getMessage());
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                update_option('xpub_admin_notice', 'Migration failed: '.$e->getMessage());
+            } else {
+                update_option('xpub_admin_notice', 'A database migration failed. Please check the logs.');
+            }
         }
     }
 }
