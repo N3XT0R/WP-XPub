@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: EchoHook Publisher
+Plugin Name: xPub
 Description: Modular Auto-Publisher for WordPress to external platforms (dev.to, LinkedIn, etc.)
 Version: 0.2
 Author: php-dev
