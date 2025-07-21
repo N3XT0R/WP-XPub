@@ -37,39 +37,47 @@ abstract class AbstractMigration
 
     abstract protected function uninstall(WPDB $wpdb): void;
 
-    public function executeInstall(): void
+    public function executeInstall(): bool
     {
-        $this->transactionalQueries(function () {
+        return $this->transactionalQueries(function () {
             $this->install($this->wpdb);
         });
     }
 
-    public function executeUninstall(): void
+    public function executeUninstall(): bool
     {
-        $this->transactionalQueries(function () {
+        return $this->transactionalQueries(function () {
             $this->uninstall($this->wpdb);
         });
     }
 
-    private function transactionalQueries(\Closure $closure): void
+    private function transactionalQueries(\Closure $closure): bool
     {
+        $result = false;
+        $usedTransaction = false;
         $wpdb = $this->wpdb;
         try {
             if ($wpdb->has_cap('transactions')) {
                 $wpdb->query('START TRANSACTION');
-                $closure();
-                $wpdb->query('COMMIT');
-            } else {
-                $closure();
+                $usedTransaction = true;
             }
+            $closure();
+            if ($usedTransaction) {
+                $wpdb->query('COMMIT');
+            }
+            $result = true;
         } catch (\Throwable $e) {
-            $wpdb->query('ROLLBACK');
+            if ($usedTransaction) {
+                $wpdb->query('ROLLBACK');
+            }
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 update_option('xpub_admin_notice', 'Migration failed: '.$e->getMessage());
             } else {
                 update_option('xpub_admin_notice', 'A database migration failed. Please check the logs.');
-                error_log('[xPub Migration] '.$e->getMessage());
+                error_log('[xPub Migration][ERROR] '.$e->getMessage()."\n".$e->getTraceAsString());
             }
         }
+
+        return $result;
     }
 }
