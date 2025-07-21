@@ -4,7 +4,7 @@
   },
   "autoload": {
     "psr-4": {
-      "XPub\\": "src/"
+      "N3XT0R\\XPub\\": "src/"
     }
   }
 }

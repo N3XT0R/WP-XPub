@@ -1,7 +1,7 @@
 <?php
-namespace XPub\Publishers;
+namespace N3XT0R\XPub\Publishers;
 
-use XPub\Contracts\PublisherInterface;
+use N3XT0R\XPub\Contracts\PublisherInterface;
 
 class DevToPublisher implements PublisherInterface {
     public function publish(string $title, string $content): bool {
