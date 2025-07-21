@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace XPub\Setup\Migrations;
+namespace N3XT0R\XPub\Setup\Migrations;
 
 use wpdb;
 
 class Migration_1 extends AbstractMigration
 {
-    protected function run(wpdb $wpdb): void
+    protected function install(wpdb $wpdb): void
     {
         $charsetCollate = $wpdb->get_charset_collate();
 
@@ -16,7 +16,7 @@ class Migration_1 extends AbstractMigration
         $configTable = $wpdb->prefix.'xpub_publisher_config';
 
         $sql = "
-        CREATE TABLE {$publisherTable} (
+        CREATE TABLE IF NOT EXISTS {$publisherTable} (
             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
             slug VARCHAR(50) NOT NULL,
             name VARCHAR(100) NOT NULL,
@@ -26,7 +26,7 @@ class Migration_1 extends AbstractMigration
             UNIQUE KEY slug_unique (slug)
         ) {$charsetCollate};
 
-        CREATE TABLE {$configTable} (
+        CREATE TABLE  IF NOT EXISTS {$configTable} (
             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
             publisher_id BIGINT UNSIGNED NOT NULL,
             config_key VARCHAR(100) NOT NULL,
@@ -41,6 +41,15 @@ class Migration_1 extends AbstractMigration
         ";
 
         dbDelta($sql);
+    }
+
+    protected function uninstall(wpdb $wpdb): void
+    {
+        $configsTable = $wpdb->prefix.'xpub_configs';
+        $publishersTable = $wpdb->prefix.'xpub_publishers';
+
+        $wpdb->query("DROP TABLE IF EXISTS $configsTable");
+        $wpdb->query("DROP TABLE IF EXISTS $publishersTable");
     }
 
 }
