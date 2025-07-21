@@ -21,11 +21,16 @@ use wpdb as WPDB;
 
 abstract class AbstractMigration
 {
-    public function __construct()
+    protected WPDB $wpdb;
+
+    public function __construct(?WPDB $customWpdb = null)
     {
         if (!function_exists('dbDelta')) {
             require_once ABSPATH.'wp-admin/includes/upgrade.php';
         }
+
+        global $wpdb;
+        $this->wpdb = $customWpdb ?? $wpdb;
     }
 
     abstract protected function install(WPDB $wpdb): void;
@@ -34,22 +39,21 @@ abstract class AbstractMigration
 
     public function executeInstall(): void
     {
-        global $wpdb;
-        $this->transactionalQueries($wpdb, function () use ($wpdb) {
-            $this->install($wpdb);
+        $this->transactionalQueries(function () {
+            $this->install($this->wpdb);
         });
     }
 
     public function executeUninstall(): void
     {
-        global $wpdb;
-        $this->transactionalQueries($wpdb, function () use ($wpdb) {
-            $this->uninstall($wpdb);
+        $this->transactionalQueries(function () {
+            $this->uninstall($this->wpdb);
         });
     }
 
-    private function transactionalQueries(WPDB $wpdb, \Closure $closure): void
+    private function transactionalQueries(\Closure $closure): void
     {
+        $wpdb = $this->wpdb;
         try {
             if ($wpdb->has_cap('transactions')) {
                 $wpdb->query('START TRANSACTION');
