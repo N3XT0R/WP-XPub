@@ -1,8 +1,8 @@
 <?php
 namespace XPub\Core;
 
-use EchoHook\Contracts\PublisherInterface;
-use EchoHook\Publishers\DevToPublisher;
+use XPub\Contracts\PublisherInterface;
+use XPub\Publishers\DevToPublisher;
 
 class PublisherFactory {
     public static function create(string $type): PublisherInterface {
