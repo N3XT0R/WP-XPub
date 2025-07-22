@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Setup\Migrations;
 
+use Monolog\Logger;
 use N3XT0R\XPub\Infrastructure\Database\Database;
 use N3XT0R\XPub\Infrastructure\Logging\LoggerFactory;
 use wpdb as WPDB;
@@ -24,14 +25,16 @@ use wpdb as WPDB;
 abstract class AbstractMigration
 {
     protected WPDB $wpdb;
+    protected Logger $logger;
 
-    public function __construct(?WPDB $customWpdb = null)
+    public function __construct(?WPDB $customWpdb = null, ?Logger $logger = null)
     {
         if (!function_exists('dbDelta')) {
             require_once ABSPATH.'wp-admin/includes/upgrade.php';
         }
 
         $this->wpdb = $customWpdb ?? Database::get();
+        $this->logger = $logger ?? LoggerFactory::create();
     }
 
     abstract protected function install(WPDB $wpdb): void;
@@ -57,6 +60,7 @@ abstract class AbstractMigration
         $result = false;
         $usedTransaction = false;
         $wpdb = $this->wpdb;
+        $logger = $this->logger;
         try {
             if ($wpdb->has_cap('transactions')) {
                 $wpdb->query('START TRANSACTION');
@@ -72,11 +76,12 @@ abstract class AbstractMigration
                 $wpdb->query('ROLLBACK');
             }
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                update_option('xpub_admin_notice', 'Migration failed: '.$e->getMessage());
+                $logger->error('Migration failed: '.$e->getMessage(), ['exception' => $e]);
             } else {
-                update_option('xpub_admin_notice', 'A database migration failed. Please check the logs.');
-                LoggerFactory::create()->error('A database migration failed. Please check the logs.');
-                error_log('[xPub Migration][ERROR] '.$e->getMessage()."\n".$e->getTraceAsString());
+                $logger->error(
+                    'A database migration failed. Please check the logs.',
+                    ['exception' => $e]
+                );
             }
         }
 
