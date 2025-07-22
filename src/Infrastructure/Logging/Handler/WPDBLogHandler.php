@@ -24,7 +24,7 @@ class WPDBLogHandler extends AbstractProcessingHandler
     protected function write(LogRecord $record): void
     {
         $this->wpdb->insert(
-            $this->table,
+            $this->wpdb->prefix.$this->table,
             [
                 'channel' => $record['channel'],
                 'level' => $record['level'],
