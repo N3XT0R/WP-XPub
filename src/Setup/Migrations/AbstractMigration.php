@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Setup\Migrations;
 
+use N3XT0R\XPub\Infrastructure\Database\Database;
 use wpdb as WPDB;
 
 abstract class AbstractMigration
@@ -29,8 +30,7 @@ abstract class AbstractMigration
             require_once ABSPATH.'wp-admin/includes/upgrade.php';
         }
 
-        global $wpdb;
-        $this->wpdb = $customWpdb ?? $wpdb;
+        $this->wpdb = $customWpdb ?? Database::get();
     }
 
     abstract protected function install(WPDB $wpdb): void;
@@ -51,7 +51,7 @@ abstract class AbstractMigration
         });
     }
 
-    private function transactionalQueries(\Closure $closure): bool
+    protected function transactionalQueries(\Closure $closure): bool
     {
         $result = false;
         $usedTransaction = false;

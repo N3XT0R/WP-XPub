@@ -10,10 +10,22 @@ class Migration_1 extends AbstractMigration
 {
     protected function install(wpdb $wpdb): void
     {
-        $charsetCollate = $wpdb->get_charset_collate();
-
         $publisherTable = $wpdb->prefix.'xpub_publishers';
         $configTable = $wpdb->prefix.'xpub_publisher_config';
+        $logsTable = $wpdb->prefix.'xpub_logs';
+
+        $sql = "
+            CREATE TABLE $logsTable (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                channel VARCHAR(50),
+                level INT,
+                level_name VARCHAR(20),
+                message TEXT,
+                context TEXT,
+                timestamp DATETIME
+            );
+        ";
+        dbDelta($sql);
 
         $sql = "
         CREATE TABLE IF NOT EXISTS {$publisherTable} (
@@ -24,7 +36,7 @@ class Migration_1 extends AbstractMigration
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id),
             UNIQUE KEY slug_unique (slug)
-        ) {$charsetCollate};
+        );
 
         CREATE TABLE  IF NOT EXISTS {$configTable} (
             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -37,7 +49,7 @@ class Migration_1 extends AbstractMigration
             FOREIGN KEY (publisher_id) REFERENCES {$publisherTable}(id) ON DELETE CASCADE ON UPDATE CASCADE,
             INDEX idx_publisher (publisher_id),
             INDEX idx_key (config_key)
-        ) {$charsetCollate};
+        );
         ";
 
         dbDelta($sql);

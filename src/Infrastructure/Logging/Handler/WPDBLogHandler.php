@@ -1,0 +1,38 @@
+<?php
+
+declare(strict_types=1);
+
+namespace N3XT0R\XPub\Infrastructure\Logging\Handler;
+
+
+use Monolog\Handler\AbstractProcessingHandler;
+use Monolog\Level;
+use Monolog\LogRecord;
+
+class WPDBLogHandler extends AbstractProcessingHandler
+{
+    private \wpdb $wpdb;
+    private string $table;
+
+    public function __construct(\wpdb $wpdb, string $table = 'xpub_logs', $level = Level::Debug, bool $bubble = true)
+    {
+        parent::__construct($level, $bubble);
+        $this->wpdb = $wpdb;
+        $this->table = $table;
+    }
+
+    protected function write(LogRecord $record): void
+    {
+        $this->wpdb->insert(
+            $this->table,
+            [
+                'channel' => $record['channel'],
+                'level' => $record['level'],
+                'level_name' => $record['level_name'],
+                'message' => $record['message'],
+                'context' => json_encode($record['context']),
+                'timestamp' => $record['datetime']->format('Y-m-d H:i:s'),
+            ]
+        );
+    }
+}
