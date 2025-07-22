@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Setup\Migrations;
 
 use N3XT0R\XPub\Infrastructure\Database\Database;
+use N3XT0R\XPub\Infrastructure\Logging\LoggerFactory;
 use wpdb as WPDB;
 
 abstract class AbstractMigration
@@ -74,6 +75,7 @@ abstract class AbstractMigration
                 update_option('xpub_admin_notice', 'Migration failed: '.$e->getMessage());
             } else {
                 update_option('xpub_admin_notice', 'A database migration failed. Please check the logs.');
+                LoggerFactory::create()->error('A database migration failed. Please check the logs.');
                 error_log('[xPub Migration][ERROR] '.$e->getMessage()."\n".$e->getTraceAsString());
             }
         }
