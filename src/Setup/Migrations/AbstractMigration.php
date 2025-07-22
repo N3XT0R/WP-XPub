@@ -1,17 +1,4 @@
 <?php
-/**
- * Base class for database migrations used by WP-XPub.
- * Extend this to define your own install() and uninstall() methods.
- *
- * This class exists solely because WordPress decided to make
- * basic infrastructure like `dbDelta()` an opt-in mess buried deep
- * in `wp-admin/includes/upgrade.php`.
- *
- * Autoloading? Namespacing? Consistency? Nah.
- * Just `require_once` your way through the dark ages.
- *
- * You're not building plugins here – you're surviving WordPress.
- */
 
 declare(strict_types=1);
 
