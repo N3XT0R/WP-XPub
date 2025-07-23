@@ -14,7 +14,7 @@ multiple external platforms – including LinkedIn, Mastodon, Dev.to, and more �
 - 🕓 Schedule publishing via WP Cron or hook-based triggers
 - 🧵 Pre- and post-publish hooks for full customization
 - 📦 Composer-ready (PSR-4 autoloading, modern architecture)
-- 🐘 Native PHP — no external service required
+- 🐘 Built with PHP – no external API calls required, uses Monolog for local logging
 
 ---
 
