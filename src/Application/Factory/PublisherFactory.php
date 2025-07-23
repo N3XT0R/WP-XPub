@@ -5,19 +5,23 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Application\Factory;
 
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
+use N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher;
+use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressFilterAdapter;
 
 class PublisherFactory
 {
     public static function create(string $target): PublisherInterface
     {
-        $map = apply_filters('wp_xpub_factory_map', [
-            'devto' => \N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher::class,
+        $map = (new WordpressFilterAdapter())->apply('wp_xpub_factory_map', [
+            'devto' => DevToPublisher::class,
         ]);
 
-        if (!isset($map[$target]) || !class_exists($map[$target])) {
-            throw new \RuntimeException("No publisher for target: $target");
+        $publisher = new $map[$target]();
+
+        if (!$publisher instanceof PublisherInterface) {
+            throw new \RuntimeException("Publisher does not implement PublisherInterface: $target");
         }
 
-        return new $map[$target]();
+        return $publisher;
     }
 }

@@ -14,5 +14,6 @@ final class WordpressHookRegistrar
         register_activation_hook($pluginFile, [WordpressPlugin::class, 'onActivate']);
         register_uninstall_hook($pluginFile, [WordpressPlugin::class, 'onUninstall']);
         add_action('admin_notices', [WordpressPlugin::class, 'showAdminNotice']);
+        add_action('admin_post_xpub_publish', [WordpressPlugin::class, 'handlePublishFromPost']);
     }
 }

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Adapter;
 
 use N3XT0R\XPub\Application\Service\Plugin\PluginBootstrapService;
+use N3XT0R\XPub\Domain\Entity\Article;
+use N3XT0R\XPub\Domain\Service\ArticlePublisher;
+use N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
@@ -57,4 +60,21 @@ final class WordpressPlugin
         $presenter = new AdminNoticePresenter();
         $presenter->showIfAvailable();
     }
+
+
+    public static function handlePublishFromPost(int $postId, \WP_Post $post, bool $update): void
+    {
+        if ($update || $post->post_status !== 'publish') {
+            return;
+        }
+
+        $title = $post->post_title;
+        $content = $post->post_content;
+
+        $article = new Article($title, $content);
+        $publisher = new ArticlePublisher(new DevToPublisher());
+
+        $publisher->publish($article);
+    }
+
 }
