@@ -11,13 +11,31 @@ final class WordpressHookRegistrar
 {
     public function register(string $pluginFile): void
     {
-        $settingsPage = new SettingsPageRegistrar();
-        add_action('init', [WordpressPlugin::class, 'boot']);
         register_activation_hook($pluginFile, [WordpressPlugin::class, 'onActivate']);
         register_uninstall_hook($pluginFile, [WordpressPlugin::class, 'onUninstall']);
+        $this->registerActions();
+        $this->registerAdminRegistrables();
+    }
+
+    private function registerActions(): void
+    {
+        add_action('init', [WordpressPlugin::class, 'boot']);
         add_action('admin_notices', [WordpressPlugin::class, 'showAdminNotice']);
         add_action('save_post', [WordpressPlugin::class, 'handleSaveFromPost'], 10, 2);
         add_action('publish_post', [WordpressPlugin::class, 'handlePublishFromPost'], 10, 2);
-        $settingsPage->register();
+    }
+
+    private function registerAdminRegistrables(): void
+    {
+        $registrables = [
+            new SettingsPageRegistrar(),
+            // new admin hooks
+        ];
+
+        foreach ($registrables as $registrable) {
+            if ($registrable instanceof HookRegistrableInterface) {
+                $registrable->register();
+            }
+        }
     }
 }

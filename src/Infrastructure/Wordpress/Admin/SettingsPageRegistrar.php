@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Admin;
 
-final class SettingsPageRegistrar
+use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookRegistrableInterface;
+
+final class SettingsPageRegistrar implements HookRegistrableInterface
 {
     public function register(): void
     {
