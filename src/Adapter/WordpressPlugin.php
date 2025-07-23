@@ -12,6 +12,7 @@ use N3XT0R\XPub\Domain\Service\ArticlePublisher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
+use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
 use WP_Post;
@@ -74,12 +75,28 @@ final class WordpressPlugin
 
     private static function createPublisher(): ArticlePublisher
     {
+        $repository = new PublisherRepository();
+        $allPublishers = $repository->all();
+
         $provider = new PublisherTargetProvider(new WordpressSettingsRepository());
-        $targets = $provider->getTargets();
+        $activeTargets = $provider->getTargets(); // e.g. ['devto', 'hashnode']
 
-        $publishers = array_map(fn($target) => PublisherFactory::create($target), $targets);
+        $instances = [];
 
-        return new ArticlePublisher($publishers);
+        foreach ($allPublishers as $publisher) {
+            if (!in_array($publisher->getSlug(), $activeTargets, true)) {
+                continue;
+            }
+
+            try {
+                $instances[] = PublisherFactory::create($publisher->getSlug());
+            } catch (\RuntimeException $e) {
+                LoggerFactory::create()->error($e->getMessage(), ['exception' => $e]);
+                continue;
+            }
+        }
+
+        return new ArticlePublisher($instances);
     }
 
     public static function handlePublishFromPost(int $postId, WP_Post $post): void
