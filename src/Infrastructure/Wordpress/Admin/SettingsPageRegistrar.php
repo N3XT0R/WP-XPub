@@ -6,7 +6,7 @@ namespace N3XT0R\XPub\Infrastructure\Wordpress\Admin;
 
 final class SettingsPageRegistrar
 {
-    public static function addOptionsPage(): void
+    public function addOptionsPage(): void
     {
         add_options_page(
             'XPUB Einstellungen',      // Page title
