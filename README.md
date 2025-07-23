@@ -137,17 +137,33 @@ $publisher->publish(new Article('Title', 'Body'));
 
 ---
 
-## 📁 Folder Structure
+## 🧱 Architecture
+
+WP-XPub is built using the Hexagonal Architecture (Ports & Adapters). This structure promotes separation of concerns and
+makes the plugin highly testable and extendable.
 
 ```
 src/
-├── Application/
-├── Domain/
+├── Application/       # Use cases, factories, orchestration
+├── Domain/            # Entities and contracts (PublisherInterface, Article, etc.)
 ├── Infrastructure/
-│   └── Wordpress/
-├── Support/
-└── ...
+│   ├── Publishers/    # Implementations of publishing platforms (Dev.to, etc.)
+│   ├── Wordpress/     # WP-specific logic (hooks, admin, DB, logging)
+├── Support/           # Reusable utilities (Seeder, helpers)
 ```
+
+### Key Concepts
+
+- Domain Layer: Pure PHP logic, no WP dependencies
+- Infrastructure Layer: WordPress-specific logic and third-party APIs
+- Application Layer: Coordinates between domain and infrastructure
+- Support Layer: Utilities for common functionality
+
+This architecture allows developers to:
+
+- Add new publishers easily without touching core logic
+- Replace parts of the system (e.g. repository) via DI or filters
+- Keep business logic testable and decoupled from WordPress
 
 ---
 
