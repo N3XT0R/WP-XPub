@@ -1,4 +1,16 @@
 {
+  "name": "n3xt0r/wp-xpub",
+  "description": "Flexible Multi-Channel Auto Publisher for WordPress",
+  "type": "wordpress-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ilya Beliaev",
+      "email": "info@php-dev.info",
+      "homepage": "https://blog.php-dev.info",
+      "role": "Developer"
+    }
+  ],
   "require": {
     "php": "^8.2",
     "monolog/monolog": "^3.9"
@@ -7,5 +19,12 @@
     "psr-4": {
       "N3XT0R\\XPub\\": "src/"
     }
-  }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
 }
