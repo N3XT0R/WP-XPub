@@ -19,19 +19,18 @@ final readonly class PublisherSeeder
      */
     public function register(string $slug, string $name, array $config = []): bool
     {
-        // Prüfen ob der Publisher bereits existiert
         if ($this->repository->findBySlug($slug)) {
             return false;
         }
 
-        // Pflichtfelder sicherstellen
         $requiredKeys = ['api_key'];
-        $missing = array_diff($requiredKeys, array_keys($config));
+        $missing = array_filter($requiredKeys, fn($key) => !array_key_exists($key, $config));
+
         if (!empty($missing)) {
             throw new InvalidArgumentException('Missing required config keys: '.implode(', ', $missing));
         }
 
-        // Publisher + Konfiguration anlegen
+
         return $this->repository->create($slug, $name, $config);
     }
 
