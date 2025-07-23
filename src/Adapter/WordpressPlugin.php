@@ -46,7 +46,11 @@ final class WordpressPlugin
      */
     public static function onActivate(string $channel = 'xpub'): void
     {
-        $runner = new SetupRunner(LoggerFactory::create($channel), new WordpressSettingsRepository());
+        $runner = new SetupRunner(
+            LoggerFactory::create($channel),
+            new WordpressSettingsRepository(),
+            new PublisherRepository()
+        );
         $runner->install();
     }
 
@@ -55,7 +59,11 @@ final class WordpressPlugin
      */
     public static function onUninstall(string $channel = 'xpub'): void
     {
-        $runner = new SetupRunner(LoggerFactory::create($channel), new WordpressSettingsRepository());
+        $runner = new SetupRunner(
+            LoggerFactory::create($channel),
+            new WordpressSettingsRepository(),
+            new PublisherRepository()
+        );
         $runner->uninstall();
     }
 
@@ -115,5 +123,5 @@ final class WordpressPlugin
         $publisher = self::createPublisher();
         $publisher->publish($article);
     }
-    
+
 }

@@ -15,6 +15,8 @@ interface PublisherRepositoryInterface
 
     public function findBySlug(string $slug): ?Publisher;
 
-    public function updateConfig(string $slug, array $newConfig): void;
+    public function updateConfig(string $slug, array $newConfig): bool;
+
+    public function create(string $slug, string $name, array $config): bool;
 
 }

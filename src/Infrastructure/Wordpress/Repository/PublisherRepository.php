@@ -72,8 +72,9 @@ class PublisherRepository implements PublisherRepositoryInterface
         return new Publisher($row->slug, $row->name, $configObjects);
     }
 
-    public function updateConfig(string $slug, array $newConfig): void
+    public function updateConfig(string $slug, array $newConfig): bool
     {
+        $result = false;
         /** @var wpdb $wpdb */
         $wpdb = Database::get();
 
@@ -85,7 +86,7 @@ class PublisherRepository implements PublisherRepositoryInterface
         );
 
         if (!$publisherId) {
-            return;
+            return false;
         }
 
         foreach ($newConfig as $key => $value) {
@@ -100,13 +101,13 @@ class PublisherRepository implements PublisherRepositoryInterface
             );
 
             if ((int)$exists > 0) {
-                $wpdb->update(
+                $result = $wpdb->update(
                     $configTable,
                     ['config_value' => $serializedValue],
                     ['publisher_id' => $publisherId, 'config_key' => $key]
                 );
             } else {
-                $wpdb->insert(
+                $result = $wpdb->insert(
                     $configTable,
                     [
                         'publisher_id' => $publisherId,
@@ -116,5 +117,36 @@ class PublisherRepository implements PublisherRepositoryInterface
                 );
             }
         }
+
+        return $result;
     }
+
+    public function create(string $slug, string $name, array $config): bool
+    {
+        $wpdb = Database::get();
+        $publisherTable = $wpdb->prefix.'xpub_publishers';
+        $configTable = $wpdb->prefix.'xpub_publisher_config';
+
+        $inserted = $wpdb->insert($publisherTable, [
+            'slug' => $slug,
+            'name' => $name,
+        ]);
+
+        if (!$inserted) {
+            return false;
+        }
+
+        $publisherId = (int)$wpdb->insert_id;
+
+        foreach ($config as $key => $value) {
+            $wpdb->insert($configTable, [
+                'publisher_id' => $publisherId,
+                'config_key' => $key,
+                'config_value' => maybe_serialize($value),
+            ]);
+        }
+
+        return true;
+    }
+
 }
