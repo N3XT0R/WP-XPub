@@ -2,7 +2,9 @@
 
 **Flexible Multi-Channel Auto Publisher for WordPress**
 
-WP-XPub is a lightweight, extensible auto-publishing plugin for WordPress. It allows you to publish your posts to multiple external platforms with ease – including LinkedIn, Mastodon, Dev.to, and more – either immediately or via scheduled jobs.
+WP-XPub is a lightweight, extensible auto-publishing plugin for WordPress. It allows you to publish your posts to
+multiple external platforms with ease – including LinkedIn, Mastodon, Dev.to, and more – either immediately or via
+scheduled jobs.
 
 ## Features
 
@@ -33,33 +35,44 @@ WP-XPub is a lightweight, extensible auto-publishing plugin for WordPress. It al
 
 ## Development
 
-WP-XPub follows modern coding standards and encourages clean separation of concerns. Use the included plugin hooks and client interface to build your own integrations.
+WP-XPub follows modern coding standards and encourages clean separation of concerns. Use the included plugin hooks and
+client interface to build your own integrations.
 
 ```php
 do_action('xpub_publish', $post_id);
 ```
 
 ### 🪝 Extend with Custom Publishers
+
 You can easily register your own publisher class by hooking into wp_xpub_factory_map.
 
 ✅ Example: Register a Custom Publisher
+
 ```php
+use N3XT0R\XPub\Support\PublisherSeederHelper;
+
 add_action('plugins_loaded', function () {
     add_filter('wp_xpub_factory_map', function ($map) {
         $map['myplatform'] = \Vendor\Namespace\MyCustomPublisher::class;
         return $map;
     });
+    
+    PublisherSeederHelper::upsert('myplatform', 'my Platform', [
+        'api_key' => '',
+    ]);
 });
 ```
+
 🧱 Minimal Example Publisher Class
+
 ```php
 namespace Vendor\Namespace;
 
-use N3XT0R\XPub\Contracts\PublisherInterface;
+use N3XT0R\XPub\Contracts\PublisherInterface;use N3XT0R\XPub\Domain\Entity\Article;
 
 class MyCustomPublisher implements PublisherInterface
 {
-    public function publish(string $title, string $content): bool
+    public function publish(Article $article): bool
     {
         // Add your platform logic here
         return true;
@@ -68,8 +81,14 @@ class MyCustomPublisher implements PublisherInterface
 ```
 
 Once registered, you can invoke your custom publisher like this:
+
 ```php
 $publisher = \N3XT0R\XPub\Core\PublisherFactory::create('myplatform');
-$publisher->publish('My Title', 'Some content...');
+$publisher->publish($article);
 
+```
+
+```php
+$publisher = \N3XT0R\XPub\Core\PublisherFactory::createWithConfig('myplatform', ['api_key' => '']);
+$publisher->publish($article);
 ```
