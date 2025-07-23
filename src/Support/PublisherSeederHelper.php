@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Support;
 
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
+use N3XT0R\XPub\Infrastructure\Wordpress\Setup\Seeder\PublisherSeeder;
 
 final class PublisherSeederHelper
 {
