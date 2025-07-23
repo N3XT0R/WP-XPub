@@ -5,8 +5,10 @@ Description: Modular Auto-Publisher for WordPress to external platforms (dev.to,
 Author: php-dev
 */
 
+use N3XT0R\XPub\Adapter\WordpressPlugin;
+
 defined('ABSPATH') or die('No script kiddies please!');
 
 require_once __DIR__.'/vendor/autoload.php';
 
-\N3XT0R\XPub\Adapter\WordpressPlugin::init(__FILE__);
+WordpressPlugin::init(__FILE__);
