@@ -84,15 +84,12 @@ final class WordpressPlugin
         $instances = [];
 
         foreach ($allPublishers as $publisher) {
-            if (!in_array($publisher->getSlug(), $activeTargets, true)) {
-                continue;
-            }
-
-            try {
-                $instances[] = PublisherFactory::create($publisher->getSlug());
-            } catch (\RuntimeException $e) {
-                LoggerFactory::create()->error($e->getMessage(), ['exception' => $e]);
-                continue;
+            if (in_array($publisher->getSlug(), $activeTargets, true)) {
+                try {
+                    $instances[] = PublisherFactory::create($publisher->getSlug());
+                } catch (\RuntimeException $e) {
+                    LoggerFactory::create()->error($e->getMessage(), ['exception' => $e]);
+                }
             }
         }
 
