@@ -12,4 +12,6 @@ interface PublisherRepositoryInterface
      * @return Publisher[]
      */
     public function all(): array;
+
+    public function findBySlug(string $slug): ?Publisher;
 }
