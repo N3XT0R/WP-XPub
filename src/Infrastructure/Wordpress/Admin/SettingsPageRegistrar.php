@@ -6,6 +6,12 @@ namespace N3XT0R\XPub\Infrastructure\Wordpress\Admin;
 
 final class SettingsPageRegistrar
 {
+    public function register(): void
+    {
+        add_action('admin_menu', [$this, 'addOptionsPage']);
+    }
+
+
     public function addOptionsPage(): void
     {
         add_options_page(
