@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Adapter;
 
+use N3XT0R\XPub\Application\Factory\PublisherFactory;
 use N3XT0R\XPub\Application\Service\Plugin\PluginBootstrapService;
 use N3XT0R\XPub\Domain\Entity\Article;
 use N3XT0R\XPub\Domain\Service\ArticlePublisher;
-use N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
+use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
+use WP_Post;
 
 /**
  * Main entry point for the WP-XPub plugin lifecycle (activation, boot, uninstall).
@@ -32,7 +34,7 @@ final class WordpressPlugin
      */
     public static function boot(): void
     {
-        $bootstrapper = new PluginBootstrapService();
+        $bootstrapper = new PluginBootstrapService(new WordpressSettingsRepository());
         $bootstrapper->bootstrap();
     }
 
@@ -62,7 +64,7 @@ final class WordpressPlugin
     }
 
 
-    public static function handlePublishFromPost(int $postId, \WP_Post $post, bool $update): void
+    public static function handlePublishFromPost(int $postId, WP_Post $post, bool $update): void
     {
         if ($update || $post->post_status !== 'publish') {
             return;
@@ -72,7 +74,7 @@ final class WordpressPlugin
         $content = $post->post_content;
 
         $article = new Article($title, $content);
-        $publisher = new ArticlePublisher(new DevToPublisher());
+        $publisher = new ArticlePublisher([PublisherFactory::create('devto')]);
 
         $publisher->publish($article);
     }

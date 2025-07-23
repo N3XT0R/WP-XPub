@@ -7,13 +7,26 @@ use N3XT0R\XPub\Domain\Entity\Article;
 
 final class ArticlePublisher
 {
-    public function __construct(
-        private readonly PublisherInterface $publisher
-    ) {
+
+    /**
+     * @var PublisherInterface[]
+     */
+    private array $publishers;
+
+    public function __construct(array $publishers)
+    {
+        $this->publishers = $publishers;
     }
 
-    public function publish(Article $article): bool
+    public function addPublisher(PublisherInterface $publisher): void
     {
-        return $this->publisher->publish($article);
+        $this->publishers[] = $publisher;
+    }
+
+    public function publish(Article $article): void
+    {
+        foreach ($this->publishers as $publisher) {
+            $publisher->publish($article);
+        }
     }
 }
