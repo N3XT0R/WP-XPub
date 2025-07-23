@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Application;
+namespace N3XT0R\XPub\Application\Service\Plugin;
 
+use N3XT0R\XPub\Application\Factory\PublisherFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
 use N3XT0R\XPub\Support\Version;
 
