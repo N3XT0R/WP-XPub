@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Admin;
 
+use N3XT0R\XPub\Application\Service\Admin\PublisherSettingsService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookRegistrableInterface;
+use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
+use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Support\View;
 
 final class SettingsPageRegistrar implements HookRegistrableInterface
@@ -28,9 +31,13 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
 
     public function renderSettingsPage(): void
     {
+        $service = new PublisherSettingsService(
+            new PublisherRepository(),
+            new WordpressSettingsRepository()
+        );
         View::render('layouts.admin', [
             'title' => 'XPUB Einstellungen',
-            'content' => fn() => View::render('admin.settings-page', ['foo' => 'bar']),
+            'content' => fn() => View::render('admin.settings-page', $service->getSettingsViewData()),
         ]);
     }
 }

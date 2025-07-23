@@ -6,6 +6,7 @@ namespace N3XT0R\XPub\Infrastructure\Wordpress\Hook;
 
 use N3XT0R\XPub\Adapter\WordpressPlugin;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsPageRegistrar;
+use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
 
 final class WordpressHookRegistrar
 {
@@ -23,6 +24,9 @@ final class WordpressHookRegistrar
         add_action('admin_notices', [WordpressPlugin::class, 'showAdminNotice']);
         add_action('save_post', [WordpressPlugin::class, 'handleSaveFromPost'], 10, 2);
         add_action('publish_post', [WordpressPlugin::class, 'handlePublishFromPost'], 10, 2);
+        add_action('admin_post_xpub_save_settings', function () {
+            (new SettingsSaveHandler())->handle();
+        });
     }
 
     private function registerAdminRegistrables(): void
