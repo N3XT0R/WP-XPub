@@ -115,57 +115,5 @@ final class WordpressPlugin
         $publisher = self::createPublisher();
         $publisher->publish($article);
     }
-
-    public static function registerAdminMenu(): void
-    {
-        add_options_page(
-            'XPUB Einstellungen',
-            'XPUB',
-            'manage_options',
-            'xpub_settings',
-            [self::class, 'renderSettingsPage']
-        );
-    }
-
-    public static function renderSettingsPage(): void
-    {
-        $repository = new PublisherRepository();
-        $allPublishers = $repository->all();
-
-        $settings = new WordpressSettingsRepository();
-        $activeTargets = $settings->get('xpub_publisher_targets', []);
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && check_admin_referer('xpub_save_settings')) {
-            $selected = $_POST['xpub_targets'] ?? [];
-            $settings->set('xpub_publisher_targets', $selected);
-            echo '<div class="updated"><p>Einstellungen gespeichert.</p></div>';
-            $activeTargets = $selected;
-        }
-
-        echo '<div class="wrap">';
-        echo '<h1>XPUB Einstellungen</h1>';
-        echo '<form method="post">';
-        wp_nonce_field('xpub_save_settings');
-
-        echo '<table class="form-table">';
-        echo '<tr><th scope="row">Aktive Publisher</th><td>';
-        echo '<select name="xpub_targets[]" multiple style="min-width: 300px;">';
-
-        foreach ($allPublishers as $publisher) {
-            $slug = esc_attr($publisher->getSlug());
-            $name = esc_html($publisher->getName());
-            $selected = in_array($slug, $activeTargets, true) ? 'selected' : '';
-            echo "<option value=\"$slug\" $selected>$name</option>";
-        }
-
-        echo '</select>';
-        echo '<p class="description">Wähle die Publisher aus, die beim Veröffentlichen eines Artikels verwendet werden sollen.</p>';
-        echo '</td></tr>';
-        echo '</table>';
-
-        submit_button('Speichern');
-        echo '</form>';
-        echo '</div>';
-    }
-
+    
 }
