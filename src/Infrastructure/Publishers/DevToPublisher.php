@@ -15,7 +15,7 @@ class DevToPublisher extends PublisherAbstract
         $apiKey = $this->getByKey('api_key');
 
         if (!$apiKey) {
-            $this->log('[DevToPublisher] Kein API-Key gesetzt.');
+            $this->error('[DevToPublisher] Kein API-Key gesetzt.');
             return false;
         }
 
@@ -42,14 +42,14 @@ class DevToPublisher extends PublisherAbstract
         $response = wp_remote_post(self::API_ENDPOINT, $args);
 
         if (is_wp_error($response)) {
-            $this->log('[DevToPublisher] Fehler beim Senden: '.$response->get_error_message());
+            $this->error('[DevToPublisher] Fehler beim Senden: '.$response->get_error_message());
             return false;
         }
 
         $code = wp_remote_retrieve_response_code($response);
         if ($code !== 201) {
             $message = wp_remote_retrieve_body($response);
-            $this->log("[DevToPublisher] Unerwartete Antwort ($code): $message");
+            $this->error("[DevToPublisher] Unerwartete Antwort ($code): $message");
             return false;
         }
 

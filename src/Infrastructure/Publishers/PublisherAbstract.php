@@ -39,4 +39,11 @@ abstract class PublisherAbstract implements PublisherInterface, ConfigurablePubl
             $this->logger->info($message, $context);
         }
     }
+
+    protected function error(string $message, array $context = []): void
+    {
+        if ($this->logger !== null) {
+            $this->logger->error($message, $context);
+        }
+    }
 }
