@@ -65,10 +65,8 @@ abstract class AbstractMigration
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 $logger->error('Migration failed: '.$e->getMessage(), ['exception' => $e]);
             } else {
-                $logger->error(
-                    'A database migration failed. Please check the logs.',
-                    ['exception' => $e]
-                );
+                $message = 'A database migration failed. Please check the logs.';
+                $logger->warning($message, ['exception' => $e]);
             }
         }
 
