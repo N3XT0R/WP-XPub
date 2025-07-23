@@ -14,8 +14,8 @@ class DevToPublisher extends PublisherAbstract
     {
         $apiKey = $this->getByKey('api_key');
 
-        if (!$apiKey) {
-            $this->error('[DevToPublisher] Kein API-Key gesetzt.');
+        if (empty($apiKey)) {
+            $this->error('[DevToPublisher] Missing API key.');
             return false;
         }
 
@@ -24,35 +24,33 @@ class DevToPublisher extends PublisherAbstract
                 'title' => $article->title,
                 'published' => true,
                 'body_markdown' => $article->content,
-                // Optional:
-                // 'tags'       => ['php', 'wordpress'],
-                // 'canonical_url' => 'https://example.com/original-post'
+                // 'tags' => ['php', 'wordpress'],
+                // 'canonical_url' => $article->canonicalUrl ?? null,
             ],
         ];
 
-        $args = [
+        $response = wp_remote_post(self::API_ENDPOINT, [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'api-key' => $apiKey,
             ],
             'body' => wp_json_encode($body),
             'timeout' => 10,
-        ];
-
-        $response = wp_remote_post(self::API_ENDPOINT, $args);
+        ]);
 
         if (is_wp_error($response)) {
-            $this->error('[DevToPublisher] Fehler beim Senden: '.$response->get_error_message());
+            $this->error('[DevToPublisher] Request failed: '.$response->get_error_message());
             return false;
         }
 
         $code = wp_remote_retrieve_response_code($response);
         if ($code !== 201) {
             $message = wp_remote_retrieve_body($response);
-            $this->error("[DevToPublisher] Unerwartete Antwort ($code): $message");
+            $this->error("[DevToPublisher] Unexpected response ($code): $message");
             return false;
         }
 
+        $this->log('[DevToPublisher] Article successfully published.');
         return true;
     }
 }
