@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Infrastructure\Logging;
+namespace N3XT0R\XPub\Infrastructure\Wordpress\Logging;
 
 use Monolog\Logger;
-use N3XT0R\XPub\Infrastructure\Database\Database;
-use N3XT0R\XPub\Infrastructure\Logging\Handler\AdminNoticeHandler;
-use N3XT0R\XPub\Infrastructure\Logging\Handler\WPDBLogHandler;
+use N3XT0R\XPub\Infrastructure\Wordpress\Database\Database;
+use N3XT0R\XPub\Infrastructure\Wordpress\Logging\Handler\AdminNoticeHandler;
+use N3XT0R\XPub\Infrastructure\Wordpress\Logging\Handler\WPDBLogHandler;
 
 class LoggerFactory
 {

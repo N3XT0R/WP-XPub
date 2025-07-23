@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Setup\Migrations;
+namespace N3XT0R\XPub\Infrastructure\Wordpress\Setup\Migrations;
 
 use Monolog\Logger;
-use N3XT0R\XPub\Infrastructure\Database\Database;
-use N3XT0R\XPub\Infrastructure\Logging\LoggerFactory;
+use N3XT0R\XPub\Infrastructure\Wordpress\Database\Database;
+use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use wpdb as WPDB;
 
 abstract class AbstractMigration

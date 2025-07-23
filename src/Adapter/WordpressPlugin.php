@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub;
+namespace N3XT0R\XPub\Adapter;
 
-use N3XT0R\XPub\Core\PublisherFactory;
-use N3XT0R\XPub\Setup\SetupRunner;
+use N3XT0R\XPub\Application\PublisherFactory;
+use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
 use N3XT0R\XPub\Support\Version;
 
 /**
  * Main entry point for the WP-XPub plugin lifecycle (activation, boot, uninstall).
  */
-final class Plugin
+final class WordpressPlugin
 {
     private static string $pluginFile;
 

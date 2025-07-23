@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Setup\Migrations;
+namespace N3XT0R\XPub\Infrastructure\Wordpress\Setup\Migrations;
 
 use wpdb;
 
