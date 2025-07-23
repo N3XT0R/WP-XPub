@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Publishers;
 
-use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Entity\Article;
 
-class DevToPublisher implements PublisherInterface
+class DevToPublisher extends PublisherAbstract
 {
     public function publish(Article $article): bool
     {

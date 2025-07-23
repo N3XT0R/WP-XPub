@@ -16,5 +16,6 @@ final class WordpressHookRegistrar
         add_action('admin_notices', [WordpressPlugin::class, 'showAdminNotice']);
         add_action('save_post', [WordpressPlugin::class, 'handleSaveFromPost'], 10, 2);
         add_action('publish_post', [WordpressPlugin::class, 'handlePublishFromPost'], 10, 2);
+        add_action('admin_menu', [WordpressPlugin::class, 'registerAdminMenu']);
     }
 }

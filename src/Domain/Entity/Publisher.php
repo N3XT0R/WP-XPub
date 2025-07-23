@@ -9,7 +9,7 @@ final class Publisher
     public function __construct(
         private string $slug,
         private string $name,
-        private array $config
+        private array $configs = []
     ) {
     }
 
@@ -18,13 +18,17 @@ final class Publisher
         return $this->slug;
     }
 
-    public function getConfig(): array
-    {
-        return $this->config;
-    }
-
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getConfigArray(): array
+    {
+        $out = [];
+        foreach ($this->configs as $c) {
+            $out[$c->getKey()] = $c->getValue();
+        }
+        return $out;
     }
 }

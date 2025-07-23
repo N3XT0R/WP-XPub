@@ -8,5 +8,6 @@ use N3XT0R\XPub\Domain\Entity\Article;
 
 interface PublisherInterface
 {
+
     public function publish(Article $article): bool;
 }
