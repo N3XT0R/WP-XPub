@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Contracts;
+namespace N3XT0R\XPub\Domain\Contracts;
 
 interface PublisherInterface {
     public function publish(string $title, string $content): bool;

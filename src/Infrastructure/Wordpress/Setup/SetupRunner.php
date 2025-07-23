@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Setup;
+namespace N3XT0R\XPub\Infrastructure\Wordpress\Setup;
 
-use N3XT0R\XPub\Setup\Migrations\AbstractMigration;
+use N3XT0R\XPub\Infrastructure\Wordpress\Setup\Migrations\AbstractMigration;
 
 /**
  * Executes and manages all available plugin migrations.
@@ -18,7 +18,7 @@ use N3XT0R\XPub\Setup\Migrations\AbstractMigration;
 class SetupRunner
 {
     public const OPTION_KEY = 'xpub_db_version';
-    public const MIGRATION_NAMESPACE = 'N3XT0R\\XPub\\Setup\\Migrations\\';
+    public const MIGRATION_NAMESPACE = 'N3XT0R\\XPub\\Infrastructure\\Wordpress\\Setup\\Migrations\\';
 
     public function install(): void
     {

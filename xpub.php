@@ -9,4 +9,4 @@ defined('ABSPATH') or die('No script kiddies please!');
 
 require_once __DIR__.'/vendor/autoload.php';
 
-\N3XT0R\XPub\Plugin::init(__FILE__);
+\N3XT0R\XPub\Adapter\WordpressPlugin::init(__FILE__);

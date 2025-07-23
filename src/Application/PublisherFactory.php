@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Core;
+namespace N3XT0R\XPub\Application;
 
-use N3XT0R\XPub\Contracts\PublisherInterface;
+use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 
 class PublisherFactory {
     public static function create(string $target): PublisherInterface {
         $map = apply_filters('wp_xpub_factory_map', [
-            'devto' => \N3XT0R\XPub\Publishers\DevToPublisher::class,
+            'devto' => \N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher::class,
         ]);
 
         if (!isset($map[$target]) || !class_exists($map[$target])) {
