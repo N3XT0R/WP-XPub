@@ -59,9 +59,11 @@ class Migration_1 extends AbstractMigration
     {
         $configsTable = $wpdb->prefix.'xpub_configs';
         $publishersTable = $wpdb->prefix.'xpub_publishers';
+        $logsTable = $wpdb->prefix.'xpub_logs';
 
         $wpdb->query("DROP TABLE IF EXISTS $configsTable");
         $wpdb->query("DROP TABLE IF EXISTS $publishersTable");
+        $wpdb->query("DROP TABLE IF EXISTS $logsTable");
     }
 
 }
