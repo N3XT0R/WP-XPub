@@ -7,7 +7,8 @@
     <fieldset>
         <legend>Wähle aktive Publisher:</legend>
         <?php
-        foreach ($publishers as $publisher):
+        foreach ($publishers as $publisher): ?>
+            <?php
             $id = 'publisher_'.esc_attr($publisher['slug']); ?>
             <label for="<?= $id ?>" style="display: block; margin-bottom: .5rem;">
                 <input
@@ -31,7 +32,8 @@
             <fieldset style="margin-top: 2rem; padding: 1rem; border: 1px solid #ccc;">
                 <legend><strong><?= esc_html($publisher['name']) ?> Konfiguration</strong></legend>
                 <?php
-                foreach ($publisher['config'] as $key => $value):
+                foreach ($publisher['config'] as $key => $value): ?>
+                    <?php
                     $inputId = 'config_'.esc_attr($publisher['slug'].'_'.$key); ?>
                     <div style="margin-bottom: 1rem;">
                         <label for="<?= $inputId ?>" style="display: block; font-weight: bold; margin-bottom: .3rem;">
@@ -43,7 +45,7 @@
                                 name="config[<?= esc_attr($publisher['slug']) ?>][<?= esc_attr($key) ?>]"
                                 value="<?= esc_attr($value) ?>"
                                 style="width: 100%; max-width: 400px;"
-                        />
+                        >
                     </div>
                 <?php
                 endforeach; ?>
