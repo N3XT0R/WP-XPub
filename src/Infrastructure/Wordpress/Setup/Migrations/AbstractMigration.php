@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Setup\Migrations;
 
+use Closure;
 use Monolog\Logger;
 use N3XT0R\XPub\Infrastructure\Wordpress\Database\Database;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
@@ -21,52 +22,68 @@ abstract class AbstractMigration
         }
 
         $this->wpdb = $customWpdb ?? Database::get();
-        $this->logger = $logger ?? LoggerFactory::create();
+        $this->logger = $logger ?? LoggerFactory::create('migration');
     }
 
+    /**
+     * Run installation queries.
+     */
     abstract protected function install(WPDB $wpdb): void;
 
+    /**
+     * Run uninstallation queries.
+     */
     abstract protected function uninstall(WPDB $wpdb): void;
 
+    /**
+     * Execute install within a transaction if supported.
+     */
     public function executeInstall(): bool
     {
-        return $this->transactionalQueries(function () {
-            $this->install($this->wpdb);
-        });
+        return $this->transactionalQueries(fn() => $this->install($this->wpdb));
     }
 
+    /**
+     * Execute uninstall within a transaction if supported.
+     */
     public function executeUninstall(): bool
     {
-        return $this->transactionalQueries(function () {
-            $this->uninstall($this->wpdb);
-        });
+        return $this->transactionalQueries(fn() => $this->uninstall($this->wpdb));
     }
 
-    protected function transactionalQueries(\Closure $closure): bool
+    /**
+     * Executes queries in a transaction-safe way (if supported).
+     */
+    protected function transactionalQueries(Closure $callback): bool
     {
         $result = false;
         $usedTransaction = false;
-        $wpdb = $this->wpdb;
-        $logger = $this->logger;
+
         try {
-            if ($wpdb->has_cap('transactions')) {
-                $wpdb->query('START TRANSACTION');
+            if ($this->wpdb->has_cap('transactions')) {
+                $this->wpdb->query('START TRANSACTION');
                 $usedTransaction = true;
             }
-            $closure();
+
+            $callback();
+
             if ($usedTransaction) {
-                $wpdb->query('COMMIT');
+                $this->wpdb->query('COMMIT');
             }
+
             $result = true;
         } catch (\Throwable $e) {
             if ($usedTransaction) {
-                $wpdb->query('ROLLBACK');
+                $this->wpdb->query('ROLLBACK');
             }
+
+            $message = 'Migration failed: '.$e->getMessage();
+            $context = ['exception' => $e];
+
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                $logger->error('Migration failed: '.$e->getMessage(), ['exception' => $e]);
+                $this->logger->error($message, $context);
             } else {
-                $message = 'A database migration failed. Please check the logs.';
-                $logger->warning($message, ['exception' => $e]);
+                $this->logger->warning('A database migration failed. Please check the logs.', $context);
             }
         }
 
