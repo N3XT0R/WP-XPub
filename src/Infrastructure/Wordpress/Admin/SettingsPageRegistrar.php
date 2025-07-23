@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Admin;
 
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookRegistrableInterface;
+use N3XT0R\XPub\Support\View;
 
 final class SettingsPageRegistrar implements HookRegistrableInterface
 {
@@ -27,8 +28,10 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
 
     public function renderSettingsPage(): void
     {
-        echo '<div class="wrap"><h1>XPUB Einstellungen</h1>';
-        echo '<p>Hier kommen deine Formulareinstellungen oder React App hin.</p>';
-        echo '</div>';
+        View::render('layouts.admin', [
+            'title' => 'XPUB Einstellungen',
+            'content' => fn() => View::render('admin.settings-page', ['foo' => 'bar']),
+        ]);
     }
 }
+
