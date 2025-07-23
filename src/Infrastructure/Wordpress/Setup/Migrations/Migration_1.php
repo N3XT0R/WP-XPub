@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Setup\Migrations;
 
+use N3XT0R\XPub\Support\PublisherSeederHelper;
 use wpdb;
 
 class Migration_1 extends AbstractMigration
 {
     protected function install(wpdb $wpdb): void
     {
-        $publisherTable = $wpdb->prefix.'xpub_publishers';
-        $configTable = $wpdb->prefix.'xpub_publisher_config';
-        $logsTable = $wpdb->prefix.'xpub_logs';
+        $prefix = $wpdb->prefix;
 
-        $sql = "
-            CREATE TABLE $logsTable (
+        $publisherTable = $prefix.'xpub_publishers';
+        $configTable = $prefix.'xpub_publisher_config';
+        $logsTable = $prefix.'xpub_logs';
+
+        // Logging table
+        dbDelta(
+            "
+            CREATE TABLE {$logsTable} (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 channel VARCHAR(50),
                 level INT,
@@ -24,46 +29,48 @@ class Migration_1 extends AbstractMigration
                 context TEXT,
                 timestamp DATETIME
             );
-        ";
-        dbDelta($sql);
-
-        $sql = "
-        CREATE TABLE IF NOT EXISTS {$publisherTable} (
-            id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-            slug VARCHAR(50) NOT NULL,
-            name VARCHAR(100) NOT NULL,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            PRIMARY KEY (id),
-            UNIQUE KEY slug_unique (slug)
+        "
         );
 
-        CREATE TABLE  IF NOT EXISTS {$configTable} (
-            id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-            publisher_id BIGINT UNSIGNED NOT NULL,
-            config_key VARCHAR(100) NOT NULL,
-            config_value TEXT NOT NULL,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            PRIMARY KEY (id),
-            FOREIGN KEY (publisher_id) REFERENCES {$publisherTable}(id) ON DELETE CASCADE ON UPDATE CASCADE,
-            INDEX idx_publisher (publisher_id),
-            INDEX idx_key (config_key)
-        );
-        ";
+        // Publisher + config tables
+        dbDelta(
+            "
+            CREATE TABLE IF NOT EXISTS {$publisherTable} (
+                id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                slug VARCHAR(50) NOT NULL,
+                name VARCHAR(100) NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (id),
+                UNIQUE KEY slug_unique (slug)
+            );
 
-        dbDelta($sql);
+            CREATE TABLE IF NOT EXISTS {$configTable} (
+                id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                publisher_id BIGINT UNSIGNED NOT NULL,
+                config_key VARCHAR(100) NOT NULL,
+                config_value TEXT NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (id),
+                FOREIGN KEY (publisher_id) REFERENCES {$publisherTable}(id)
+                    ON DELETE CASCADE ON UPDATE CASCADE,
+                INDEX idx_publisher (publisher_id),
+                INDEX idx_key (config_key)
+            );
+        "
+        );
+
+        // Ensure default publisher is present
+        PublisherSeederHelper::upsert('devto', 'Dev.to', ['api_key' => '']);
     }
 
     protected function uninstall(wpdb $wpdb): void
     {
-        $configsTable = $wpdb->prefix.'xpub_configs';
-        $publishersTable = $wpdb->prefix.'xpub_publishers';
-        $logsTable = $wpdb->prefix.'xpub_logs';
+        $prefix = $wpdb->prefix;
 
-        $wpdb->query("DROP TABLE IF EXISTS $configsTable");
-        $wpdb->query("DROP TABLE IF EXISTS $publishersTable");
-        $wpdb->query("DROP TABLE IF EXISTS $logsTable");
+        $wpdb->query("DROP TABLE IF EXISTS {$prefix}xpub_publisher_config");
+        $wpdb->query("DROP TABLE IF EXISTS {$prefix}xpub_publishers");
+        $wpdb->query("DROP TABLE IF EXISTS {$prefix}xpub_logs");
     }
-
 }
