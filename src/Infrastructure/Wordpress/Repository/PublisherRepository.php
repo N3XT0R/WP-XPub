@@ -8,12 +8,13 @@ use N3XT0R\XPub\Domain\Entity\Publisher;
 use N3XT0R\XPub\Domain\Entity\PublisherConfig;
 use N3XT0R\XPub\Domain\Repository\PublisherRepositoryInterface;
 use N3XT0R\XPub\Infrastructure\Wordpress\Database\Database;
+use wpdb;
 
 class PublisherRepository implements PublisherRepositoryInterface
 {
     public function all(): array
     {
-        /** @var \wpdb $wpdb */
+        /** @var wpdb $wpdb */
         $wpdb = Database::get();
 
         $publisherTable = $wpdb->prefix.'xpub_publishers';
@@ -21,7 +22,6 @@ class PublisherRepository implements PublisherRepositoryInterface
 
         $rows = $wpdb->get_results("SELECT * FROM $publisherTable");
 
-        // Safety check: if $rows is not an array, return empty
         if (!is_array($rows)) {
             return [];
         }
@@ -29,16 +29,12 @@ class PublisherRepository implements PublisherRepositoryInterface
         $result = [];
 
         foreach ($rows as $row) {
-            // Fetch config for each publisher
             $configs = $wpdb->get_results(
-                $wpdb->prepare(
-                    "SELECT * FROM $configTable WHERE publisher_id = %d",
-                    $row->id
-                )
+                $wpdb->prepare("SELECT * FROM $configTable WHERE publisher_id = %d", $row->id)
             );
 
             $configObjects = array_map(
-                fn($c) => new PublisherConfig($c->config_key, $c->config_value),
+                fn($c) => new PublisherConfig($c->config_key, maybe_unserialize($c->config_value)),
                 $configs
             );
 
@@ -48,12 +44,9 @@ class PublisherRepository implements PublisherRepositoryInterface
         return $result;
     }
 
-    /**
-     * Optional: Hole einen einzelnen Publisher anhand des Slugs.
-     */
     public function findBySlug(string $slug): ?Publisher
     {
-        /** @var \wpdb $wpdb */
+        /** @var wpdb $wpdb */
         $wpdb = Database::get();
 
         $publisherTable = $wpdb->prefix.'xpub_publishers';
@@ -72,10 +65,56 @@ class PublisherRepository implements PublisherRepositoryInterface
         );
 
         $configObjects = array_map(
-            fn($c) => new PublisherConfig($c->config_key, $c->config_value),
+            fn($c) => new PublisherConfig($c->config_key, maybe_unserialize($c->config_value)),
             $configs
         );
 
         return new Publisher($row->slug, $row->name, $configObjects);
+    }
+
+    public function updateConfig(string $slug, array $newConfig): void
+    {
+        /** @var wpdb $wpdb */
+        $wpdb = Database::get();
+
+        $publisherTable = $wpdb->prefix.'xpub_publishers';
+        $configTable = $wpdb->prefix.'xpub_publisher_config';
+
+        $publisherId = $wpdb->get_var(
+            $wpdb->prepare("SELECT id FROM $publisherTable WHERE slug = %s", $slug)
+        );
+
+        if (!$publisherId) {
+            return;
+        }
+
+        foreach ($newConfig as $key => $value) {
+            $serializedValue = maybe_serialize($value);
+
+            $exists = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT COUNT(*) FROM $configTable WHERE publisher_id = %d AND config_key = %s",
+                    $publisherId,
+                    $key
+                )
+            );
+
+            if ((int)$exists > 0) {
+                $wpdb->update(
+                    $configTable,
+                    ['config_value' => $serializedValue],
+                    ['publisher_id' => $publisherId, 'config_key' => $key]
+                );
+            } else {
+                $wpdb->insert(
+                    $configTable,
+                    [
+                        'publisher_id' => $publisherId,
+                        'config_key' => $key,
+                        'config_value' => $serializedValue,
+                    ]
+                );
+            }
+        }
     }
 }

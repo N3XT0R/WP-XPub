@@ -6,6 +6,9 @@ namespace N3XT0R\XPub\Domain\Entity;
 
 final class Publisher
 {
+    /**
+     * @param  PublisherConfig[]  $configs
+     */
     public function __construct(
         private string $slug,
         private string $name,
@@ -23,6 +26,19 @@ final class Publisher
         return $this->name;
     }
 
+    /**
+     * @return PublisherConfig[]
+     */
+    public function getConfigs(): array
+    {
+        return $this->configs;
+    }
+
+    public function setConfig(array $configs): void
+    {
+        $this->configs = $configs;
+    }
+
     public function getConfigArray(): array
     {
         $out = [];
@@ -30,5 +46,16 @@ final class Publisher
             $out[$c->getKey()] = $c->getValue();
         }
         return $out;
+    }
+
+    public function getConfigByKey(string $key): ?string
+    {
+        foreach ($this->configs as $config) {
+            if ($config->getKey() === $key) {
+                return $config->getValue();
+            }
+        }
+
+        return null;
     }
 }

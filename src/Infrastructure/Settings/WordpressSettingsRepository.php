@@ -22,4 +22,5 @@ class WordpressSettingsRepository implements SettingsRepositoryInterface
     {
         return delete_option($key);
     }
+
 }
