@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Setup;
 
+use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\Migrations\AbstractMigration;
+use Psr\Log\LoggerInterface;
 
 /**
  * Executes and manages all available plugin migrations.
@@ -20,9 +22,18 @@ class SetupRunner
     public const OPTION_KEY = 'xpub_db_version';
     public const MIGRATION_NAMESPACE = 'N3XT0R\\XPub\\Infrastructure\\Wordpress\\Setup\\Migrations\\';
 
+    private LoggerInterface $logger;
+    private SettingsRepositoryInterface $settings;
+
+    public function __construct(LoggerInterface $logger, SettingsRepositoryInterface $settings)
+    {
+        $this->logger = $logger;
+        $this->settings = $settings;
+    }
+
     public function install(): void
     {
-        $installedVersion = (int)get_option(self::OPTION_KEY, 0);
+        $installedVersion = (int)$this->settings->get(self::OPTION_KEY, 0);
 
         $migrations = $this->getAvailableMigrations();
         sort($migrations);
@@ -41,7 +52,7 @@ class SetupRunner
         }
 
         if (!empty($migrations)) {
-            update_option(self::OPTION_KEY, max($migrations));
+            $this->settings->set(self::OPTION_KEY, max($migrations));
         }
     }
 
@@ -53,7 +64,7 @@ class SetupRunner
         foreach ($migrations as $version) {
             $className = self::MIGRATION_NAMESPACE.'Migration_'.$version;
             if (!class_exists($className)) {
-                error_log("[xPub] Migration class $className not found.");
+                $this->logger->error("Migration class {$className} not found.");
                 break;
             }
 
@@ -63,13 +74,17 @@ class SetupRunner
             }
         }
 
-        delete_option(self::OPTION_KEY);
+        $this->settings->delete(self::OPTION_KEY);
     }
 
     private function getAvailableMigrations(): array
     {
         $directory = __DIR__.'/Migrations';
         $files = scandir($directory);
+        if (!is_array($files)) {
+            $this->logger->error("Could not read migration directory: {$directory}");
+            return [];
+        }
 
         $versions = [];
 

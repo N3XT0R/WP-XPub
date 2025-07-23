@@ -6,9 +6,11 @@ namespace N3XT0R\XPub\Adapter;
 
 use N3XT0R\XPub\Application\Factory\PublisherFactory;
 use N3XT0R\XPub\Application\Service\Plugin\PluginBootstrapService;
+use N3XT0R\XPub\Application\Service\Publishing\PublisherTargetProvider;
 use N3XT0R\XPub\Domain\Entity\Article;
 use N3XT0R\XPub\Domain\Service\ArticlePublisher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
+use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
@@ -41,17 +43,19 @@ final class WordpressPlugin
     /**
      * Runs on plugin activation (e.g., DB setup).
      */
-    public static function onActivate(): void
+    public static function onActivate(string $channel = 'xpub'): void
     {
-        (new SetupRunner())->install();
+        $runner = new SetupRunner(LoggerFactory::create($channel), new WordpressSettingsRepository());
+        $runner->install();
     }
 
     /**
      * Runs on plugin uninstall (e.g., cleanup).
      */
-    public static function onUninstall(): void
+    public static function onUninstall(string $channel = 'xpub'): void
     {
-        (new SetupRunner())->uninstall();
+        $runner = new SetupRunner(LoggerFactory::create($channel), new WordpressSettingsRepository());
+        $runner->uninstall();
     }
 
     /**
@@ -59,24 +63,41 @@ final class WordpressPlugin
      */
     public static function showAdminNotice(): void
     {
-        $presenter = new AdminNoticePresenter();
+        $presenter = new AdminNoticePresenter(new WordpressSettingsRepository());
         $presenter->showIfAvailable();
     }
 
+    private static function createArticleFromPost(WP_Post $post): Article
+    {
+        return new Article($post->ID, $post->post_title, $post->post_content);
+    }
 
-    public static function handlePublishFromPost(int $postId, WP_Post $post, bool $update): void
+    private static function createPublisher(): ArticlePublisher
+    {
+        $provider = new PublisherTargetProvider(new WordpressSettingsRepository());
+        $targets = $provider->getTargets();
+
+        $publishers = array_map(fn($target) => PublisherFactory::create($target), $targets);
+
+        return new ArticlePublisher($publishers);
+    }
+
+    public static function handlePublishFromPost(int $postId, WP_Post $post): void
+    {
+        self::handleSaveFromPost($postId, $post, true);
+    }
+
+
+    public static function handleSaveFromPost(int $postId, WP_Post $post, bool $update = false): void
     {
         if ($update || $post->post_status !== 'publish') {
             return;
         }
 
-        $title = $post->post_title;
-        $content = $post->post_content;
-
-        $article = new Article($title, $content);
-        $publisher = new ArticlePublisher([PublisherFactory::create('devto')]);
-
+        $article = self::createArticleFromPost($post);
+        $publisher = self::createPublisher();
         $publisher->publish($article);
     }
+
 
 }

@@ -4,6 +4,7 @@ namespace N3XT0R\XPub\Domain\Service;
 
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Entity\Article;
+use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 
 final class ArticlePublisher
 {
@@ -26,7 +27,10 @@ final class ArticlePublisher
     public function publish(Article $article): void
     {
         foreach ($this->publishers as $publisher) {
-            $publisher->publish($article);
+            $success = $publisher->publish($article);
+            if (!$success) {
+                LoggerFactory::create()->error("Publishing failed for post {$article->postId}");
+            }
         }
     }
 }
