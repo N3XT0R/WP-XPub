@@ -37,20 +37,17 @@ src/
 
 ---
 
-## Extensibility
+## Benefits
 
-- **New publishers** can be registered via the `wp_xpub_factory_map` filter.
-- **Custom content handling** is done via interfaces like `RendersPostContentInterface`.
-- **Markdown conversion** is abstracted via a dedicated renderer.
-- **Settings** are encapsulated and not directly accessed from the domain.
+- 🔧 **Easy to maintain**: Each part of the code has its place.
+- 🔌 **Easy to extend**: Add new publishing targets with just one adapter class.
+- 📦 **Plugin-friendly**: Integrates cleanly into the WordPress plugin system.
+- 🌍 **Future-proof**: Can be reused outside of WordPress if needed (headless CMS, CLI, etc).
 
 ---
 
-## Future-Proofing
+Yes, it's a WordPress plugin.  
+Yes, it uses namespaces, contracts, factories, and modern code.  
+Yes, it works out of the box in any WordPress environment.
 
-This modular architecture allows:
-
-- Reuse of core logic in other environments (e.g., Laravel, CLI apps).
-- Swapping or upgrading infrastructure without touching business logic.
-- Better testability and CI integration.
-- Asynchronous publishing (e.g., job queues) without modifying domain behavior.
+> _Just because it's cleanly built doesn't mean it's not native._
