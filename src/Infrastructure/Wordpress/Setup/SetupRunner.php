@@ -68,9 +68,11 @@ class SetupRunner
                 break;
             }
 
-            $migration = new $className();
-            if ($migration instanceof AbstractMigration) {
-                $migration->executeUninstall();
+            if (class_exists($className) && $className !== AbstractMigration::class) {
+                $migration = new $className();
+                if ($migration instanceof AbstractMigration) {
+                    $migration->executeUninstall();
+                }
             }
         }
 
