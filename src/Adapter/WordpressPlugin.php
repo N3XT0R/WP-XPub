@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Adapter;
 
+use N3XT0R\XPub\Domain\Entity\Article;
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\WordpressPublisherFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\I18n\Translator;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
-use N3XT0R\XPub\Infrastructure\Wordpress\Mapper\ArticleMapper;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
@@ -85,8 +85,8 @@ final class WordpressPlugin
         if ($update || $post->post_status !== 'publish') {
             return;
         }
-
-        $article = ArticleMapper::fromPost($post);
+        
+        $article = Article::fromWpPost($post);
         $publisher = WordpressPublisherFactory::create();
         $publisher->publish($article);
     }
