@@ -3,6 +3,7 @@
 Plugin Name: xPub
 Description: Modular Auto-Publisher for WordPress to external platforms (dev.to, LinkedIn, etc.)
 Author: php-dev
+Version: 1.0.0-dev
 */
 
 use N3XT0R\XPub\Adapter\WordpressPlugin;
