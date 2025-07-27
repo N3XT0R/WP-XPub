@@ -1,0 +1,14 @@
+<?php
+
+use PHPUnit\Framework\TestCase;
+use N3XT0R\XPub\Domain\Entity\PublisherConfig;
+
+class PublisherConfigTest extends TestCase
+{
+    public function testGetters(): void
+    {
+        $config = new PublisherConfig('api_key', 'secret');
+        $this->assertSame('api_key', $config->getKey());
+        $this->assertSame('secret', $config->getValue());
+    }
+}
