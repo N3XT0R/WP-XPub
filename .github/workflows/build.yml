@@ -28,6 +28,12 @@ jobs:
       - name: Run PHP syntax check
         run: find ./src -type f -name "*.php" -exec php -l {} \;
 
+      - name: Run build script (generate version.php)
+        run: ./build/build.sh
+
+      - name: Verify generated version.php
+        run: cat version.php
+
       - name: Create ZIP
         run: |
           mkdir -p build
