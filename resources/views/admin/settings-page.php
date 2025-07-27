@@ -3,9 +3,10 @@
     <?php
     wp_nonce_field('xpub_save_settings'); ?>
 
-    <h2>Publisher aktivieren</h2>
+    <h2><?= esc_html($translator->translate('Activate Publisher')) ?></h2>
+
     <fieldset>
-        <legend>Wähle aktive Publisher:</legend>
+        <legend><?= esc_html($translator->translate('Select active publishers:')) ?></legend>
         <?php
         foreach ($publishers as $publisher): ?>
             <?php
@@ -24,20 +25,23 @@
         endforeach; ?>
     </fieldset>
 
-    <h2>Konfiguration</h2>
+    <h2><?= esc_html($translator->translate('Configuration')) ?></h2>
     <?php
     foreach ($publishers as $publisher): ?>
         <?php
         if (in_array($publisher['slug'], $activePublisherSlugs, true)): ?>
             <fieldset style="margin-top: 2rem; padding: 1rem; border: 1px solid #ccc;">
-                <legend><strong><?= esc_html($publisher['name']) ?> Konfiguration</strong></legend>
+                <legend><strong><?= esc_html($publisher['name']) ?> <?= esc_html(
+                            $translator->translate('Configuration')
+                        ) ?></strong></legend>
+
                 <?php
                 foreach ($publisher['config'] as $key => $value): ?>
                     <?php
                     $inputId = 'config_'.esc_attr($publisher['slug'].'_'.$key); ?>
                     <div style="margin-bottom: 1rem;">
                         <label for="<?= $inputId ?>" style="display: block; font-weight: bold; margin-bottom: .3rem;">
-                            <?= esc_html($key) ?>:
+                            <?= esc_html($translator->translate($key)) ?>:
                         </label>
                         <input
                                 type="text"
@@ -56,6 +60,8 @@
     endforeach; ?>
 
     <p style="margin-top: 2rem;">
-        <button type="submit" class="button button-primary">Einstellungen speichern</button>
+        <button type="submit" class="button button-primary">
+            <?= esc_html($translator->translate('Save settings')) ?>
+        </button>
     </p>
 </form>
