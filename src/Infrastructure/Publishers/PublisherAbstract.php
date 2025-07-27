@@ -57,6 +57,8 @@ abstract class PublisherAbstract implements PublisherInterface, ConfigurablePubl
 
     public function publish(Article $article): bool
     {
+        $article = $this->enrichArticleIfNeeded($article);
+        
         // Pre-publish hook
         $article = apply_filters("xpub_pre_publish_{$this->slug}", $article, $this);
 
@@ -68,6 +70,29 @@ abstract class PublisherAbstract implements PublisherInterface, ConfigurablePubl
 
         return $result;
     }
+
+    protected function enrichArticleIfNeeded(Article $article): Article
+    {
+        if (!empty($article->excerpt) || empty($article->content)) {
+            return $article;
+        }
+
+        $excerpt = wp_strip_all_tags($article->content);
+        $excerpt = trim($excerpt);
+
+        if (mb_strlen($excerpt) > 280) {
+            $excerpt = mb_substr($excerpt, 0, 277).'...';
+        }
+
+        return new Article(
+            postId: $article->postId,
+            title: $article->title,
+            content: $article->content,
+            excerpt: $excerpt,
+            url: $article->url
+        );
+    }
+
 
     abstract protected function handlePublish(Article $article): bool;
 }
