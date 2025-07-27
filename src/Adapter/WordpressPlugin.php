@@ -6,10 +6,12 @@ namespace N3XT0R\XPub\Adapter;
 
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\WordpressPublisherFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
+use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Mapper\ArticleMapper;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
+use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
 use WP_Post;
 
 /**
@@ -34,6 +36,30 @@ final class WordpressPlugin
     {
         $bootstrapper = new PluginBootstrapService(new WordpressSettingsRepository());
         $bootstrapper->bootstrap();
+    }
+
+    /**
+     * Runs on plugin activation (e.g., DB setup).
+     */
+    public static function onActivate(string $channel = 'xpub'): void
+    {
+        $runner = new SetupRunner(
+            LoggerFactory::create($channel),
+            new WordpressSettingsRepository()
+        );
+        $runner->install();
+    }
+
+    /**
+     * Runs on plugin uninstall (e.g., cleanup).
+     */
+    public static function onUninstall(string $channel = 'xpub'): void
+    {
+        $runner = new SetupRunner(
+            LoggerFactory::create($channel),
+            new WordpressSettingsRepository()
+        );
+        $runner->uninstall();
     }
 
     /**
