@@ -1,59 +1,29 @@
 # WP-XPub Architecture
 
-WP-XPub is built using the principles of **Hexagonal Architecture (Ports & Adapters)** to ensure a clean separation of
-concerns, testability, and long-term maintainability.
+**WP-XPub is a native WordPress plugin** — just built with a clear internal structure.
 
----
+We follow a layered architecture pattern inspired by modern PHP practices (sometimes called hexagonal or "Ports &
+Adapters"). Why? Because it helps keep the code clean, testable, and easy to extend — even in large projects.
 
-## Why Hexagonal?
+This is still 100% WordPress:
 
-The goal of WP-XPub is **not** to be tightly coupled to WordPress internals – although it runs in a WP environment.
-Instead, we aim to:
+- It uses standard WordPress hooks and filters.
+- It registers post meta fields the WordPress way.
+- It integrates with the post editor UI.
+- It respects WP roles, settings, permissions, and translation practices.
 
-- **Encapsulate business logic**: The Domain layer is isolated and testable outside of WordPress.
-- **Support multiple publish targets**: Each platform (e.g., Dev.to) is a replaceable adapter.
-- **Enable better testing**: Application logic can be tested without bootstrapping WordPress.
-- **Allow future evolution**: A headless or API-only variant could reuse Domain and Application layers.
-- **Make WordPress a technical detail**, not the architectural core.
+## Why a layered structure?
 
----
+By separating logic into clear layers, we avoid mixing business logic with WordPress-specific code. That means:
 
-## Layers
+- **Domain**: Core concepts like articles, publishers, and publishing logic.
+- **Infrastructure**: WordPress-specific code (hooks, admin UI, persistence).
+- **Application**: Orchestrates use cases and coordinates services.
+- **Support**: Utilities like logging, seeding, or markdown rendering.
 
-### Domain
+This way, we keep the WordPress integration where it belongs – but the rest of the plugin remains reusable and modular.
 
-- Pure business logic.
-- No knowledge of WordPress, HTTP, or infrastructure.
-- Defines contracts such as:
-    - `PublisherInterface`
-    - `Article`
-    - `TranslatesMessagesInterface`
-
-### Application
-
-- Coordinates flows (use cases).
-- Uses domain objects and orchestrates infrastructure via interfaces.
-- Contains factories and service classes like `ArticlePublisher`.
-
-### Infrastructure
-
-- Contains **all implementation details**, including:
-    - WordPress API integration (hooks, post meta, filters)
-    - Publishing adapters (e.g., Dev.to API)
-    - Logging
-    - Markdown rendering
-- Implements domain/application interfaces.
-- Replaceable at runtime or test time.
-
-### Support
-
-- Reusable helper classes (e.g., `Seeder`, MarkdownRenderer).
-- Contains no domain or application logic.
-- Provides shared functionality that is orthogonal to business logic.
-
----
-
-## Structure
+## Code Structure
 
 ```
 src/
