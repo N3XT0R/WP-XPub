@@ -21,7 +21,8 @@
   },
   "autoload": {
     "psr-4": {
-      "N3XT0R\\XPub\\": "src/"
+      "N3XT0R\\XPub\\": "src/",
+      "N3XT0R\\XPub\\Tests": "tests/"
     }
   },
   "extra": {
