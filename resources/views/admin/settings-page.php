@@ -1,12 +1,18 @@
+<?php
+
+/** @var string|null $value */
+
+/** @var \N3XT0R\XPub\Infrastructure\Wordpress\I18n\Translator $translator */
+?>
 <form method="post" action="<?= esc_url(admin_url('admin-post.php')) ?>">
     <input type="hidden" name="action" value="xpub_save_settings">
     <?php
     wp_nonce_field('xpub_save_settings'); ?>
 
-    <h2><?= esc_html($translator->translate('Activate Publisher')) ?></h2>
+    <h2><?= $translator->translateEscaped('Activate Publisher') ?></h2>
 
     <fieldset>
-        <legend><?= esc_html($translator->translate('Select active publishers:')) ?></legend>
+        <legend><?= $translator->translateEscaped('Select active publishers:') ?></legend>
         <?php
         foreach ($publishers as $publisher): ?>
             <?php
@@ -25,15 +31,14 @@
         endforeach; ?>
     </fieldset>
 
-    <h2><?= esc_html($translator->translate('Configuration')) ?></h2>
+    <h2><?= $translator->translateEscaped('Configuration') ?></h2>
     <?php
     foreach ($publishers as $publisher): ?>
         <?php
         if (in_array($publisher['slug'], $activePublisherSlugs, true)): ?>
             <fieldset style="margin-top: 2rem; padding: 1rem; border: 1px solid #ccc;">
-                <legend><strong><?= esc_html($publisher['name']) ?> <?= esc_html(
-                            $translator->translate('Configuration')
-                        ) ?></strong></legend>
+                <legend><strong><?= esc_html($publisher['name']) ?> <?= $translator->translateEscaped('Configuration')
+                        ?></strong></legend>
 
                 <?php
                 foreach ($publisher['config'] as $key => $value): ?>
@@ -41,7 +46,7 @@
                     $inputId = 'config_'.esc_attr($publisher['slug'].'_'.$key); ?>
                     <div style="margin-bottom: 1rem;">
                         <label for="<?= $inputId ?>" style="display: block; font-weight: bold; margin-bottom: .3rem;">
-                            <?= esc_html($translator->translate($key)) ?>:
+                            <?= $translator->translateEscaped($key) ?>:
                         </label>
                         <input
                                 type="text"
@@ -61,7 +66,7 @@
 
     <p style="margin-top: 2rem;">
         <button type="submit" class="button button-primary">
-            <?= esc_html($translator->translate('Save settings')) ?>
+            <?= $translator->translateEscaped('Save settings') ?>
         </button>
     </p>
 </form>

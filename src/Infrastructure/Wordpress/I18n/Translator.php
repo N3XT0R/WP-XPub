@@ -38,4 +38,9 @@ class Translator implements TranslatesMessagesInterface
     {
         return vsprintf(__($message, self::TEXT_DOMAIN), $params);
     }
+
+    public function translateEscaped(string $message): string
+    {
+        return esc_html(__($message, self::TEXT_DOMAIN));
+    }
 }

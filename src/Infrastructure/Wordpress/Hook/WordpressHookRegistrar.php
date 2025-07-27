@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Hook;
 
 use N3XT0R\XPub\Adapter\WordpressPlugin;
+use N3XT0R\XPub\Infrastructure\Wordpress\Admin\MetaBox;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsPageRegistrar;
 
 final class WordpressHookRegistrar
@@ -31,6 +32,7 @@ final class WordpressHookRegistrar
     {
         $registrables = [
             new SettingsPageRegistrar(),
+            new MetaBox(),
         ];
 
         foreach ($registrables as $registrable) {
