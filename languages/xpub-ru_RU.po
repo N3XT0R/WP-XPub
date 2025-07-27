@@ -36,3 +36,7 @@ msgstr "Ключ API"
 #: resources/views/admin/settings-page.php
 msgid "client_id"
 msgstr "ID клиента"
+
+#: resources/views/admin/metabox.php
+msgid "Custom Text for Social Sharing"
+msgstr "Пользовательский текст для публикации в соцсетях"
