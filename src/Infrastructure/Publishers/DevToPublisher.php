@@ -21,7 +21,7 @@ class DevToPublisher extends PublisherAbstract
         }
 
         $renderer = HtmlToMarkdownRendererFactory::create();
-        $markdown = $renderer->convert($article->htmlContent);
+        $markdown = $renderer->convert($article->excerpt);
         $this->debug('Markdown: '.$markdown);
 
         $body = [

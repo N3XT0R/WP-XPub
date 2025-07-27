@@ -75,14 +75,19 @@ final class WordpressPlugin
         $presenter->showIfAvailable();
     }
 
-    public static function handlePublishFromPost(int $postId, WP_Post $post): void
+    public static function handlePublishFromPost(int $postId, ?WP_Post $post): void
     {
         self::handleSaveFromPost($postId, $post, true);
     }
 
 
-    public static function handleSaveFromPost(int $postId, WP_Post $post, bool $update = false): void
+    public static function handleSaveFromPost(int $postId, ?WP_Post $post, bool $update = false): void
     {
+        if (!$post) {
+            return;
+        }
+
+
         if ($update || $post->post_status !== 'publish') {
             return;
         }

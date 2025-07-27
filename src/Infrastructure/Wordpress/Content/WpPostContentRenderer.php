@@ -9,17 +9,15 @@ use WP_Post;
 
 final class WpPostContentRenderer implements RendersPostContentInterface
 {
-    public function render(WP_Post $post): string
+    public function render(?WP_Post $post): string
     {
-        global $post;
-        $original_post = $post;
-
+        if (empty($post->post_content)) {
+            return '';
+        }
+        
         setup_postdata($post);
         $content = apply_filters('the_content', $post->post_content);
         wp_reset_postdata();
-
-        $post = $original_post;
-
         return wp_kses_post($content);
     }
 }

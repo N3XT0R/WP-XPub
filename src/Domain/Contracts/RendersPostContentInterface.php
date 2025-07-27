@@ -6,5 +6,5 @@ namespace N3XT0R\XPub\Domain\Contracts;
 
 interface RendersPostContentInterface
 {
-    public function render(\WP_Post $post): string;
+    public function render(?\WP_Post $post): string;
 }
