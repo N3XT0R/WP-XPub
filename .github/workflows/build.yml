@@ -1,0 +1,58 @@
+name: Build & Package WP-XPub
+
+on:
+  push:
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ develop, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, dom, json, curl, zip
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --no-dev --prefer-dist --no-progress --no-scripts
+
+      - name: Run PHP syntax check
+        run: find ./src -type f -name "*.php" -exec php -l {} \;
+
+      - name: Create ZIP
+        run: |
+          mkdir -p build
+          zip -r "build/wp-xpub.zip" wp-xpub -x '*.git*' -x '*vendor/bin/*' -x '*tests/*'
+
+      - name: Upload ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wp-xpub
+          path: build/wp-xpub.zip
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: wp-xpub
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: wp-xpub.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
