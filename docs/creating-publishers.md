@@ -35,7 +35,7 @@ In your plugin or theme:
 
 ```php
 add_filter('wp_xpub_factory_map', static function (array $map): array {
-    $map['example'] = \YourNamespace\YourPublisher::class;
+    $map['myPublisher'] = \YourNamespace\MyPublisher::class;
     return $map;
 });
 ```
