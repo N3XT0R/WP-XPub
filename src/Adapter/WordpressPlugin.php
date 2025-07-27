@@ -27,6 +27,11 @@ final class WordpressPlugin
     {
         $registrar = new WordpressHookRegistrar();
         $registrar->register($pluginFile);
+        load_plugin_textdomain(
+            'xpub',
+            false,
+            $pluginFile.'/languages'
+        );
     }
 
     /**

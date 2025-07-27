@@ -2,14 +2,18 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Support;
+namespace N3XT0R\XPub\Infrastructure\Wordpress\View;
 
-final class View
+use N3XT0R\XPub\Domain\Contracts\ViewInterface;
+use N3XT0R\XPub\Infrastructure\Wordpress\I18n\Translator;
+
+final class View implements ViewInterface
 {
-    private const BASE_PATH = __DIR__.'/../../resources/views';
+    private const BASE_PATH = __DIR__.'/../../../../resources/views';
 
     public static function render(string $view, array $data = []): void
     {
+        $data['translator'] = new Translator();
         extract($data);
         $path = self::resolvePath($view);
 

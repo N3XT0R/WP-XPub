@@ -8,7 +8,7 @@ use N3XT0R\XPub\Application\Service\Admin\PublisherSettingsService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookRegistrableInterface;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
-use N3XT0R\XPub\Support\View;
+use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
 
 final class SettingsPageRegistrar implements HookRegistrableInterface
 {
