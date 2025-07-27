@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Adapter;
 
-use N3XT0R\XPub\Domain\Entity\Article;
+use N3XT0R\XPub\Infrastructure\Wordpress\Content\WpPostContentRenderer;
+use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\WordpressPublisherFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\I18n\Translator;
@@ -85,8 +86,8 @@ final class WordpressPlugin
         if ($update || $post->post_status !== 'publish') {
             return;
         }
-        
-        $article = Article::fromWpPost($post);
+
+        $article = (new ArticleFactory(new WpPostContentRenderer()))->fromWpPost($post);
         $publisher = WordpressPublisherFactory::create();
         $publisher->publish($article);
     }
