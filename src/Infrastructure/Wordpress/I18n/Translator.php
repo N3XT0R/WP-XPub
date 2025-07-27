@@ -12,7 +12,6 @@ class Translator implements TranslatesMessagesInterface
 
     public static function register(string $pluginFile): void
     {
-        error_log($pluginFile);
         load_plugin_textdomain(
             self::TEXT_DOMAIN,
             false,
