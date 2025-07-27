@@ -63,11 +63,6 @@ class SetupRunner
 
         foreach ($migrations as $version) {
             $className = self::MIGRATION_NAMESPACE.'Migration_'.$version;
-            if (!class_exists($className)) {
-                $this->logger->error("Migration class {$className} not found.");
-                break;
-            }
-
             if (class_exists($className) && $className !== AbstractMigration::class) {
                 $migration = new $className();
                 if ($migration instanceof AbstractMigration) {
