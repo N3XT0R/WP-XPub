@@ -6,6 +6,7 @@ namespace N3XT0R\XPub\Adapter;
 
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\WordpressPublisherFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
+use N3XT0R\XPub\Infrastructure\Wordpress\I18n\Translator;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Mapper\ArticleMapper;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
@@ -27,11 +28,7 @@ final class WordpressPlugin
     {
         $registrar = new WordpressHookRegistrar();
         $registrar->register($pluginFile);
-        load_plugin_textdomain(
-            'xpub',
-            false,
-            $pluginFile.'/languages'
-        );
+        Translator::register($pluginFile);
     }
 
     /**

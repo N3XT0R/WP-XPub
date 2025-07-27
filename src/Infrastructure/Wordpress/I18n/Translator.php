@@ -10,6 +10,15 @@ class Translator implements TranslatesMessagesInterface
 {
     private const TEXT_DOMAIN = 'xpub';
 
+    public static function register(string $pluginFile): void
+    {
+        load_plugin_textdomain(
+            self::TEXT_DOMAIN,
+            false,
+            $pluginFile.'/languages'
+        );
+    }
+
     public function translate(string $message): string
     {
         return __($message, self::TEXT_DOMAIN);
