@@ -9,7 +9,6 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Mapper\ArticleMapper;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
-use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
@@ -46,8 +45,7 @@ final class WordpressPlugin
     {
         $runner = new SetupRunner(
             LoggerFactory::create($channel),
-            new WordpressSettingsRepository(),
-            new PublisherRepository()
+            new WordpressSettingsRepository()
         );
         $runner->install();
     }
@@ -59,8 +57,7 @@ final class WordpressPlugin
     {
         $runner = new SetupRunner(
             LoggerFactory::create($channel),
-            new WordpressSettingsRepository(),
-            new PublisherRepository()
+            new WordpressSettingsRepository()
         );
         $runner->uninstall();
     }
