@@ -167,6 +167,23 @@ This architecture allows developers to:
 
 ---
 
+## 🌍 Supported Languages
+
+WP-XPub includes out-of-the-box translations for multiple languages:
+
+| Language          | Locale  | Status                              |
+|-------------------|---------|-------------------------------------|
+| German            | `de_DE` | ✅ Active                            |
+| English (default) | `en_US` | ✅ Built-in (no `.po` file required) |
+| French            | `fr_FR` | ✅ Active                            |
+| Spanish           | `es_ES` | ✅ Active                            |
+| Italian           | `it_IT` | ✅ Active                            |
+| Russian           | `ru_RU` | ✅ Active                            |
+
+Custom translations can be added by placing `.po` and `.mo` files in the plugin's `languages/` directory.
+
+Want to contribute a new translation? Pull requests are welcome!
+
 ## 📃 License
 
 [MIT License](LICENSE)
