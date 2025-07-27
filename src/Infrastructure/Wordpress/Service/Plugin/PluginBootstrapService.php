@@ -26,12 +26,16 @@ class PluginBootstrapService
     {
         $currentVersion = Version::get();
         $savedVersion = (string)$this->settings->get('xpub_plugin_version');
+        $setupRunner = new SetupRunner($this->logger, $this->settings);
 
-        if (!empty($currentVersion) && version_compare($currentVersion, $savedVersion, '>')) {
+        if ($setupRunner->isInstalled() &&
+            !empty($currentVersion) && version_compare(
+                $currentVersion,
+                $savedVersion,
+                '>'
+            )) {
             $this->logger->info('Running plugin setup for version '.$currentVersion);
-
-            (new SetupRunner($this->logger, $this->settings))->install();
-
+            $setupRunner->install();
             $this->settings->set('xpub_plugin_version', $currentVersion);
             $this->logger->info('Setup complete. Version stored: '.$currentVersion);
         }

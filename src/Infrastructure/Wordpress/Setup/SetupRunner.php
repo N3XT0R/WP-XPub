@@ -20,6 +20,7 @@ use Psr\Log\LoggerInterface;
 class SetupRunner
 {
     public const OPTION_KEY = 'xpub_db_version';
+    public const OPTION_INSTALLED_KEY = 'xpub_installed';
     public const MIGRATION_NAMESPACE = 'N3XT0R\\XPub\\Infrastructure\\Wordpress\\Setup\\Migrations\\';
 
     private LoggerInterface $logger;
@@ -29,6 +30,11 @@ class SetupRunner
     {
         $this->logger = $logger;
         $this->settings = $settings;
+    }
+
+    public function isInstalled(): bool
+    {
+        return $this->settings->get(self::OPTION_INSTALLED_KEY, false);
     }
 
     public function install(): void
@@ -53,6 +59,7 @@ class SetupRunner
 
         if (!empty($migrations)) {
             $this->settings->set(self::OPTION_KEY, max($migrations));
+            $this->settings->set(self::OPTION_INSTALLED_KEY, true);
         }
     }
 
