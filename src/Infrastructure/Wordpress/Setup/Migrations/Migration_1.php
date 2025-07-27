@@ -60,7 +60,8 @@ class Migration_1 extends AbstractMigration
                 FOREIGN KEY (publisher_id) REFERENCES {$publisherTable}(id)
                     ON DELETE CASCADE ON UPDATE CASCADE,
                 INDEX idx_publisher (publisher_id),
-                INDEX idx_key (config_key)
+                INDEX idx_key (config_key),
+                UNIQUE KEY publisher_key (publisher_id, config_key)
             );
         "
         );
