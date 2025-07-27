@@ -6,7 +6,6 @@ namespace N3XT0R\XPub\Infrastructure\Publishers;
 
 use N3XT0R\XPub\Domain\Entity\Article;
 use N3XT0R\XPub\Infrastructure\Markdown\HtmlToMarkdownRendererFactory;
-use N3XT0R\XPub\Infrastructure\Markdown\MarkdownRendererFactory;
 
 class DevToPublisher extends PublisherAbstract
 {
