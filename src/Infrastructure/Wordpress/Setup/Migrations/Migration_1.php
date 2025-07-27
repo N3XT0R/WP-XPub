@@ -32,7 +32,7 @@ class Migration_1 extends AbstractMigration
         "
         );
 
-        // Publisher + config tables
+        // Publisher
         dbDelta(
             "
             CREATE TABLE IF NOT EXISTS {$publisherTable} (
@@ -43,9 +43,13 @@ class Migration_1 extends AbstractMigration
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 PRIMARY KEY (id),
                 UNIQUE KEY slug_unique (slug)
-            );
+            );"
+        );
 
-            CREATE TABLE IF NOT EXISTS {$configTable} (
+        //config
+        dbDelta(
+            "
+           CREATE TABLE IF NOT EXISTS {$configTable} (
                 id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                 publisher_id BIGINT UNSIGNED NOT NULL,
                 config_key VARCHAR(100) NOT NULL,
