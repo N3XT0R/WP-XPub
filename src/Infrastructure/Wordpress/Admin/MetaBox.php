@@ -38,7 +38,7 @@ class MetaBox implements HookRegistrableInterface
         if (!isset($_POST['xpub_meta_box_nonce']) || !wp_verify_nonce($_POST['xpub_meta_box_nonce'], 'xpub_meta_box')) {
             return;
         }
-
+        
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
