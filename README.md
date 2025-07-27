@@ -11,7 +11,6 @@ multiple external platforms – including LinkedIn, Mastodon, Dev.to, and more �
 
 - 🔁 Auto-publish WordPress posts to external platforms
 - 🧩 Modular client driver system (easily add new platforms)
-- 🕓 Schedule publishing via WP Cron or hook-based triggers
 - 🧵 Pre- and post-publish hooks for full customization
 - 📦 Composer-ready (PSR-4 autoloading, modern architecture)
 - 🐘 Built with PHP – no external API calls required, uses Monolog for local logging
