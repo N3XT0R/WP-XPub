@@ -25,3 +25,33 @@ class MyPublisher extends PublisherAbstract {
     }
 }
 ```
+
+## Step 2: Register via Hook
+
+To register a custom publisher, hook into the `wp_xpub_factory_map` filter.
+This hook allows you to add your own publisher classes to the list of available targets.
+
+In your plugin or theme:
+
+```php
+add_filter('wp_xpub_factory_map', static function (array $map): array {
+    $map['example'] = \YourNamespace\YourPublisher::class;
+    return $map;
+});
+```
+
+The internal factory uses this hook like this:
+
+```php
+private static function getDefaultPublisherArray(): array
+{
+    return [
+        'devto' => DevToPublisher::class,
+    ];
+}
+
+$map = apply_filters('wp_xpub_factory_map', self::getDefaultPublisherArray());
+```
+
+The key `('example')` acts as the slug, and the value must be the fully qualified class name of a concrete publisher
+that extends `PublisherAbstract`.
