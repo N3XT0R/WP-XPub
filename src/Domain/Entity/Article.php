@@ -24,7 +24,7 @@ final class Article
             postId: $post->ID,
             title: $post->post_title ?? '',
             content: $post->post_content ?? '',
-            excerpt: $post->post_excerpt ?: null,
+            excerpt: get_post_meta($post->ID, '_xpub_custom_excerpt', true) ?: $post->post_excerpt ?: null,
             url: get_permalink($post)
         );
     }
