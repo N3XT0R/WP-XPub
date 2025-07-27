@@ -20,7 +20,7 @@ class Migration_1 extends AbstractMigration
         // Logging table
         dbDelta(
             "
-            CREATE TABLE {$logsTable} (
+            CREATE TABLE IF NOT EXISTS {$logsTable} (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 channel VARCHAR(50),
                 level INT,
