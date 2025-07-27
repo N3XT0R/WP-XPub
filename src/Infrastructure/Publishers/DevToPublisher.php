@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\Publishers;
 
 use N3XT0R\XPub\Domain\Entity\Article;
+use N3XT0R\XPub\Infrastructure\Markdown\HtmlToMarkdownRendererFactory;
+use N3XT0R\XPub\Infrastructure\Markdown\MarkdownRendererFactory;
 
 class DevToPublisher extends PublisherAbstract
 {
@@ -19,12 +21,16 @@ class DevToPublisher extends PublisherAbstract
             return false;
         }
 
+        $renderer = HtmlToMarkdownRendererFactory::create();
+        $markdown = $renderer->convert($article->htmlContent);
+        $this->debug('[DevToPublisher] Markdown: '.$markdown);
+
         $body = [
             'article' => [
                 'title' => $article->title,
                 'published' => true,
-                'body_markdown' => $article->content,
-                // 'tags' => ['php', 'wordpress'],
+                'body_markdown' => $markdown,
+                'tags' => $article->tags,
                 // 'canonical_url' => $article->canonicalUrl ?? null,
             ],
         ];
