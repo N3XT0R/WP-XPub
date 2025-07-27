@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace N3XT0R\XPub\Infrastructure\Wordpress\Hook;
+
+use N3XT0R\XPub\Adapter\WordpressPlugin;
+use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
+
+final class HookProvider
+{
+    /**
+     * @return HookDefinition[]
+     */
+    public function getHooks(): array
+    {
+        return [
+            new HookDefinition('init', [WordpressPlugin::class, 'boot']),
+            new HookDefinition('admin_notices', [WordpressPlugin::class, 'showAdminNotice']),
+            new HookDefinition('save_post', [WordpressPlugin::class, 'handleSaveFromPost'], 10, 2),
+            new HookDefinition('publish_post', [WordpressPlugin::class, 'handlePublishFromPost'], 10, 2),
+            new HookDefinition('admin_post_xpub_save_settings', function () {
+                (new SettingsSaveHandler())->handle();
+            }),
+        ];
+    }
+}
