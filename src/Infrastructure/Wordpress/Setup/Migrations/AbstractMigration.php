@@ -22,7 +22,7 @@ abstract class AbstractMigration
         }
 
         $this->wpdb = $customWpdb ?? Database::get();
-        $this->logger = $logger ?? LoggerFactory::create('migration');
+        $this->logger = $logger ?? LoggerFactory::create();
     }
 
     /**

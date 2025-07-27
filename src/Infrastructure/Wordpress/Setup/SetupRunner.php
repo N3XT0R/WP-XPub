@@ -42,7 +42,7 @@ class SetupRunner
             if ($version > $installedVersion) {
                 $className = self::MIGRATION_NAMESPACE.'Migration_'.$version;
 
-                if (class_exists($className)) {
+                if (class_exists($className) && $className !== AbstractMigration::class) {
                     $migration = new $className();
                     if ($migration instanceof AbstractMigration) {
                         $migration->executeInstall();
