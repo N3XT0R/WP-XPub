@@ -58,7 +58,6 @@ final class WordpressPlugin
      */
     public static function onUninstall(string $channel = 'xpub'): void
     {
-        error_log('UNINSTALL XPub gestartet');
         $runner = new SetupRunner(
             LoggerFactory::create($channel),
             new WordpressSettingsRepository()
