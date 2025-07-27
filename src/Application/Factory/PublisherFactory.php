@@ -6,6 +6,8 @@ namespace N3XT0R\XPub\Application\Factory;
 
 use N3XT0R\XPub\Domain\Contracts\ConfigurablePublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
+use N3XT0R\XPub\Domain\Contracts\SlugAwareInterface;
+use N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 
 class PublisherFactory
@@ -19,7 +21,7 @@ class PublisherFactory
     private static function getDefaultPublisherArray(): array
     {
         return [
-            'devto' => \N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher::class,
+            'devto' => DevToPublisher::class,
         ];
     }
 
@@ -40,6 +42,10 @@ class PublisherFactory
         if ($instance instanceof ConfigurablePublisherInterface) {
             $instance->setConfig($config);
             $instance->setLogger(LoggerFactory::create($target));
+        }
+
+        if ($instance instanceof SlugAwareInterface) {
+            $instance->setSlug($target);
         }
 
         if (!$instance instanceof PublisherInterface) {

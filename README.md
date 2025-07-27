@@ -113,7 +113,9 @@ Or extend `PublisherAbstract` for logging/config support:
 ```php
 class MyCustomPublisher extends \N3XT0R\XPub\Infrastructure\Publishers\PublisherAbstract
 {
-    public function publish(Article $article): bool
+    protected string $slug = 'myCustom';
+
+    protected function handlePublish(Article $article): bool
     {
         $this->log("Publishing: " . $article->title);
         return true;

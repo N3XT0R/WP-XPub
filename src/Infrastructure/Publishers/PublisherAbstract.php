@@ -6,12 +6,20 @@ namespace N3XT0R\XPub\Infrastructure\Publishers;
 
 use N3XT0R\XPub\Domain\Contracts\ConfigurablePublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
+use N3XT0R\XPub\Domain\Contracts\SlugAwareInterface;
+use N3XT0R\XPub\Domain\Entity\Article;
 use Psr\Log\LoggerInterface;
 
-abstract class PublisherAbstract implements PublisherInterface, ConfigurablePublisherInterface
+abstract class PublisherAbstract implements PublisherInterface, ConfigurablePublisherInterface, SlugAwareInterface
 {
     protected array $config;
     protected ?LoggerInterface $logger;
+    protected string $slug;
+
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
 
     public function setLogger(?LoggerInterface $logger = null): void
     {
@@ -46,4 +54,20 @@ abstract class PublisherAbstract implements PublisherInterface, ConfigurablePubl
             $this->logger->error($message, $context);
         }
     }
+
+    public function publish(Article $article): bool
+    {
+        // Pre-publish hook
+        $article = apply_filters("xpub_pre_publish_{$this->slug}", $article, $this);
+
+        // Actual publish logic
+        $result = $this->handlePublish($article);
+
+        // Post-publish hook
+        do_action("xpub_post_publish_{$this->slug}", $article, $result, $this);
+
+        return $result;
+    }
+
+    abstract protected function handlePublish(Article $article): bool;
 }

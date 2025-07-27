@@ -10,7 +10,7 @@ class DevToPublisher extends PublisherAbstract
 {
     private const API_ENDPOINT = 'https://dev.to/api/articles';
 
-    public function publish(Article $article): bool
+    protected function handlePublish(Article $article): bool
     {
         $apiKey = $this->getByKey('api_key');
 
