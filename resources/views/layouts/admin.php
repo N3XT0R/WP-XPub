@@ -8,7 +8,7 @@
 <div class="wrap">
     <h1><?= $title ?? 'XPUB Settings' ?></h1>
     <?php
-    View::slot($content) ?>
+    \N3XT0R\XPub\Support\View::slot($content) ?>
 </div>
 </body>
 </html>

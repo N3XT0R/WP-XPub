@@ -26,12 +26,10 @@ final class PublisherSettingsService
                     'slug' => $publisher->getSlug(),
                     'name' => $publisher->getName(),
                     'active' => in_array($publisher->getSlug(), $active, true),
-                    'config' => array_map(fn($cfg) => [
-                        'key' => $cfg->getKey(),
-                        'value' => $cfg->getValue(),
-                    ], $publisher->getConfigArray())
+                    'config' => $publisher->getConfigArray(),
                 ];
-            }, $publishers)
+            }, $publishers),
+            'activePublisherSlugs' => $active
         ];
     }
 }

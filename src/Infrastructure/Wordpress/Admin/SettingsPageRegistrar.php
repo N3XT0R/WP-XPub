@@ -18,7 +18,7 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
     }
 
 
-    public function addOptionsPage(): void
+    public static function addOptionsPage(): void
     {
         add_options_page(
             'XPUB Einstellungen',      // Page title
@@ -29,7 +29,7 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
         );
     }
 
-    public function renderSettingsPage(): void
+    public static function renderSettingsPage(): void
     {
         $service = new PublisherSettingsService(
             new PublisherRepository(),
