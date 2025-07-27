@@ -118,7 +118,7 @@ class PublisherRepository implements PublisherRepositoryInterface
             }
         }
 
-        return $result;
+        return (bool)$result;
     }
 
     public function create(string $slug, string $name, array $config): bool
