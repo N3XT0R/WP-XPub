@@ -17,6 +17,7 @@ final class HookProvider
         return [
             new HookDefinition('init', [WordpressPlugin::class, 'boot']),
             new HookDefinition('admin_notices', [WordpressPlugin::class, 'showAdminNotice']),
+            new HookDefinition('save_post', [WordpressPlugin::class, 'handleSaveFromPost'], 10, 2),
             new HookDefinition('publish_post', [WordpressPlugin::class, 'handlePublishFromPost'], 10, 2),
             new HookDefinition('admin_post_xpub_save_settings', function () {
                 (new SettingsSaveHandler())->handle();
