@@ -33,7 +33,7 @@ abstract class PublisherAbstract implements PublisherInterface, ConfigurablePubl
 
     public function setConfig(array $config): void
     {
-        $this->setConfig($config);
+        $this->config = $config;
     }
 
     public function getByKey(string $key): mixed
@@ -58,7 +58,7 @@ abstract class PublisherAbstract implements PublisherInterface, ConfigurablePubl
     public function publish(Article $article): bool
     {
         $article = $this->enrichArticleIfNeeded($article);
-        
+
         // Pre-publish hook
         $article = apply_filters("xpub_pre_publish_{$this->slug}", $article, $this);
 
