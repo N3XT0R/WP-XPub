@@ -17,13 +17,13 @@ class DevToPublisher extends PublisherAbstract
         $apiKey = $this->getByKey('api_key');
 
         if (empty($apiKey)) {
-            $this->error('[DevToPublisher] Missing API key.');
+            $this->error('Missing API key.');
             return false;
         }
 
         $renderer = HtmlToMarkdownRendererFactory::create();
         $markdown = $renderer->convert($article->htmlContent);
-        $this->debug('[DevToPublisher] Markdown: '.$markdown);
+        $this->debug('Markdown: '.$markdown);
 
         $body = [
             'article' => [
@@ -45,18 +45,18 @@ class DevToPublisher extends PublisherAbstract
         ]);
 
         if (is_wp_error($response)) {
-            $this->error('[DevToPublisher] Request failed: '.$response->get_error_message());
+            $this->error('Request failed: '.$response->get_error_message());
             return false;
         }
 
         $code = wp_remote_retrieve_response_code($response);
         if ($code !== 201) {
             $message = wp_remote_retrieve_body($response);
-            $this->error("[DevToPublisher] Unexpected response ($code): $message");
+            $this->error("Unexpected response ($code): $message");
             return false;
         }
 
-        $this->log('[DevToPublisher] Article successfully published.');
+        $this->log('Article successfully published.');
         return true;
     }
 }
