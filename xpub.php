@@ -2,7 +2,7 @@
 /**
  * Plugin Name: XPub Multi-Channel Publisher
  * Description: Flexible Multi-Channel Auto Publisher for WordPress
- * Version: 0.1.0
+ * Version: 1.0.0
  * Author: Ilya Beliaev
  * License: GPL-3.0-OR-LATER
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -11,7 +11,7 @@
  * Requires at least: 6.0
  * Tested up to: 6.8
  * Requires PHP: 8.2
- * Stable tag: 0.1.0
+ * Stable tag: 1.0.0
  */
 
 
