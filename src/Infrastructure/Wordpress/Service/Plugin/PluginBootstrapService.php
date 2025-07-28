@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin;
 
 use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
-use N3XT0R\XPub\Infrastructure\Version\Version;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
+use N3XT0R\XPub\Infrastructure\Wordpress\Version\Version;
 use Psr\Log\LoggerInterface;
 
 class PluginBootstrapService
@@ -26,6 +26,7 @@ class PluginBootstrapService
     {
         $currentVersion = Version::get();
         $savedVersion = (string)$this->settings->get('xpub_plugin_version', '0.0.0');
+        error_log(print_r([$currentVersion, $savedVersion], true));
 
         if (!empty($savedVersion) &&
             !empty($currentVersion) && version_compare(

@@ -14,8 +14,6 @@
  * Stable tag: 0.1.0
  */
 
-include_once 'version.php';
-
 use N3XT0R\XPub\Adapter\WordpressPlugin;
 
 defined('ABSPATH') or die('No script kiddies please!');
