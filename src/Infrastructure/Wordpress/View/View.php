@@ -9,7 +9,13 @@ use N3XT0R\XPub\Infrastructure\Wordpress\I18n\Translator;
 
 final class View implements ViewInterface
 {
-    private const BASE_PATH = __DIR__.'/../../../../resources/views';
+
+    private static string $basePath = '';
+
+    public static function setBasePath(string $path): void
+    {
+        self::$basePath = rtrim($path, '/');
+    }
 
     public static function render(string $view, array $data = []): void
     {
@@ -37,6 +43,6 @@ final class View implements ViewInterface
     private static function resolvePath(string $view): string
     {
         $relativePath = str_replace('.', '/', $view).'.php';
-        return self::BASE_PATH.'/'.$relativePath;
+        return self::$basePath.'/'.$relativePath;
     }
 }
