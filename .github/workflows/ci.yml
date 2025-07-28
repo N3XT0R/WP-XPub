@@ -64,11 +64,16 @@ jobs:
           - name: Run build script
             run: ./build/build.sh
 
+          - name: Zip Plugin Directory
+            run: |
+              cd build
+              zip -r ../xpub-multi-channel-publisher.zip xpub-multi-channel-publisher
+
           - name: Upload Artifact
             uses: actions/upload-artifact@v4
             with:
               name: xpub-multi-channel-publisher
-              path: build/xpub-multi-channel-publisher
+              path: xpub-multi-channel-publisher.zip
 
   release:
        name: Create GitHub Release
