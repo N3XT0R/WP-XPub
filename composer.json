@@ -25,6 +25,11 @@
       "N3XT0R\\XPub\\Tests\\": "tests/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "N3XT0R\\XPub\\Tests\\": "tests/"
+    }
+  },
   "extra": {
     "branch-alias": {
       "dev-master": "1.0.x-dev"

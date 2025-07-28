@@ -1,5 +1,7 @@
 <?php
 
+namespace N3XT0R\XPub\Tests\Domain\Entity;
+
 use PHPUnit\Framework\TestCase;
 use N3XT0R\XPub\Domain\Entity\Publisher;
 use N3XT0R\XPub\Domain\Entity\PublisherConfig;
