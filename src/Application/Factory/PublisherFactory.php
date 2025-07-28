@@ -7,7 +7,7 @@ namespace N3XT0R\XPub\Application\Factory;
 use N3XT0R\XPub\Domain\Contracts\ConfigurablePublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\SlugAwareInterface;
-use N3XT0R\XPub\Domain\Hooks\FilterDispatcherInterface;
+use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
 use N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 
@@ -43,7 +43,10 @@ class PublisherFactory
         $map = self::$filterDispatcher->filter('wp_xpub_factory_map', self::getDefaultPublisherArray());
 
 
-        $class = $map[$target];
+        $class = $map[$target] ?? '';
+        if (!class_exists($class)) {
+            throw new \RuntimeException("class '$class' not found");
+        }
 
         /** @var PublisherInterface $instance */
         $instance = new $class();

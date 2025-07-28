@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Hook;
 
-use N3XT0R\XPub\Domain\Hooks\FilterDispatcherInterface;
+use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
 
 class WordpressFilterDispatcher implements FilterDispatcherInterface
 {

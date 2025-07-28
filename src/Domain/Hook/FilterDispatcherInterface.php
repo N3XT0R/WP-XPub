@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Domain\Hooks;
+namespace N3XT0R\XPub\Domain\Hook;
 
 interface FilterDispatcherInterface
 {
