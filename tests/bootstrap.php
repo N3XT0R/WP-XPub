@@ -179,3 +179,14 @@ if (!class_exists('WP_Post')) {
         }
     }
 }
+
+if (!class_exists('wpdb')) {
+    class wpdb
+    {
+        public string $prefix = '';
+
+        public function insert(string $table, array $data, array $format = [])
+        {
+        }
+    }
+}

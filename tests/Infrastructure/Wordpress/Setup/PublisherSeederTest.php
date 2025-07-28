@@ -14,10 +14,25 @@ class PublisherSeederTest extends TestCase
     public function testRegisterThrowsOnMissingConfig(): void
     {
         $repo = new class implements PublisherRepositoryInterface {
-            public function all(): array { return []; }
-            public function findBySlug(string $slug): ?Publisher { return null; }
-            public function updateConfig(string $slug, array $newConfig): bool { return true; }
-            public function create(string $slug, string $name, array $config): bool { return true; }
+            public function all(): array
+            {
+                return [];
+            }
+
+            public function findBySlug(string $slug): ?Publisher
+            {
+                return null;
+            }
+
+            public function updateConfig(string $slug, array $newConfig): bool
+            {
+                return true;
+            }
+
+            public function create(string $slug, string $name, array $config): bool
+            {
+                return true;
+            }
         };
 
         $seeder = new PublisherSeeder($repo);
@@ -28,13 +43,34 @@ class PublisherSeederTest extends TestCase
     public function testUpsertUpdatesExistingConfig(): void
     {
         $updated = [];
-        $repo = new class(&$updated) implements PublisherRepositoryInterface {
+        $repo = new class($updated) implements PublisherRepositoryInterface {
             private array $updated;
-            public function __construct(&$u) { $this->updated =& $u; }
-            public function all(): array { return []; }
-            public function findBySlug(string $slug): ?Publisher { return new Publisher($slug, 'name', [new PublisherConfig('api_key', '')]); }
-            public function updateConfig(string $slug, array $newConfig): bool { $this->updated[$slug] = $newConfig; return true; }
-            public function create(string $slug, string $name, array $config): bool { return true; }
+
+            public function __construct(&$u)
+            {
+                $this->updated =& $u;
+            }
+
+            public function all(): array
+            {
+                return [];
+            }
+
+            public function findBySlug(string $slug): ?Publisher
+            {
+                return new Publisher($slug, 'name', [new PublisherConfig('api_key', '')]);
+            }
+
+            public function updateConfig(string $slug, array $newConfig): bool
+            {
+                $this->updated[$slug] = $newConfig;
+                return true;
+            }
+
+            public function create(string $slug, string $name, array $config): bool
+            {
+                return true;
+            }
         };
 
         $seeder = new PublisherSeeder($repo);

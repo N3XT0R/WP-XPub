@@ -12,9 +12,9 @@ use Psr\Log\LoggerInterface;
 
 abstract class PublisherAbstract implements PublisherInterface, ConfigurablePublisherInterface, SlugAwareInterface
 {
-    protected array $config;
-    protected ?LoggerInterface $logger;
-    protected string $slug;
+    protected array $config = [];
+    protected ?LoggerInterface $logger = null;
+    protected string $slug = 'unknown';
 
     public function setSlug(string $slug): void
     {
