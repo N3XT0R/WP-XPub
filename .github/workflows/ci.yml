@@ -85,8 +85,11 @@ jobs:
              name: wp-xpub-build
              path: release/
 
-         - name: Show Artifact Files (debug)
-           run: ls -R release/
+         - name: Re-zip downloaded artifact for GitHub Release
+           run: |
+            cd release
+            zip -r ../wp-xpub.zip .
+
 
          - name: Upload to GitHub Release
            uses: softprops/action-gh-release@v1
