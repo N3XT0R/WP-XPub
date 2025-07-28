@@ -124,9 +124,9 @@ if (!function_exists('wp_kses_post')) {
 }
 
 if (!function_exists('get_permalink')) {
-    function get_permalink($post): string
+    function get_permalink(WP_Post $post): string
     {
-        return 'http://example.com/'.$post;
+        return 'http://example.com/'.$post->ID;
     }
 }
 if (!function_exists('setup_postdata')) {
