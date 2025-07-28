@@ -9,7 +9,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Database\Database;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\Handler\AdminNoticeHandler;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\Handler\WPDBLogHandler;
 
-final class LoggerFactory
+class LoggerFactory
 {
     public static function create(string $channel = 'xpub'): Logger
     {

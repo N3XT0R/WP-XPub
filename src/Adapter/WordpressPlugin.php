@@ -13,6 +13,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\I18n\Translator;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
+use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
@@ -96,7 +97,8 @@ final class WordpressPlugin
         }
 
         $article = (new ArticleFactory(new WpPostContentRenderer()))->fromWpPost($post);
-        $publisher = WordpressPublisherFactory::create();
+        $publisherFactory = new WordpressPublisherFactory(new PublisherRepository(), new WordpressSettingsRepository());
+        $publisher = $publisherFactory->create();
         $publisher->publish($article);
     }
 

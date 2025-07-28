@@ -10,20 +10,26 @@ use N3XT0R\XPub\Domain\Service\Publishing\PublisherTargetProvider;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
+use Psr\Log\LoggerInterface;
 
-final class WordpressPublisherFactory
+final readonly class WordpressPublisherFactory
 {
-    public static function create(): ArticlePublisher
-    {
-        $repository = new PublisherRepository();
-        $settings = new WordpressSettingsRepository();
-        $activeTargets = (new PublisherTargetProvider(
-            $settings
-        ))->getTargets();
+    protected LoggerInterface $loggerInterface;
 
+    public function __construct(
+        private PublisherRepository $repository,
+        private WordpressSettingsRepository $settings,
+        ?LoggerInterface $loggerInterface = null
+    ) {
+        $this->loggerInterface = $loggerInterface ?? LoggerFactory::create();
+    }
+
+    public function create(): ArticlePublisher
+    {
+        $activeTargets = (new PublisherTargetProvider($this->settings))->getTargets();
         $instances = [];
 
-        foreach ($repository->all() as $publisher) {
+        foreach ($this->repository->all() as $publisher) {
             if (in_array($publisher->getSlug(), $activeTargets, true)) {
                 try {
                     $instances[] = PublisherFactory::createWithConfig(
@@ -31,7 +37,7 @@ final class WordpressPublisherFactory
                         $publisher->getConfigArray()
                     );
                 } catch (\RuntimeException $e) {
-                    LoggerFactory::create()->error($e->getMessage(), ['exception' => $e]);
+                    $this->loggerInterface->error($e->getMessage(), ['exception' => $e]);
                 }
             }
         }
