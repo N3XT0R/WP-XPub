@@ -28,7 +28,7 @@ $header = <<<PHP
  * Domain Path: /languages
  * Text Domain: xpub-multi-channel-publisher
  * Requires at least: 6.0
- * Tested up to: 6.8.2
+ * Tested up to: 6.8
  * Requires PHP: 8.2
  * Stable tag: {$version}
  */
