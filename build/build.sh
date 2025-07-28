@@ -1,5 +1,21 @@
 #!/bin/bash
+set -e
+BUILD_DIR=build
+PLUGIN_DIR=$BUILD_DIR/xpub
 
-VERSION=$(git describe --tags --always)
-echo "<?php const XPUB_VERSION = '$VERSION';" > version.php
-echo "Generated version.php with version: $VERSION"
+rm -rf "$PLUGIN_DIR"
+mkdir -p "$PLUGIN_DIR"
+
+rsync -av --delete \
+  --exclude='.git' \
+  --exclude='build' \
+  --exclude='tests' \
+  --exclude='.github' \
+  --exclude='*.zip' \
+  --exclude='phpunit.*' \
+  --exclude='.gitignore' \
+  --exclude='.gitattributes' \
+  ./ "$PLUGIN_DIR/"
+
+cd "$BUILD_DIR"
+zip -r wp-xpub.zip xpub

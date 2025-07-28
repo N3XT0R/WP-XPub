@@ -53,20 +53,13 @@ jobs:
             run: composer install --no-dev --no-progress --prefer-dist
 
           - name: Make build script executable
-            run: chmod +x build/build.sh
+            run: chmod +x build/version.sh build/build.sh
 
           - name: Generate version.php
-            run: bash ./build/build.sh
+            run: bash ./build/version.sh
 
-          - name: Prepare Plugin Directory
-            run: |
-              mkdir -p build/xpub
-              rsync -av --exclude='.git' --exclude='vendor/bin' --exclude='tests' --exclude='build' --exclude='.github' ./ build/xpub/
-
-          - name: Zip Plugin
-            run: |
-              cd build
-              zip -r wp-xpub.zip xpub
+          - name: Run build script
+            run: ./build/build.sh
 
           - name: Upload Artifact
             uses: actions/upload-artifact@v4
