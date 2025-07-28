@@ -1,5 +1,15 @@
 #!/bin/bash
 
 VERSION=$(git describe --tags --always)
+
+# version.php schreiben
 echo "<?php const XPUB_VERSION = '$VERSION';" > version.php
-echo "Generated version.php with version: $VERSION"
+
+# version.json mit echtem Variablenwert
+cat <<EOF > version.json
+{
+  "version": "$VERSION"
+}
+EOF
+
+echo "Generated version.php and version.json with version: $VERSION"

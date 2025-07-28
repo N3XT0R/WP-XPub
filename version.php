@@ -1,2 +1,1 @@
-<?php
-//define('XPUB_VERSION', '1.2.3');
+<?php const XPUB_VERSION = 'b1ff09d';
