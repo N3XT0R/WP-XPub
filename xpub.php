@@ -3,7 +3,7 @@
 include_once 'version.php';
 
 /**
- * Plugin Name: xPub-Publisher (WP-XPub)
+ * Plugin Name: WP-XPub
  * Description: Flexible Multi-Channel Auto Publisher for WordPress
  * Version: 1.0.0
  * Author: Ilya Beliaev (N3XT0R)
