@@ -57,6 +57,7 @@ final class WordpressPlugin
             new WordpressSettingsRepository()
         );
         $runner->install();
+        WordpressCron::register();
     }
 
     /**
@@ -69,6 +70,7 @@ final class WordpressPlugin
             new WordpressSettingsRepository()
         );
         $runner->uninstall();
+        WordpressCron::deregister();
     }
 
     /**

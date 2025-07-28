@@ -16,7 +16,6 @@
 
 include_once 'version.php';
 
-use N3XT0R\XPub\Adapter\WordpressCron;
 use N3XT0R\XPub\Adapter\WordpressPlugin;
 
 defined('ABSPATH') or die('No script kiddies please!');
@@ -24,8 +23,3 @@ require_once __DIR__.'/vendor/autoload.php';
 
 WordpressPlugin::init(__FILE__);
 
-if (defined('WP_CLI') && WP_CLI) {
-    return;
-}
-
-WordpressCron::register();

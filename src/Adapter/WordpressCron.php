@@ -17,6 +17,7 @@ final class WordpressCron
 {
     public static function register(): void
     {
+        add_action('xpub_run_job_runner', [self::class, 'run']);
         if (!wp_next_scheduled('xpub_run_job_runner')) {
             wp_schedule_event(time(), 'xpub_every_five_minutes', 'xpub_run_job_runner');
         }
@@ -29,6 +30,17 @@ final class WordpressCron
             return $schedules;
         });
     }
+
+    public static function deregister(): void
+    {
+        $timestamp = wp_next_scheduled('xpub_run_job_runner');
+        if ($timestamp !== false) {
+            wp_unschedule_event($timestamp, 'xpub_run_job_runner');
+        }
+        
+        remove_action('xpub_run_job_runner', [self::class, 'run']);
+    }
+
 
     public static function run(): void
     {
