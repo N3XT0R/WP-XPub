@@ -19,6 +19,7 @@ multiple external platforms – including LinkedIn, Mastodon, Dev.to, and more �
 - 🧵 Pre- and post-publish hooks for full customization
 - 📦 Composer-ready (PSR-4 autoloading, modern architecture)
 - 🐘 Built with PHP – no external API calls required, uses Monolog for local logging
+- 🔄 GitHub-based update mechanism with manual check and local changelog
 
 ---
 
