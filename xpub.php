@@ -2,13 +2,15 @@
 
 include_once 'version.php';
 
-/*
-Plugin Name: xPub-Publisher (WP-XPub)
-Description: Modular Auto-Publisher for WordPress to external platforms (dev.to, LinkedIn, etc.)
-Author: php-dev
-Version: 1.0.0
-Domain Path: /languages
-*/
+/**
+ * Plugin Name: xPub-Publisher (WP-XPub)
+ * Description: Flexible Multi-Channel Auto Publisher for WordPress
+ * Version: 1.0.0
+ * Author: N3XT0R
+ * License: GPLv3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ */
+
 
 use N3XT0R\XPub\Adapter\WordpressPlugin;
 
