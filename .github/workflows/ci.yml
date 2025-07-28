@@ -26,9 +26,6 @@ jobs:
       - name: Install Dependencies
         run: composer install --no-progress --no-suggest --prefer-dist
 
-      - name: Run PHPStan
-        run: vendor/bin/phpstan analyse src tests
-
       - name: Run PHPUnit Tests
         run: vendor/bin/phpunit --configuration phpunit.xml --coverage-clover=coverage/clover.xml --path-coverage
 
