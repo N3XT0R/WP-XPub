@@ -20,6 +20,7 @@ final readonly class WordpressHookRegistrar
     public function register(string $pluginFile): void
     {
         register_activation_hook($pluginFile, [WordpressPlugin::class, 'onActivate']);
+        //register_deactivation_hook($pluginFile, [WordpressPlugin::class, 'onUninstall']);
         register_uninstall_hook($pluginFile, [WordpressPlugin::class, 'onUninstall']);
         $this->registerActions();
         $this->registerAdminRegistrables();
