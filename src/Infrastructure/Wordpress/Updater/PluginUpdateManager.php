@@ -25,6 +25,16 @@ class PluginUpdateManager
         $this->pluginInfoUrl = $pluginInfoUrl;
     }
 
+    public static function boot(string $pluginFile): void
+    {
+        (new PluginUpdateManager(
+            $pluginFile,
+            'xpub-multi-channel-publisher',                                   // slug
+            'https://github.com/N3XT0R/WP-XPub/latest/xpub-multi-channel-publisher.zip',
+            'https://github.com/N3XT0R/WP-XPub'          // optional info URL
+        ))->register();
+    }
+
     public function register(): void
     {
         add_filter('site_transient_update_plugins', [$this, 'removeWpOrgUpdate']);
@@ -46,9 +56,6 @@ class PluginUpdateManager
         $pluginPath = WP_PLUGIN_DIR.'/'.$this->pluginFile;
         $pluginData = get_plugin_data($pluginPath, false, false);
         $currentVersion = $pluginData['Version'];
-
-        // Hier würdest du z. B. via GitHub API die neueste Version abfragen
-        // oder aus statischer JSON-Datei ziehen
         $remoteVersion = $this->getRemoteVersion();
 
         if (version_compare($remoteVersion, $currentVersion, '>')) {

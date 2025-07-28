@@ -16,6 +16,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
+use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
 use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
 use WP_Post;
 
@@ -35,6 +36,7 @@ final class WordpressPlugin
         PublisherFactory::setFilterDispatcher(new WordpressFilterDispatcher());
         $registrar = new WordpressHookRegistrar();
         $registrar->register($pluginFile);
+        PluginUpdateManager::boot($pluginFile);
     }
 
     /**
