@@ -3,10 +3,10 @@
 include_once 'version.php';
 
 /*
-Plugin Name: xPub-Publisher
+Plugin Name: xPub-Publisher (WP-XPub)
 Description: Modular Auto-Publisher for WordPress to external platforms (dev.to, LinkedIn, etc.)
 Author: php-dev
-Version: 1.0.0-RC1
+Version: 1.0.0
 Domain Path: /languages
 */
 
