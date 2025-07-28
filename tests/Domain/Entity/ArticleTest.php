@@ -2,8 +2,8 @@
 
 namespace N3XT0R\XPub\Tests\Domain\Entity;
 
-use PHPUnit\Framework\TestCase;
 use N3XT0R\XPub\Domain\Entity\Article;
+use PHPUnit\Framework\TestCase;
 
 class ArticleTest extends TestCase
 {
@@ -17,7 +17,7 @@ class ArticleTest extends TestCase
 
     public function testRequiresTitleAndContent(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         new Article(1, '', '');
     }
 }

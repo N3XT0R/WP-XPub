@@ -2,8 +2,8 @@
 
 namespace N3XT0R\XPub\Tests\Infrastructure\Markdown;
 
-use PHPUnit\Framework\TestCase;
 use N3XT0R\XPub\Infrastructure\Markdown\HtmlToMarkdownRenderer;
+use PHPUnit\Framework\TestCase;
 
 class HtmlToMarkdownRendererTest extends TestCase
 {

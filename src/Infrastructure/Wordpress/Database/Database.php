@@ -10,7 +10,7 @@ final class Database
 {
     private static ?wpdb $instance = null;
 
-    public static function get(): wpdb
+    public static function get(): ?wpdb
     {
         if (!self::$instance) {
             global $wpdb;
