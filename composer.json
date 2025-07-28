@@ -32,7 +32,7 @@
   },
   "scripts": {
     "generate-header": [
-      "@php build/header-generator.php"
+      "php build/header-generator.php"
     ]
   },
   "extra": {
