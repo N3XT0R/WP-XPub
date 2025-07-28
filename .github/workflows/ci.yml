@@ -52,6 +52,9 @@ jobs:
           - name: Install Dependencies
             run: composer install --no-dev --no-progress --prefer-dist
 
+          - name: Generate Plugin Header
+            run: composer generate-header
+
           - name: Make build script executable
             run: chmod +x build/version.sh build/build.sh
 
