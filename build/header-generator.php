@@ -26,7 +26,7 @@ $header = <<<PHP
  * License: {$license}
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Domain Path: /languages
- * Text Domain: xpub
+ * Text Domain: xpub-multi-channel-publisher
  * Requires at least: 6.0
  * Tested up to: 6.8.2
  * Requires PHP: 8.2

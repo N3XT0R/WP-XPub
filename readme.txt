@@ -1,4 +1,4 @@
-=== WP-XPub ===
+=== XPub Multi-Channel Publisher ===
 Contributors: php-dev
 Tags: auto-publish, linkedin, mastodon
 Requires at least: 6.8
