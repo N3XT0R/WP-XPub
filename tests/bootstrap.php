@@ -40,3 +40,26 @@ if (!function_exists('is_admin')) { function is_admin() { return true; } }
 if (!function_exists('wp_get_post_tags')) { function wp_get_post_tags() { return []; } }
 if (!function_exists('wp_reset_postdata')) { function wp_reset_postdata() {} }
 if (!function_exists('wp_kses_post')) { function wp_kses_post($content) { return $content; } }
+
+if (!function_exists('get_permalink')) {
+    function get_permalink($post): string { return ''; }
+}
+if (!function_exists('setup_postdata')) { function setup_postdata($post) {} }
+
+if (!class_exists('WP_Post')) {
+    class WP_Post
+    {
+        public int $ID;
+        public string $post_title = '';
+        public string $post_content = '';
+        public string $post_excerpt = '';
+        public string $post_status = '';
+
+        public function __construct(array $data = [])
+        {
+            foreach ($data as $key => $value) {
+                $this->$key = $value;
+            }
+        }
+    }
+}
