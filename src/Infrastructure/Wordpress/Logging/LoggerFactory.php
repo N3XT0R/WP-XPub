@@ -14,7 +14,11 @@ final class LoggerFactory
     public static function create(string $channel = 'xpub'): Logger
     {
         $logger = new Logger($channel);
-        $logger->pushHandler(new WPDBLogHandler(Database::get()));
+        $database = Database::get();
+        if ($database) {
+            $logger->pushHandler(new WPDBLogHandler($database));
+        }
+
         $logger->pushHandler(new AdminNoticeHandler());
 
         return $logger;
