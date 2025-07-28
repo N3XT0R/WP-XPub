@@ -12,7 +12,8 @@ class HookProviderTest extends TestCase
 {
     public function testItProvidesExpectedHooks(): void
     {
-        $provider = new HookProvider();
+        $dummyPluginFile = 'my-plugin/my-plugin.php';
+        $provider = new HookProvider($dummyPluginFile);
         $hooks = $provider->getHooks();
 
         $this->assertIsArray($hooks);
