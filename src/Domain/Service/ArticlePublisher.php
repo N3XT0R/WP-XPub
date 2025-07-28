@@ -23,11 +23,6 @@ final class ArticlePublisher
         $this->logger = $logger ?? LoggerFactory::create();
     }
 
-    public function addPublisher(PublisherInterface $publisher): void
-    {
-        $this->publishers[] = $publisher;
-    }
-
     public function publish(Article $article): void
     {
         foreach ($this->publishers as $publisher) {
