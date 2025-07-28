@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0-RC1] - 2025-07-28
+## [0.1.0] – 2025-07-27
 
 ### Added
 
@@ -24,9 +24,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Logging behavior on misconfigured publisher targets now triggers a PSR-3 compatible logger error.
+- Refactored short PHP echo tags for WordPress.org compatibility.
+- Removed deprecated `load_plugin_textdomain()` call to meet current translation standards.
+- Excluded hidden files from build package to comply with WP.org guidelines.
 
 ### Notes
 
 - This is a **Release Candidate**: the plugin is functionally complete and API-stable, but not fully tested.
 - Remaining test coverage and potential refactorings will be addressed in upcoming stable releases.
-
