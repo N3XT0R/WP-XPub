@@ -89,13 +89,12 @@ jobs:
            run: |
             cd release
             zip -r ../wp-xpub.zip .
-            cd ..
 
 
          - name: Create GitHub Release
            uses: softprops/action-gh-release@v1
            with:
-             files: release/wp-xpub.zip
+             files: wp-xpub.zip
            env:
              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
