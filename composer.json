@@ -2,7 +2,7 @@
   "name": "n3xt0r/wp-xpub",
   "description": "Flexible Multi-Channel Auto Publisher for WordPress",
   "type": "wordpress-plugin",
-  "license": "MIT",
+  "license": "GPLv3",
   "authors": [
     {
       "name": "Ilya Beliaev",
@@ -29,6 +29,11 @@
     "psr-4": {
       "N3XT0R\\XPub\\Tests\\": "tests/"
     }
+  },
+  "scripts": {
+    "generate-header": [
+      "@php build/header-generator.php"
+    ]
   },
   "extra": {
     "branch-alias": {
