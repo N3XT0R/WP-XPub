@@ -8,6 +8,7 @@ use N3XT0R\XPub\Application\Factory\PublisherFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Content\WpPostContentRenderer;
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\WordpressPublisherFactory;
+use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookProvider;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressFilterDispatcher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
@@ -16,7 +17,6 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
-use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
 use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
 use WP_Post;
 
@@ -34,9 +34,8 @@ final class WordpressPlugin
     {
         View::setBasePath(plugin_dir_path(__FILE__).'../../resources/views');
         PublisherFactory::setFilterDispatcher(new WordpressFilterDispatcher());
-        $registrar = new WordpressHookRegistrar();
+        $registrar = new WordpressHookRegistrar(new HookProvider($pluginFile));
         $registrar->register($pluginFile);
-        PluginUpdateManager::boot($pluginFile);
     }
 
     /**

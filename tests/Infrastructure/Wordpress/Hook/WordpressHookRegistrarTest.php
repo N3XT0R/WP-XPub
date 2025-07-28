@@ -13,7 +13,8 @@ final class WordpressHookRegistrarTest extends TestCase
 {
     public function testItDispatchesAllHooksFromProvider(): void
     {
-        $provider = new HookProvider();
+        $dummyPluginFile = 'my-plugin/my-plugin.php';
+        $provider = new HookProvider($dummyPluginFile);
         $dispatcher = new DummyDispatcher();
         $registrar = new WordpressHookRegistrar($provider, $dispatcher);
 

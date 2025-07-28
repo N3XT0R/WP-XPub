@@ -6,9 +6,15 @@ namespace N3XT0R\XPub\Infrastructure\Wordpress\Hook;
 
 use N3XT0R\XPub\Adapter\WordpressPlugin;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
+use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
 
 final class HookProvider
 {
+
+    public function __construct(private readonly string $pluginFile)
+    {
+    }
+
     /**
      * @return HookDefinition[]
      */
@@ -22,6 +28,7 @@ final class HookProvider
             new HookDefinition('admin_post_xpub_save_settings', function () {
                 (new SettingsSaveHandler())->handle();
             }),
+            new HookDefinition('init', fn() => PluginUpdateManager::boot($this->pluginFile)),
         ];
     }
 }

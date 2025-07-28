@@ -12,7 +12,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsPageRegistrar;
 final readonly class WordpressHookRegistrar
 {
     public function __construct(
-        private HookProvider $provider = new HookProvider(),
+        private HookProvider $provider,
         private HookDispatcherInterface $dispatcher = new WordpressHookDispatcher()
     ) {
     }
