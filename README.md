@@ -24,12 +24,15 @@ multiple external platforms – including LinkedIn, Mastodon, Dev.to, and more �
 
 ## 📦 Installation
 
-```bash
-composer require n3xt0r/wp-xpub
-```
-
+[Installation](docs/installation.md)
 Activate the plugin in WordPress and configure publishers via  
 **Settings > XPUB**
+
+> ⚠️ **Note**: WP-XPub is *not* available on the official WordPress Plugin Hub.  
+> This is a conscious decision, as the WordPress plugin linter enforces coding patterns that violate modern Clean Code
+> and architectural best practices.  
+> WP-XPub adheres to a strict PSR-based code style and a hexagonal architecture, which cannot be reconciled with certain
+> WordPress guidelines.
 
 ---
 
