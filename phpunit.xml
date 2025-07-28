@@ -20,6 +20,9 @@
         <report>
             <clover outputFile="coverage/clover.xml"/>
         </report>
+        <exclude>
+            <directory>src/Adapter</directory>
+        </exclude>
     </coverage>
     <source>
         <include>
