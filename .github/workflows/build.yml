@@ -44,7 +44,7 @@ jobs:
       - name: Create ZIP
         run: |
           mkdir -p build
-          zip -r build/wp-xpub.zip . -x '*.git*' -x '*vendor/bin/*' -x '*tests/*' -x 'build/*' -x '*.github/*'
+          zip -r build/wp-xpub.zip . -x '*.git*' -x '*vendor/bin/*' -x 'build/*' -x '*.github/*'
 
 
       - name: Upload ZIP artifact
