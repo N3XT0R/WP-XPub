@@ -25,6 +25,7 @@ multiple external platforms – including LinkedIn, Mastodon, Dev.to, and more �
 ## 📦 Installation
 
 [Installation](docs/installation.md)
+
 Activate the plugin in WordPress and configure publishers via  
 **Settings > XPUB**
 
