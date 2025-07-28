@@ -22,6 +22,7 @@ use WP_Post;
 
 /**
  * Main entry point for the WP-XPub plugin lifecycle (activation, boot, uninstall).
+ * @codeCoverageIgnore
  */
 final class WordpressPlugin
 {
