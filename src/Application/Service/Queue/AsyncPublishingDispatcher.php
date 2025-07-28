@@ -22,14 +22,17 @@ final class AsyncPublishingDispatcher
 
     public function dispatch(Article $article): void
     {
-        $now = new DateTimeImmutable();
+        $scheduledAt = $article->scheduledAt ?? new DateTimeImmutable();
 
         foreach ($this->publisherSelector->getAll() as $key => $publisher) {
             $job = new Job(
                 postId: $article->postId,
                 publisherKey: $key,
                 payload: $this->articleFactory->toArray($article),
-                scheduledAt: $now
+                scheduledAt: $scheduledAt,
+                attempts: 0,
+                lastError: null,
+                id: null
             );
 
             $this->queue->enqueue($job);

@@ -28,12 +28,18 @@ final class ArticleFactory implements ArticleFactoryInterface, WordpressArticleF
             url: (string)($data['url'] ?? ''),
             htmlContent: (string)($data['htmlContent'] ?? ''),
             tags: (array)($data['tags'] ?? []),
+            scheduledAt: $data['scheduledAt']
         );
     }
 
     public function fromWpPost(WP_Post $post): Article
     {
         $tags = wp_get_post_tags($post->ID, ['fields' => 'names']);
+        $scheduledAt = null;
+
+        if ($post->post_status === 'future' && !empty($post->post_date_gmt) && $post->post_date_gmt !== '0000-00-00 00:00:00') {
+            $scheduledAt = new \DateTimeImmutable($post->post_date_gmt, new \DateTimeZone('UTC'));
+        }
 
         return $this->fromArray([
             'postId' => $post->ID,
@@ -43,6 +49,7 @@ final class ArticleFactory implements ArticleFactoryInterface, WordpressArticleF
             'url' => get_permalink($post),
             'htmlContent' => $this->renderer->render($post),
             'tags' => $tags,
+            'scheduledAt' => $scheduledAt
         ]);
     }
 

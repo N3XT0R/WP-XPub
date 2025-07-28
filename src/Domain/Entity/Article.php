@@ -11,7 +11,8 @@ final class Article
         public readonly ?string $excerpt = null,
         public readonly ?string $url = null,
         public readonly ?string $htmlContent = null,
-        public readonly array $tags = []
+        public readonly array $tags = [],
+        public readonly ?\DateTimeImmutable $scheduledAt = null
     ) {
         if (empty($title) || empty($content)) {
             throw new \InvalidArgumentException('Title and content are required.');

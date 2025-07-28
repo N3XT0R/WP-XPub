@@ -19,6 +19,7 @@ class ArticleFactory implements ArticleFactoryInterface
             url: (string)($data['url'] ?? ''),
             htmlContent: (string)($data['htmlContent'] ?? ''),
             tags: (array)($data['tags'] ?? []),
+            scheduledAt: $data['scheduledAt'],
         );
     }
 
@@ -32,6 +33,7 @@ class ArticleFactory implements ArticleFactoryInterface
             'url' => $article->url,
             'htmlContent' => $article->htmlContent,
             'tags' => $article->tags,
+            'scheduledAt' => $article->scheduledAt,
         ];
     }
 
