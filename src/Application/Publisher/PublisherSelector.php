@@ -39,10 +39,7 @@ final class PublisherSelector
         foreach ($this->repository->all() as $publisher) {
             $slug = $publisher->getSlug();
             try {
-                $instances[$slug] = $this->factory->createWithConfig(
-                    $slug,
-                    $publisher->getConfigArray()
-                );
+                $instances[$slug] = $this->get($slug);
             } catch (\Throwable $e) {
                 $this->logger?->warning(
                     "Failed to create publisher for slug '{$slug}': ".$e->getMessage(),
