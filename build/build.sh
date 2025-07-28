@@ -19,3 +19,4 @@ rsync -av --delete \
 
 cd "$BUILD_DIR"
 zip -r wp-xpub.zip xpub
+cd ..
