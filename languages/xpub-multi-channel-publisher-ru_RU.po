@@ -5,38 +5,38 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: it_IT\n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Domain: xpub\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Domain: xpub-multi-channel-publisher\n"
 "X-Generator: Poedit 3.6\n"
 
 #: resources/views/admin/settings-page.php:6
 msgid "Activate Publisher"
-msgstr "Attiva l’editore"
+msgstr "Активировать издателя"
 
 #: resources/views/admin/settings-page.php:8
 msgid "Select active publishers:"
-msgstr "Seleziona gli editori attivi:"
+msgstr "Выберите активных издателей:"
 
 #: resources/views/admin/settings-page.php:36
 msgid "Configuration"
-msgstr "Configurazione"
+msgstr "Конфигурация"
 
 #: resources/views/admin/settings-page.php:65
 msgid "Save settings"
-msgstr "Salva impostazioni"
+msgstr "Сохранить настройки"
 
 #: resources/views/admin/settings-page.php
 msgid "api_key"
-msgstr "Chiave API"
+msgstr "Ключ API"
 
 #: resources/views/admin/settings-page.php
 msgid "client_id"
-msgstr "ID client"
+msgstr "ID клиента"
 
 #: resources/views/admin/metabox.php
 msgid "Custom Text for Social Sharing"
-msgstr "Testo personalizzato per la condivisione sui social"
+msgstr "Пользовательский текст для публикации в соцсетях"
