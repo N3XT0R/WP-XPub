@@ -16,5 +16,4 @@ class Job
         public readonly ?int $id = null,
     ) {
     }
-
 }

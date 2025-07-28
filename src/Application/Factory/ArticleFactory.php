@@ -21,4 +21,18 @@ class ArticleFactory implements ArticleFactoryInterface
             tags: (array)($data['tags'] ?? []),
         );
     }
+
+    public function toArray(Article $article): array
+    {
+        return [
+            'postId' => $article->postId,
+            'title' => $article->title,
+            'content' => $article->content,
+            'excerpt' => $article->excerpt,
+            'url' => $article->url,
+            'htmlContent' => $article->htmlContent,
+            'tags' => $article->tags,
+        ];
+    }
+
 }
