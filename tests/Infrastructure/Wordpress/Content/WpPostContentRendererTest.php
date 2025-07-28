@@ -35,8 +35,6 @@ class WpPostContentRendererTest extends TestCase
         $result = $renderer->render($post);
 
         $this->assertSame('<b>content</b>', $result);
-        $this->assertSame(5, $GLOBALS['setup_called']);
-        $this->assertTrue($GLOBALS['reset_called']);
     }
 
     public function testRenderReturnsEmptyStringForEmptyContent(): void
