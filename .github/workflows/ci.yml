@@ -68,7 +68,7 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
               name: wp-xpub-build
-              path: build/xpub
+              path: build/xpub-multi-channel-publisher
 
   release:
        name: Create GitHub Release
@@ -88,13 +88,13 @@ jobs:
          - name: Re-zip downloaded artifact for GitHub Release
            run: |
             cd release
-            zip -r ../wp-xpub.zip .
+            zip -r ../xpub-multi-channel-publisher.zip .
 
 
          - name: Create GitHub Release
            uses: softprops/action-gh-release@v1
            with:
-             files: wp-xpub.zip
+             files: xpub-multi-channel-publisher.zip
            env:
              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

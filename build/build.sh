@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 BUILD_DIR=build
-PLUGIN_DIR=$BUILD_DIR/xpub
+PLUGIN_DIR=$BUILD_DIR/xpub-multi-channel-publisher
 
 rm -rf "$PLUGIN_DIR"
 mkdir -p "$PLUGIN_DIR"

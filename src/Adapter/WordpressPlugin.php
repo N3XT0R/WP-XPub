@@ -51,7 +51,6 @@ final class WordpressPlugin
      */
     public static function onActivate(string $channel = 'xpub'): void
     {
-        error_log('INSTALL XPub gestartet');
         $runner = new SetupRunner(
             LoggerFactory::create($channel),
             new WordpressSettingsRepository()

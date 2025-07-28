@@ -15,6 +15,16 @@ translation functions (e.g. `__()`, `_x()`, `_n()`).
 To ensure compatibility with these requirements, we deliberately replaced the constant with the literal
 `'xpub-multi-channel-publisher'` in all translation calls.
 
+### About direct SQL queries in Migration_1
+
+The uninstall routine performs controlled schema cleanup via DROP TABLE statements. These are deliberately written with
+dynamic table prefixes and are not passed through `prepare()`, since schema DDL is not compatible with placeholder
+substitution.
+
+We have explicitly disabled certain linter warnings using `// phpcs:ignore` to preserve structural clarity and maintain
+versioned migrations.
+
+
 ---
 
 We hope this clarification helps during your review.

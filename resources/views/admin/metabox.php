@@ -7,7 +7,7 @@ wp_nonce_field('xpub_meta_box', 'xpub_meta_box_nonce');
 ?>
 <label for="xpub_custom_excerpt">
     <?php
-    echo $translator->translateEscaped('Custom Text for Social Sharing');
+    echo esc_html($translator->translate('Custom Text for Social Sharing'));
     ?>
 </label>
 

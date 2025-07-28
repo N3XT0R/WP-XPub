@@ -14,8 +14,10 @@ final class SettingsSaveHandler
     {
         (new SettingsFormRequestValidator())->validate();
 
-        $activePublisherSlugs = $_POST['active_publishers'] ?? [];
-        $publisherConfigs = $_POST['config'] ?? [];
+        $activePublisherSlugs = isset($_POST['active_publishers']) ? wp_unslash($_POST['active_publishers']) : [];
+        $activePublisherSlugs = array_map('sanitize_text_field', $activePublisherSlugs);
+
+        $publisherConfigs = isset($_POST['config']) ? wp_unslash($_POST['config']) : [];
 
         $settingsRepo = new WordpressSettingsRepository();
         $settingsRepo->set('xpub_publisher_targets', $activePublisherSlugs);
@@ -25,6 +27,7 @@ final class SettingsSaveHandler
         wp_redirect(admin_url('options-general.php?page=xpub-settings&updated=true'));
         exit;
     }
+
 
     private function persistPublisherConfigs(array $publisherConfigs): void
     {

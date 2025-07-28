@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$file = __DIR__.'/../xpub.php';
+$file = __DIR__.'/../xpub-multi-channel-publisher.php';
 
 $composer = json_decode(file_get_contents(__DIR__.'/../composer.json'), true);
 
@@ -23,8 +23,8 @@ $header = <<<PHP
  * Description: {$description}
  * Version: {$version}
  * Author: {$authorName}
- * License: GPLv3 or later
- * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Domain Path: /languages
  * Text Domain: xpub-multi-channel-publisher
  * Requires at least: 6.0
