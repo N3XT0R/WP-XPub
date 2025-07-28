@@ -7,11 +7,19 @@ namespace N3XT0R\XPub\Application\Factory;
 use N3XT0R\XPub\Domain\Contracts\ConfigurablePublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\SlugAwareInterface;
+use N3XT0R\XPub\Domain\Hooks\FilterDispatcherInterface;
 use N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 
 class PublisherFactory
 {
+
+    private static ?FilterDispatcherInterface $filterDispatcher = null;
+
+    public static function setFilterDispatcher(FilterDispatcherInterface $dispatcher): void
+    {
+        self::$filterDispatcher = $dispatcher;
+    }
 
     public static function create(string $target): PublisherInterface
     {
@@ -28,11 +36,12 @@ class PublisherFactory
 
     public static function createWithConfig(string $target, array $config): PublisherInterface
     {
-        $map = apply_filters('wp_xpub_factory_map', self::getDefaultPublisherArray());
-
-        if (!isset($map[$target]) || !class_exists($map[$target])) {
-            throw new \RuntimeException("No publisher for target: $target");
+        if (!self::$filterDispatcher) {
+            throw new \LogicException('FilterDispatcher not set');
         }
+
+        $map = self::$filterDispatcher->filter('wp_xpub_factory_map', self::getDefaultPublisherArray());
+
 
         $class = $map[$target];
 
