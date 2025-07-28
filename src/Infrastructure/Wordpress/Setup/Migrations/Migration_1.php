@@ -73,19 +73,8 @@ class Migration_1 extends AbstractMigration
     protected function uninstall(wpdb $wpdb): void
     {
         $prefix = $wpdb->prefix;
-
-        // We perform controlled schema teardown as part of plugin uninstallation.
-        // These DROP statements are safe and versioned – caching and prepare() are not relevant here.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange,
-        // WordPress.DB.DirectDatabaseQuery.DirectQuery,
-        // WordPress.DB.DirectDatabaseQuery.NoCaching,
-        // WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $wpdb->query("DROP TABLE IF EXISTS {$prefix}xpub_publisher_config");
-
-        // phpcs:ignore ...
         $wpdb->query("DROP TABLE IF EXISTS {$prefix}xpub_publishers");
-
-        // phpcs:ignore ...
         $wpdb->query("DROP TABLE IF EXISTS {$prefix}xpub_logs");
     }
 }
