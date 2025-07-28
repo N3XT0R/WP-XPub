@@ -50,6 +50,7 @@ Activate the plugin in WordPress and configure publishers via
 The full documentation is now available in the `docs/` folder:
 
 - [Overview & Index](docs/index.md)
+- [Installation](docs/installation.md)
 - [Creating Custom Publishers](docs/creating-publishers.md)
 - [Architecture (Hexagonal Design)](docs/architecture.md)
 - [Hooks & Filters](docs/hooks.md)
