@@ -46,6 +46,30 @@ external platforms – either instantly or via scheduled jobs.
 > This is by design: WordPress.org enforces legacy coding patterns that conflict with modern PSR standards and clean
 > architecture.  
 > WP-XPub prioritizes maintainability and extensibility over legacy compatibility.
+>
+> 🛠️ **Why this deviation?**  
+> WP-XPub follows a hexagonal (ports & adapters) architecture to enforce separation of concerns, testability, and
+> long-term maintainability.  
+> The WordPress Plugin Directory imposes structural constraints that prevent clean software design, including:
+>
+> - Reliance on `functions.php` and global functions instead of DI and modular bootstrapping
+> - Static hook registration without lifecycle encapsulation
+> - No support for PSR-4, namespaces, or autoloading
+> - **A legacy translation system** (`gettext`) that requires **literal strings** for all translatable text – making
+    dynamic or domain-driven I18n impossible
+> - No support for application-layer abstractions (e.g. service containers, middleware, or event buses)
+>
+> ❌ These constraints hinder composability, reusability, and testability.
+>
+> ✅ WP-XPub deliberately separates domain logic, infrastructure, and framework adapters – allowing modern PHP practices
+> like:
+>
+> - **Constructor-based dependency injection**
+> - **PSR-compliant, autoloaded class structure**
+> - **Dynamic, context-aware translations via service-based I18n**
+> - **Full test coverage of application and domain code – independent from WordPress internals**
+>
+> WP-XPub is designed for developers who want to **integrate WordPress without being constrained by it**.
 
 ---
 
