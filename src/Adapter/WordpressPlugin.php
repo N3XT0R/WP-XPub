@@ -10,7 +10,6 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\WordpressPublisherFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressFilterDispatcher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
-use N3XT0R\XPub\Infrastructure\Wordpress\I18n\Translator;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
@@ -36,7 +35,6 @@ final class WordpressPlugin
         PublisherFactory::setFilterDispatcher(new WordpressFilterDispatcher());
         $registrar = new WordpressHookRegistrar();
         $registrar->register($pluginFile);
-        Translator::register($pluginFile);
     }
 
     /**
