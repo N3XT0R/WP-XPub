@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin;
 
 use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
+use N3XT0R\XPub\Infrastructure\Version\Version;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
-use N3XT0R\XPub\Support\Version;
 use Psr\Log\LoggerInterface;
 
 class PluginBootstrapService

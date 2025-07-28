@@ -2,8 +2,6 @@
 
 VERSION=$(git describe --tags --always)
 
-# version.php schreiben
-echo "<?php const XPUB_VERSION = '$VERSION';" > version.php
 
 # version.json mit echtem Variablenwert
 cat <<EOF > version.json
