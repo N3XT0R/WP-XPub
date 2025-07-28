@@ -17,7 +17,7 @@ class HookProviderTest extends TestCase
         $hooks = $provider->getHooks();
 
         $this->assertIsArray($hooks);
-        $this->assertCount(5, $hooks);
+        $this->assertCount(6, $hooks);
         foreach ($hooks as $hook) {
             $this->assertInstanceOf(HookDefinition::class, $hook);
             $this->assertIsString($hook->hookName);
