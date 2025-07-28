@@ -68,7 +68,7 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
               name: xpub-multi-channel-publisher
-              path: build/xpub-multi-channel-publisher
+              path: build/xpub-multi-channel-publisher/
 
   release:
        name: Create GitHub Release
