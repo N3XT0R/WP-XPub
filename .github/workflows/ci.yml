@@ -67,7 +67,7 @@ jobs:
           - name: Upload Artifact
             uses: actions/upload-artifact@v4
             with:
-              name: xpub-multi-channel-publisher
+              name: xpub
               path: build/xpub-multi-channel-publisher/
 
   release:
@@ -82,7 +82,7 @@ jobs:
          - name: Download Build Artifact
            uses: actions/download-artifact@v4
            with:
-             name: xpub-multi-channel-publisher
+             name: xpub
              path: release/
 
          - name: Re-zip downloaded artifact for GitHub Release
