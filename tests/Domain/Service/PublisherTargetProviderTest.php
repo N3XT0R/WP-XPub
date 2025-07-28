@@ -1,5 +1,7 @@
 <?php
 
+namespace N3XT0R\XPub\Tests\Domain\Service;
+
 use PHPUnit\Framework\TestCase;
 use N3XT0R\XPub\Domain\Service\Publishing\PublisherTargetProvider;
 use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;

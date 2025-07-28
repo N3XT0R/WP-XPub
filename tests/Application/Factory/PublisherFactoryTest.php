@@ -1,5 +1,7 @@
 <?php
 
+namespace N3XT0R\XPub\Tests\Application\Factory;
+
 use PHPUnit\Framework\TestCase;
 use N3XT0R\XPub\Application\Factory\PublisherFactory;
 use N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher;
