@@ -108,7 +108,7 @@ if (!function_exists('is_admin')) {
 if (!function_exists('wp_get_post_tags')) {
     function wp_get_post_tags()
     {
-        return [];
+        return ['one', 'two'];
     }
 }
 if (!function_exists('wp_reset_postdata')) {
