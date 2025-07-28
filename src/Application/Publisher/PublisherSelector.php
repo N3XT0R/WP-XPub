@@ -6,21 +6,27 @@ namespace N3XT0R\XPub\Application\Publisher;
 
 use N3XT0R\XPub\Application\Factory\PublisherFactory;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
-use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
+use N3XT0R\XPub\Domain\Repository\PublisherRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 final class PublisherSelector
 {
     public function __construct(
-        private readonly SettingsRepositoryInterface $settings,
+        private readonly PublisherRepositoryInterface $repository,
+        private readonly PublisherFactory $factory,
         private readonly ?LoggerInterface $logger = null
     ) {
     }
 
-
-    public function get(string $key): PublisherInterface
+    public function get(string $slug): PublisherInterface
     {
-        return PublisherFactory::create($key);
+        $publisher = $this->repository->findBySlug($slug);
+
+        if (!$publisher) {
+            throw new \RuntimeException("Publisher with slug '{$slug}' not found.");
+        }
+
+        return $this->factory->createWithConfig($slug, $publisher->getConfigArray());
     }
 
     /**
@@ -28,20 +34,15 @@ final class PublisherSelector
      */
     public function getAll(): array
     {
-        return PublisherFactory::all();
-    }
-
-    /**
-     * @return PublisherInterface[]
-     */
-    public function getActive(): array
-    {
-        $activeSlugs = $this->settings->get('xpub_publisher_targets', []);
         $instances = [];
 
-        foreach ($activeSlugs as $slug) {
+        foreach ($this->repository->all() as $publisher) {
+            $slug = $publisher->getSlug();
             try {
-                $instances[$slug] = PublisherFactory::create($slug);
+                $instances[$slug] = $this->factory->createWithConfig(
+                    $slug,
+                    $publisher->getConfigArray()
+                );
             } catch (\Throwable $e) {
                 $this->logger?->warning(
                     "Failed to create publisher for slug '{$slug}': ".$e->getMessage(),
