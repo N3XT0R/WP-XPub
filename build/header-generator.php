@@ -7,7 +7,8 @@ $file = __DIR__.'/../xpub.php';
 $composer = json_decode(file_get_contents(__DIR__.'/../composer.json'), true);
 
 // Git-Version holen
-$version = trim(shell_exec('git describe --tags --abbrev=0 2>/dev/null')) ?: '0.1.0-dev';
+exec('git describe --tags --abbrev=0 2>/dev/null', $out, $exit);
+$version = $exit === 0 ? trim($out[0]) : '0.1.0';
 
 // Basisinfos aus composer.json
 $name = $composer['name'] ?? 'wp-xpub';
