@@ -5,23 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2025-08-28
+## [1.1.0] - 2025-07-28
 
 ### Added
 
-- Integrated WordPress cron support to trigger asynchronous job processing
-- Introduced `WordpressCron` class for registering scheduled tasks
-- Added recurring `xpub_run_job_runner` event, scheduled every 5 minutes
-- JobRunner now runs via WordPress cron, publishing queued articles in the background
+- Introduced asynchronous job system with new `Job` entity to represent deferred publishing tasks.
+- Implemented `AsyncPublishingDispatcher` to enqueue one job per configured publisher.
+- Added `PublisherSelector` for resolving all available publishers dynamically.
+- Integrated WordPress cron via `WordpressCron` class, with custom 5-minute schedule (`xpub_every_five_minutes`) and
+  automatic hook registration.
+- Extended `Article` entity with `scheduledAt` timestamp, derived from WordPress `post_date_gmt`.
+- Introduced new `JobRunner` that processes enqueued jobs via cron execution.
 
 ### Changed
 
-- Moved cron registration into `WordpressPlugin::onActivate()` for better encapsulation
-- Ensured architectural compliance with hexagonal design by removing cron logic from plugin entrypoint
+- Publishing flow now handled asynchronously on post publish instead of immediate execution.
+- `WordpressPlugin::handlePublishFromPost()` now uses `AsyncPublishingDispatcher` to decouple publishing from request
+  lifecycle.
 
-### Removed
+### Internal
 
-- Removed direct call to `WordpressCron::register()` from plugin main file
+- Manual dependency wiring added for cron job execution (no DI container yet).
+- Clearer separation of plugin lifecycle logic (`init`, `boot`, `onActivate`, `onUninstall`) in `WordpressPlugin`.
 
 ## [1.0.1] - 2025-08-28
 
