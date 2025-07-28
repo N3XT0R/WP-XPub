@@ -1,23 +1,27 @@
 <?php
+
 namespace N3XT0R\XPub\Tests\Infrastructure\Wordpress\Factory;
 
-use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
 use N3XT0R\XPub\Domain\Contracts\RendersPostContentInterface;
+use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
 use PHPUnit\Framework\TestCase;
 use WP_Post;
 
-function get_post_meta($postId, $key, $single = false) {
+function get_post_meta($postId, $key, $single = false)
+{
     if ($key === '_xpub_custom_excerpt') {
         return 'excerpt';
     }
     return '';
 }
 
-function get_permalink($post): string {
-    return 'http://example.com/' . $post->ID;
+function get_permalink($post): string
+{
+    return 'http://example.com/'.$post->ID;
 }
 
-function wp_get_post_tags($postId, $args) {
+function wp_get_post_tags($postId, $args)
+{
     return ['one', 'two'];
 }
 
@@ -32,7 +36,7 @@ class ArticleFactoryTest extends TestCase
             'ID' => 1,
             'post_title' => 'Title',
             'post_content' => 'Content',
-            'post_excerpt' => '',
+            'post_excerpt' => 'excerpt',
         ]);
 
         $factory = new ArticleFactory($renderer);
