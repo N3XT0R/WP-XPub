@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Application\Factory;
 
+use LogicException;
 use N3XT0R\XPub\Domain\Contracts\ConfigurablePublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\SlugAwareInterface;
 use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
 use N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
+use RuntimeException;
 
-class PublisherFactory
+final class PublisherFactory
 {
-
     private static ?FilterDispatcherInterface $filterDispatcher = null;
 
     public static function setFilterDispatcher(FilterDispatcherInterface $dispatcher): void
@@ -26,6 +27,46 @@ class PublisherFactory
         return self::createWithConfig($target, []);
     }
 
+    public static function createWithConfig(string $target, array $config): PublisherInterface
+    {
+        $map = self::getPublisherMap();
+
+        if (!isset($map[$target]) || !class_exists($map[$target])) {
+            throw new RuntimeException("No valid publisher class found for target '$target'");
+        }
+
+        return self::instantiatePublisher($target, $map[$target], $config);
+    }
+
+    public static function all(): array
+    {
+        $map = self::getPublisherMap();
+        $instances = [];
+
+        foreach ($map as $key => $class) {
+            if (!class_exists($class)) {
+                continue;
+            }
+
+            $instance = self::instantiatePublisher($key, $class);
+            $instances[$key] = $instance;
+        }
+
+        return $instances;
+    }
+
+    private static function getPublisherMap(): array
+    {
+        if (!self::$filterDispatcher) {
+            throw new LogicException('FilterDispatcher not set');
+        }
+
+        return self::$filterDispatcher->filter(
+            'wp_xpub_factory_map',
+            self::getDefaultPublisherArray()
+        );
+    }
+
     private static function getDefaultPublisherArray(): array
     {
         return [
@@ -33,39 +74,23 @@ class PublisherFactory
         ];
     }
 
-
-    public static function createWithConfig(string $target, array $config): PublisherInterface
+    private static function instantiatePublisher(string $slug, string $class, array $config = []): PublisherInterface
     {
-        if (!self::$filterDispatcher) {
-            throw new \LogicException('FilterDispatcher not set');
-        }
-
-        $map = self::$filterDispatcher->filter('wp_xpub_factory_map', self::getDefaultPublisherArray());
-
-
-        $class = $map[$target] ?? '';
-        if (!class_exists($class)) {
-            throw new \RuntimeException("No publisher for target '$target'");
-        }
-
-        /** @var PublisherInterface $instance */
         $instance = new $class();
+
+        if (!$instance instanceof PublisherInterface) {
+            throw new RuntimeException("Class '$class' must implement PublisherInterface");
+        }
 
         if ($instance instanceof ConfigurablePublisherInterface) {
             $instance->setConfig($config);
-            $instance->setLogger(LoggerFactory::create($target));
+            $instance->setLogger(LoggerFactory::create($slug));
         }
 
         if ($instance instanceof SlugAwareInterface) {
-            $instance->setSlug($target);
-        }
-
-        if (!$instance instanceof PublisherInterface) {
-            throw new \RuntimeException("Publisher class for target '$target' must implement PublisherInterface");
+            $instance->setSlug($slug);
         }
 
         return $instance;
     }
-
-
 }
