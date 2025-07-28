@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-08-28
+
+### Added
+
+- Integrated WordPress cron support to trigger asynchronous job processing
+- Introduced `WordpressCron` class for registering scheduled tasks
+- Added recurring `xpub_run_job_runner` event, scheduled every 5 minutes
+- JobRunner now runs via WordPress cron, publishing queued articles in the background
+
+### Changed
+
+- Moved cron registration into `WordpressPlugin::onActivate()` for better encapsulation
+- Ensured architectural compliance with hexagonal design by removing cron logic from plugin entrypoint
+
+### Removed
+
+- Removed direct call to `WordpressCron::register()` from plugin main file
+
 ## [1.0.1] - 2025-08-28
 
 ### Changed
