@@ -5,11 +5,9 @@ on:
     tags:
       - 'v*'
     branches:
-      - develop
       - master
-      - feature/*
   pull_request:
-    branches: [ develop, master ]
+    branches: [ master ]
 
 jobs:
   build:
