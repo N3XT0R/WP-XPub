@@ -4,7 +4,7 @@
  * Description: Flexible Multi-Channel Auto Publisher for WordPress
  * Version: 1.0.0-RC1
  * Author: Ilya Beliaev
- * License: GPLV3
+ * License: GPL-3.0-OR-LATER
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Domain Path: /languages
  * Text Domain: xpub

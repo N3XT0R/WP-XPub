@@ -16,7 +16,3 @@ rsync -av --delete \
   --exclude='.gitignore' \
   --exclude='.gitattributes' \
   ./ "$PLUGIN_DIR/"
-
-cd "$BUILD_DIR"
-zip -r wp-xpub.zip xpub
-cd ..
