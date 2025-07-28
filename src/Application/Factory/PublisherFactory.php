@@ -45,7 +45,7 @@ class PublisherFactory
 
         $class = $map[$target] ?? '';
         if (!class_exists($class)) {
-            throw new \RuntimeException("class '$class' not found");
+            throw new \RuntimeException("No publisher for target '$target'");
         }
 
         /** @var PublisherInterface $instance */

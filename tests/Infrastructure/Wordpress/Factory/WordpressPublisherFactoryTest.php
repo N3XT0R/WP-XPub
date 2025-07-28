@@ -30,7 +30,7 @@ final class WordpressPublisherFactoryTest extends TestCase
         $loggerMock->expects($this->once())
             ->method('error')
             ->with(
-                $this->stringContains("class '' not found"),
+                $this->stringContains("No publisher for target 'test'"),
                 $this->arrayHasKey('exception')
             );
 
