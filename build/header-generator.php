@@ -19,7 +19,7 @@ $license = strtoupper($composer['license'] ?? 'GPLv3');
 // WordPress-Plugin-Header erzeugen
 $header = <<<PHP
 /**
- * Plugin Name: WP-XPub
+ * Plugin Name: XPub Multi-Channel Publisher
  * Description: {$description}
  * Version: {$version}
  * Author: {$authorName}
