@@ -25,7 +25,7 @@ class PluginBootstrapService
     public function bootstrap(): void
     {
         $currentVersion = Version::get();
-        $savedVersion = (string)$this->settings->get('xpub_plugin_version');
+        $savedVersion = (string)$this->settings->get('xpub_plugin_version', '0.0.0');
 
         if (!empty($savedVersion) &&
             !empty($currentVersion) && version_compare(
