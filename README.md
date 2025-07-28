@@ -1,40 +1,51 @@
 # WP-XPub
 
-[![CI](https://github.com/N3XT0R/wp-xpub/actions/workflows/ci.yml/badge.svg)](https://github.com/wp-xpub/actions/workflows/ci.yml)
+[![CI](https://github.com/N3XT0R/wp-xpub/actions/workflows/ci.yml/badge.svg)](https://github.com/N3XT0R/wp-xpub/actions/workflows/ci.yml)
 [![Latest Stable Version](https://poser.pugx.org/n3xt0r/wp-xpub/v/stable)](https://packagist.org/packages/n3xt0r/wp-xpub)
-[![Code Coverage](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/coverage.svg)](https://qlty.sh/gh/N3XT0R/projects/WP-XPub)
-[![Maintainability](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/maintainability.svg)](https://qlty.sh/gh/N3XT0R/projects/WP-XPub)
+[![Code Coverage](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/coverage.svg)](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/coverage.svg)
+[![Maintainability](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/maintainability.svg)](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/maintainability.svg)
 
-**Flexible Multi-Channel Auto Publisher for WordPress**
+**Flexible Multi-Channel Auto Publisher for WordPress**  
+Publish your blog posts to LinkedIn, Mastodon, Dev.to and more – automatically and without writing a single line of
+code.
 
-WP-XPub is a lightweight, extensible auto-publishing plugin for WordPress. It allows you to publish your posts to
-multiple external platforms – including LinkedIn, Mastodon, Dev.to, and more – either immediately or via scheduled jobs.
+---
+
+## ✨ What is WP-XPub?
+
+**WP-XPub** is a lightweight, ready-to-use WordPress plugin that lets you automatically share your posts to multiple
+external platforms – either instantly or via scheduled jobs.
+
+✅ **No technical knowledge needed** – just install, activate, connect your accounts and you're done.  
+🛠️ **Developers welcome** – WP-XPub is modular, PSR-compliant, and follows a clean hexagonal architecture.
 
 ---
 
 ## 🚀 Features
 
 - 🔁 Auto-publish WordPress posts to external platforms
-- 🧩 Modular client driver system (easily add new platforms)
+- 🔌 Supports LinkedIn, Mastodon, Dev.to – and more via plugin drivers
+- 🧩 Modular client driver system (easily extend to new platforms)
+- ⏱️ Instant or scheduled publishing
 - 🧵 Pre- and post-publish hooks for full customization
-- 📦 Composer-ready (PSR-4 autoloading, modern architecture)
-- 🐘 Built with PHP – no external API calls required, uses Monolog for local logging
-- 🔄 GitHub-based update mechanism with manual check and local changelog
+- 📦 Composer-ready (PSR-4 autoloading, modern structure)
+- 🐘 Local logging via Monolog – no external tracking or APIs
+- 🔄 GitHub-based update mechanism with local changelog
 
 ---
 
 ## 📦 Installation
 
-[Installation](docs/installation.md)
+1. Clone or download the plugin into your `wp-content/plugins` directory.
+2. Activate it via the WordPress admin panel.
+3. Go to **Settings > XPUB** and connect your desired platforms.
 
-Activate the plugin in WordPress and configure publishers via  
-**Settings > XPUB**
+📄 See the full [installation guide](docs/installation.md) for details.
 
-> ⚠️ **Note**: WP-XPub is *not* available on the official WordPress Plugin Hub.  
-> This is a conscious decision, as the WordPress plugin linter enforces coding patterns that violate modern Clean Code
-> and architectural best practices.  
-> WP-XPub adheres to a strict PSR-based code style and a hexagonal architecture, which cannot be reconciled with certain
-> WordPress guidelines.
+> ⚠️ **Note:** WP-XPub is *not* listed on the official WordPress Plugin Directory.  
+> This is by design: WordPress.org enforces legacy coding patterns that conflict with modern PSR standards and clean
+> architecture.  
+> WP-XPub prioritizes maintainability and extensibility over legacy compatibility.
 
 ---
 
@@ -42,20 +53,40 @@ Activate the plugin in WordPress and configure publishers via
 
 - PHP 8.2+
 - WordPress 6.8.2+
-- Composer (optional for development)
+- Composer (optional, for development or extensions)
 
 ---
 
-## 📚 Documentation
+## 🧠 For Developers
 
-The full documentation is now available in the `docs/` folder:
+WP-XPub is built with a clear separation of concerns and is easy to extend:
+
+- 🧱 Hexagonal architecture (Ports & Adapters)
+- 🧩 Create your own publisher drivers with minimal boilerplate
+- 📦 Fully PSR-4 compliant, Composer-ready
+- 🧪 CI integration and code coverage metrics
+- 🐘 Monolog-based logging system
+- 🔄 GitHub update workflow with changelog diffing
+
+See the [developer docs](docs/index.md) for more:
+
+- [Creating Custom Publishers](docs/creating-publishers.md)
+- [Architecture Overview](docs/architecture.md)
+- [Hooks & Filters](docs/hooks.md)
+- [Translations](docs/translations.md)
+
+---
+
+## 📚 Full Documentation
+
+All documentation is available in the `docs/` folder:
 
 - [Overview & Index](docs/index.md)
 - [Installation](docs/installation.md)
-- [Creating Custom Publishers](docs/creating-publishers.md)
-- [Architecture (Hexagonal Design)](docs/architecture.md)
+- [Creating Publishers](docs/creating-publishers.md)
+- [Architecture](docs/architecture.md)
 - [Hooks & Filters](docs/hooks.md)
-- [Supported Languages](docs/translations.md)
+- [Languages](docs/translations.md)
 
 ---
 

@@ -2,7 +2,7 @@
   "name": "n3xt0r/wp-xpub",
   "description": "Flexible Multi-Channel Auto Publisher for WordPress",
   "type": "wordpress-plugin",
-  "license": "GPL-3.0-or-later",
+  "license": "MIT",
   "authors": [
     {
       "name": "Ilya Beliaev",
