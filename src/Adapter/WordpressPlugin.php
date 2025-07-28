@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Adapter;
 
 use N3XT0R\XPub\Application\Factory\PublisherFactory;
+use N3XT0R\XPub\Application\Publisher\PublisherSelector;
+use N3XT0R\XPub\Application\Service\Queue\AsyncPublishingDispatcher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Content\WpPostContentRenderer;
+use N3XT0R\XPub\Infrastructure\Wordpress\Database\Database;
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
-use N3XT0R\XPub\Infrastructure\Wordpress\Factory\WordpressPublisherFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookProvider;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressFilterDispatcher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
+use N3XT0R\XPub\Infrastructure\Wordpress\Repository\WPDBQueueRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
@@ -99,10 +102,18 @@ final class WordpressPlugin
             return;
         }
 
+        $dispatcher = self::getDispatcher();
         $article = (new ArticleFactory(new WpPostContentRenderer()))->fromWpPost($post);
-        $publisherFactory = new WordpressPublisherFactory(new PublisherRepository(), new WordpressSettingsRepository());
-        $publisher = $publisherFactory->create();
-        $publisher->publish($article);
+        $dispatcher->dispatch($article);
+    }
+
+    private static function getDispatcher(): AsyncPublishingDispatcher
+    {
+        return new AsyncPublishingDispatcher(
+            new WPDBQueueRepository(Database::get()),
+            new PublisherSelector(new PublisherRepository(), new PublisherFactory()),
+            new ArticleFactory(new WpPostContentRenderer())
+        );
     }
 
 }
