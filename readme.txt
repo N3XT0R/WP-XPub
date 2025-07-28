@@ -10,4 +10,5 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 == Description ==
 
-Your plugin description goes here...
+WP-XPub is a lightweight, extensible auto-publishing plugin for WordPress. It allows you to publish your posts to
+multiple external platforms – including LinkedIn, Mastodon, Dev.to, and more - either immediately or via scheduled jobs.

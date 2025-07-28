@@ -23,7 +23,7 @@ $header = <<<PHP
  * Description: {$description}
  * Version: {$version}
  * Author: {$authorName}
- * License: {$license}
+ * License: GPLv3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Domain Path: /languages
  * Text Domain: xpub-multi-channel-publisher
