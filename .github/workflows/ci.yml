@@ -56,7 +56,7 @@ jobs:
             run: composer generate-header
 
           - name: Make build script executable
-            run: chmod +x build/version.sh build/build.sh
+            run: chmod +x build/build.sh
 
           - name: Run build script
             run: ./build/build.sh
