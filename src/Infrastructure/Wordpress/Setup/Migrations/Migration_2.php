@@ -25,7 +25,8 @@ class Migration_2 extends AbstractMigration
               `last_error` TEXT NULL,
               `created_at` DATETIME NOT NULL,
               `updated_at` DATETIME NOT NULL,
-              PRIMARY KEY (`id`)
+              PRIMARY KEY (`id`),
+              UNIQUE KEY uq_post_publisher (post_id, publisher)
             );
         "
         );

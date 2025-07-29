@@ -14,18 +14,78 @@ class WPDBQueueRepository implements QueueRepositoryInterface
     {
     }
 
-    public function enqueue(Job $job): void
+    public function enqueue(Job $job): bool
     {
-        $this->db->insert("{$this->db->prefix}xpub_queue", [
+        $existing = $this->findExistingJob($job);
+
+        if (!$existing) {
+            return $this->insertJob($job);
+        }
+
+        if ($this->shouldUpdate($existing, $job)) {
+            return $this->updateJob((int)$existing['id'], $job);
+        }
+
+        // nothing changed
+        return true;
+    }
+
+    public function findExistingJob(Job $job): ?array
+    {
+        return $this->db->get_row(
+            $this->db->prepare(
+                "SELECT id, payload, scheduled_at, status FROM {$this->db->prefix}xpub_queue 
+             WHERE post_id = %d AND publisher = %s",
+                $job->postId,
+                $job->publisherKey
+            ),
+            ARRAY_A
+        ) ?: null;
+    }
+
+    public function insertJob(Job $job): bool
+    {
+        $now = current_time('mysql', 1);
+
+        $result = $this->db->insert("{$this->db->prefix}xpub_queue", [
             'post_id' => $job->postId,
             'publisher' => $job->publisherKey,
             'payload' => json_encode($job->payload),
             'scheduled_at' => $job->scheduledAt->format('Y-m-d H:i:s'),
             'attempts' => 0,
             'status' => 'pending',
-            'created_at' => current_time('mysql', 1),
-            'updated_at' => current_time('mysql', 1),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
+
+        return $result !== false;
+    }
+
+    public function updateJob(int $id, Job $job): bool
+    {
+        $now = current_time('mysql', 1);
+
+        $result = $this->db->update(
+            "{$this->db->prefix}xpub_queue",
+            [
+                'payload' => json_encode($job->payload),
+                'scheduled_at' => $job->scheduledAt->format('Y-m-d H:i:s'),
+                'attempts' => 0,
+                'status' => 'pending',
+                'updated_at' => $now,
+            ],
+            ['id' => $id]
+        );
+
+        return $result !== false;
+    }
+
+    public function shouldUpdate(array $existing, Job $job): bool
+    {
+        return
+            $existing['status'] !== 'pending' ||
+            $existing['scheduled_at'] !== $job->scheduledAt->format('Y-m-d H:i:s') ||
+            $existing['payload'] !== json_encode($job->payload);
     }
 
     /**
