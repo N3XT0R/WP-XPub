@@ -54,4 +54,5 @@ $map = apply_filters('wp_xpub_factory_map', self::getDefaultPublisherArray());
 ```
 
 The key `('example')` acts as the slug, and the value must be the fully qualified class name of a concrete publisher
-that extends `PublisherAbstract`.
+that extends `PublisherAbstract`
+

@@ -35,6 +35,12 @@ src/
 ├── Support/           # Reusable utilities (Seeder, helpers)
 ```
 
+## Queue & Scheduling
+
+When a post is saved, WP-XPub stores publishing jobs in its own queue table. A
+WordPress cron task runs every minute and processes pending jobs. This ensures
+that articles are published asynchronously without blocking the editor.
+
 ---
 
 ## Benefits
@@ -50,4 +56,4 @@ Yes, it's a WordPress plugin.
 Yes, it uses namespaces, contracts, factories, and modern code.  
 Yes, it works out of the box in any WordPress environment.
 
-> _Just because it's cleanly built doesn't mean it's not native._
+> _Just because it's cleanly built doesn't mean it's not native.
