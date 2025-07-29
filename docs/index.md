@@ -6,6 +6,7 @@ Welcome to the documentation for WP-XPub, the flexible multi-channel auto publis
 
 - [Installation](installation.md)
 - [Update](update.md)
+- [oAuth](oauth.md)
 - [Hooks](hooks.md)
 - [Creating Publishers](creating-publishers.md)
 - [Architecture](architecture.md)
