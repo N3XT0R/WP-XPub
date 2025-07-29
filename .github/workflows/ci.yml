@@ -58,9 +58,6 @@ jobs:
           - name: Make build script executable
             run: chmod +x build/version.sh build/build.sh
 
-          - name: Generate version.php
-            run: bash ./build/version.sh
-
           - name: Run build script
             run: ./build/build.sh
 
