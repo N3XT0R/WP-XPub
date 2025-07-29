@@ -11,12 +11,12 @@ use N3XT0R\XPub\Domain\Contracts\QueueRepositoryInterface;
 use N3XT0R\XPub\Domain\Entity\Article;
 use N3XT0R\XPub\Domain\Entity\Job;
 
-final class AsyncPublishingDispatcher
+final readonly class AsyncPublishingDispatcher
 {
     public function __construct(
-        private readonly QueueRepositoryInterface $queue,
-        private readonly PublisherSelector $publisherSelector,
-        private readonly ArticleFactoryInterface $articleFactory,
+        private QueueRepositoryInterface $queue,
+        private PublisherSelector $publisherSelector,
+        private ArticleFactoryInterface $articleFactory,
     ) {
     }
 
