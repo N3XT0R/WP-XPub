@@ -63,7 +63,7 @@ class JobRunner
         $post = get_post($postId);
 
         if (!$post instanceof \WP_Post || $post->post_status !== 'publish') {
-            $this->logger?->info("Post {$postId} is not published");
+            $this->logger?->debug("Post {$postId} is not published");
             return false;
         }
 
@@ -75,7 +75,7 @@ class JobRunner
                 $rev->post_modified_gmt > $post->post_modified_gmt &&
                 $rev->post_status !== 'publish'
             ) {
-                $this->logger?->info("Post {$postId} has newer unpublished revision {$rev->ID}");
+                $this->logger?->debug("Post {$postId} has newer unpublished revision {$rev->ID}");
                 return false;
             }
         }
