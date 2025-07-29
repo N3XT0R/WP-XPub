@@ -39,7 +39,7 @@ final class ReleaseService implements ReleaseProviderInterface
         return [
             'version' => ltrim($data['tag_name'], 'v'),
             'changelog' => $data['body'] ?? '',
-            'download_url' => $data['zipball_url'] ?? '',
+            'download_url' => $data['assets']['browser_download_url'] ?? '',
         ];
     }
 }
