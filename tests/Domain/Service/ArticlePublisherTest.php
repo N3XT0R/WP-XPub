@@ -20,7 +20,7 @@ class ArticlePublisherTest extends TestCase
             ->willReturn(true);
 
         $articlePublisher = new ArticlePublisher([$publisher]);
-        $articlePublisher->publish(new Article(1, 'title', 'content'));
+        $articlePublisher->publish(new Article(1, 0, 'title', 'content'));
     }
 
     public function testPublishWillTriggerError(): void
@@ -33,7 +33,7 @@ class ArticlePublisherTest extends TestCase
         $logger = new Logger('test', [$testHandler]);
 
         $articlePublisher = new ArticlePublisher([$publisher], $logger);
-        $articlePublisher->publish(new Article(1, 'title', 'content'));
+        $articlePublisher->publish(new Article(1, 0, 'title', 'content'));
         self::assertTrue($testHandler->hasErrorRecords());
         self::assertTrue($testHandler->hasRecordThatContains('Publishing failed for post', Level::Error));
     }

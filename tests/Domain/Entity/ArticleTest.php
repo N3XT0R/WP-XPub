@@ -9,8 +9,9 @@ class ArticleTest extends TestCase
 {
     public function testCanCreateArticle(): void
     {
-        $article = new Article(1, 'Title', 'Content');
+        $article = new Article(1, 1, 'Title', 'Content');
         $this->assertSame(1, $article->postId);
+        $this->assertSame(1, $article->post_parent);
         $this->assertSame('Title', $article->title);
         $this->assertSame('Content', $article->content);
     }
@@ -18,6 +19,6 @@ class ArticleTest extends TestCase
     public function testRequiresTitleAndContent(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Article(1, '', '');
+        new Article(1, 1, '', '');
     }
 }

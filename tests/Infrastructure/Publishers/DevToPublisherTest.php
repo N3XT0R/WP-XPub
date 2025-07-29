@@ -17,7 +17,7 @@ class DevToPublisherTest extends TestCase
     {
         $publisher = new DevToPublisher();
         $publisher->setConfig(['api_key' => '']);
-        $result = $publisher->publish(new Article(1, 't', 'c'));
+        $result = $publisher->publish(new Article(1, 0, 't', 'c'));
         $this->assertFalse($result);
     }
 
@@ -26,7 +26,7 @@ class DevToPublisherTest extends TestCase
         $GLOBALS['wp_remote_post_response'] = ['response' => ['code' => 201], 'body' => ''];
         $publisher = new DevToPublisher();
         $publisher->setConfig(['api_key' => 'abc']);
-        $result = $publisher->publish(new Article(2, 't', 'c'));
+        $result = $publisher->publish(new Article(2, 0, 't', 'c'));
         $this->assertTrue($result);
     }
 
@@ -35,7 +35,7 @@ class DevToPublisherTest extends TestCase
         $GLOBALS['wp_remote_post_response'] = ['response' => ['code' => 400], 'body' => 'bad'];
         $publisher = new DevToPublisher();
         $publisher->setConfig(['api_key' => 'abc']);
-        $result = $publisher->publish(new Article(3, 't', 'c'));
+        $result = $publisher->publish(new Article(3, 0, 't', 'c'));
         $this->assertFalse($result);
     }
 }

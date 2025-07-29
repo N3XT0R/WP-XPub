@@ -34,6 +34,7 @@ class ArticleFactoryTest extends TestCase
 
         $post = new WP_Post([
             'ID' => 1,
+            'post_parent' => 1,
             'post_title' => 'Title',
             'post_content' => 'Content',
             'post_excerpt' => 'excerpt',

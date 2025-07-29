@@ -15,26 +15,36 @@ use Psr\Log\LoggerInterface;
 
 final class WordpressPublisherFactoryTest extends TestCase
 {
-    public function testRuntimeExceptionTriggersLogger(): void
+    protected function setUp(): void
     {
+        // Set the required dispatcher before each test
         PublisherFactory::setFilterDispatcher(new WordpressFilterDispatcher());
+    }
+
+    public function test_it_logs_runtime_exception_when_publisher_factory_fails(): void
+    {
+        // Arrange: publisher entity, repository mock
         $publisher = new Publisher('test', 'test', []);
 
-        $repoMock = $this->createMock(PublisherRepository::class);
-        $repoMock->method('all')->willReturn([$publisher]);
+        $repositoryMock = $this->createMock(PublisherRepository::class);
+        $repositoryMock->method('all')->willReturn([$publisher]);
 
         $settingsMock = $this->createMock(WordpressSettingsRepository::class);
         $settingsMock->method('get')->willReturn(['test']);
 
         $loggerMock = $this->createMock(LoggerInterface::class);
-        $loggerMock->expects($this->once())
+        $loggerMock
+            ->expects($this->once())
             ->method('error')
             ->with(
-                $this->stringContains("No publisher for target 'test'"),
-                $this->arrayHasKey('exception')
+                $this->stringContains("No valid publisher class found for target 'test'"),
+                $this->callback(function ($context) {
+                    return isset($context['exception']) && $context['exception'] instanceof \RuntimeException;
+                })
             );
 
-        $factory = new WordpressPublisherFactory($repoMock, $settingsMock, $loggerMock);
+        // Act: create the factory and trigger exception
+        $factory = new WordpressPublisherFactory($repositoryMock, $settingsMock, $loggerMock);
         $factory->create();
     }
 }
