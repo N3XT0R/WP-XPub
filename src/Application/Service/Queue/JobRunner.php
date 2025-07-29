@@ -31,7 +31,7 @@ class JobRunner
 
                 // Skip if article is not published
                 if (!$this->isPublishedAndNotOutdated($article->postId)) {
-                    $this->logger?->info("Skipping job {$job->id} for unpublished post {$article->postId}");
+                    $this->logger?->debug("Skipping job {$job->id} for unpublished post {$article->postId}");
                     continue;
                 }
 
