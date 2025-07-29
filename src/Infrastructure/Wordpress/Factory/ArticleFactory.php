@@ -20,6 +20,14 @@ final class ArticleFactory implements ArticleFactoryInterface, WordpressArticleF
 
     public function fromArray(array $data): Article
     {
+        if (is_array($data['scheduledAt'])) {
+            $data['scheduledAt'] = new \DateTimeImmutable(
+                $data['scheduledAt']['date'],
+                new \DateTimeZone($data['scheduledAt']['timezone'])
+            );
+        }
+
+
         return new Article(
             postId: (int)($data['postId'] ?? 0),
             post_parent: (int)($data['post_parent'] ?? 0),
@@ -29,7 +37,7 @@ final class ArticleFactory implements ArticleFactoryInterface, WordpressArticleF
             url: (string)($data['url'] ?? ''),
             htmlContent: (string)($data['htmlContent'] ?? ''),
             tags: (array)($data['tags'] ?? []),
-            scheduledAt: $data['scheduledAt'],
+            scheduledAt: $data['scheduledAt'] ?? null,
         );
     }
 
