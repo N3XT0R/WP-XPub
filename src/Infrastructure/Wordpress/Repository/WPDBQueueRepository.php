@@ -51,7 +51,7 @@ class WPDBQueueRepository implements QueueRepositoryInterface
             'post_id' => $job->postId,
             'publisher' => $job->publisherKey,
             'payload' => json_encode($job->payload),
-            'scheduled_at' => $job->scheduledAt->format('Y-m-d H:i:s'),
+            'scheduled_at' => $job->scheduledAt?->format('Y-m-d H:i:s'),
             'attempts' => 0,
             'status' => 'pending',
             'created_at' => $now,
@@ -69,7 +69,7 @@ class WPDBQueueRepository implements QueueRepositoryInterface
             "{$this->db->prefix}xpub_queue",
             [
                 'payload' => json_encode($job->payload),
-                'scheduled_at' => $job->scheduledAt->format('Y-m-d H:i:s'),
+                'scheduled_at' => $job->scheduledAt?->format('Y-m-d H:i:s'),
                 'attempts' => 0,
                 'status' => 'pending',
                 'updated_at' => $now,
@@ -82,11 +82,13 @@ class WPDBQueueRepository implements QueueRepositoryInterface
 
     public function shouldUpdate(array $existing, Job $job): bool
     {
-        return
-            $existing['status'] !== 'pending' ||
-            $existing['scheduled_at'] !== $job->scheduledAt->format('Y-m-d H:i:s') ||
-            $existing['payload'] !== json_encode($job->payload);
+        $samePayload = json_decode($existing['payload'], true) === $job->payload;
+        $sameSchedule = $existing['scheduled_at'] === $job->scheduledAt->format('Y-m-d H:i:s');
+        $isPending = $existing['status'] === 'pending';
+
+        return !$isPending || !$samePayload || !$sameSchedule;
     }
+
 
     /**
      * @param  \DateTimeImmutable  $now

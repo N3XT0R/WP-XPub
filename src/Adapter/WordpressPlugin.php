@@ -87,20 +87,16 @@ final class WordpressPlugin
 
     public static function handlePublishFromPost(int $postId, ?WP_Post $post): void
     {
-        self::handleSaveFromPost($postId, $post, true);
+        self::handleSaveFromPost($postId, $post);
     }
 
 
-    public static function handleSaveFromPost(int $postId, ?WP_Post $post, bool $update = false): void
+    public static function handleSaveFromPost(int $postId, ?WP_Post $post): void
     {
         if (!$post) {
             return;
         }
 
-
-        if ($update || $post->post_status !== 'publish') {
-            return;
-        }
 
         $dispatcher = self::getDispatcher();
         $article = (new ArticleFactory(new WpPostContentRenderer()))->fromWpPost($post);
