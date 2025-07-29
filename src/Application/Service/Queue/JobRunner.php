@@ -49,6 +49,16 @@ class JobRunner
         }
     }
 
+    /**
+     * Checks whether a given WordPress post is published and has no newer unpublished revision.
+     *
+     * This ensures that only the latest published version is processed.
+     * If a newer revision exists (e.g. a draft or scheduled update), the method returns false.
+     *
+     * @param  int  $postId  The ID of the parent (published) post.
+     *
+     * @return bool True if the post is published and not outdated by a newer unpublished revision; false otherwise.
+     */
     private function isPublishedAndNotOutdated(int $postId): bool
     {
         $post = get_post($postId);
