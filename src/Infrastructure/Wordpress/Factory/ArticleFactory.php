@@ -22,6 +22,7 @@ final class ArticleFactory implements ArticleFactoryInterface, WordpressArticleF
     {
         return new Article(
             postId: (int)($data['postId'] ?? 0),
+            post_parent: (int)($data['post_parent'] ?? 0),
             title: (string)($data['title'] ?? ''),
             content: (string)($data['content'] ?? ''),
             excerpt: $data['excerpt'] ?? null,
@@ -43,7 +44,8 @@ final class ArticleFactory implements ArticleFactoryInterface, WordpressArticleF
         }
 
         return $this->fromArray([
-            'postId' => $postId,
+            'postId' => $post->ID,
+            'post_parent' => $post->post_parent,
             'title' => $post->post_title ?? '',
             'content' => $post->post_content ?? '',
             'excerpt' => get_post_meta($postId, '_xpub_custom_excerpt', true) ?: $post->post_excerpt ?: null,
@@ -58,6 +60,7 @@ final class ArticleFactory implements ArticleFactoryInterface, WordpressArticleF
     {
         return [
             'postId' => $article->postId,
+            'post_parent' => $article->post_parent,
             'title' => $article->title,
             'content' => $article->content,
             'excerpt' => $article->excerpt,

@@ -6,6 +6,7 @@ final class Article
 {
     public function __construct(
         public readonly int $postId,
+        public readonly int $post_parent = 0,
         public readonly string $title,
         public readonly string $content,
         public readonly ?string $excerpt = null,

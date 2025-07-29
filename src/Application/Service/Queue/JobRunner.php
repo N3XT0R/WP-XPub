@@ -29,6 +29,13 @@ class JobRunner
                 $publisher = $this->publisherSelector->get($job->publisherKey);
                 $article = $this->articleFactory->fromArray($job->payload);
 
+                // Skip if article is not published
+                if (!$this->isPublished($article->postId)) {
+                    $this->logger?->info("Skipping job {$job->id} for unpublished post {$article->postId}");
+                    continue;
+                }
+
+
                 $publisher->publish($article);
                 $this->queue->markAsDone($job);
             } catch (\Throwable $e) {
@@ -40,5 +47,12 @@ class JobRunner
                 $this->queue->markAsFailed($job, $e->getMessage());
             }
         }
+    }
+
+    private function isPublished(int $postId): bool
+    {
+        $post = get_post($postId);
+
+        return $post instanceof \WP_Post && $post->post_status === 'publish';
     }
 }

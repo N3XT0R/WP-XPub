@@ -13,6 +13,7 @@ class ArticleFactory implements ArticleFactoryInterface
     {
         return new Article(
             postId: (int)($data['postId'] ?? 0),
+            post_parent: (int)($data['post_parent'] ?? 0),
             title: (string)($data['title'] ?? ''),
             content: (string)($data['content'] ?? ''),
             excerpt: $data['excerpt'] ?? null,
@@ -27,6 +28,7 @@ class ArticleFactory implements ArticleFactoryInterface
     {
         return [
             'postId' => $article->postId,
+            'post_parent' => $article->post_parent,
             'title' => $article->title,
             'content' => $article->content,
             'excerpt' => $article->excerpt,
