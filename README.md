@@ -107,6 +107,7 @@ All documentation is available in the `docs/` folder:
 
 - [Overview & Index](docs/index.md)
 - [Installation](docs/installation.md)
+- [Update](docs/update.md)
 - [Creating Publishers](docs/creating-publishers.md)
 - [Architecture](docs/architecture.md)
 - [Hooks & Filters](docs/hooks.md)
