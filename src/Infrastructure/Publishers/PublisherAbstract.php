@@ -93,10 +93,14 @@ abstract class PublisherAbstract implements PublisherInterface, ConfigurablePubl
 
         return new Article(
             postId: $article->postId,
+            post_parent: $article->post_parent,
             title: $article->title,
             content: $article->content,
             excerpt: $excerpt,
-            url: $article->url
+            url: $article->url,
+            htmlContent: $article->htmlContent,
+            tags: $article->tags,
+            scheduledAt: $article->scheduledAt,
         );
     }
 
