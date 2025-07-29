@@ -12,10 +12,12 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
     protected SettingsRepositoryInterface $settings;
     protected string $storageKey;
 
+    private const STORAGE_PREFIX = 'xpub_oauth_';
+
     public function __construct(SettingsRepositoryInterface $settings, string $storageKey)
     {
         $this->settings = $settings;
-        $this->storageKey = $storageKey;
+        $this->storageKey = self::STORAGE_PREFIX.$storageKey;
     }
 
     public function getAccessToken(): ?string
