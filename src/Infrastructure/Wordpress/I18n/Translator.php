@@ -8,7 +8,7 @@ use N3XT0R\XPub\Domain\Contracts\TranslatesMessagesInterface;
 
 class Translator implements TranslatesMessagesInterface
 {
-    private const TEXT_DOMAIN = 'xpub';
+    private const TEXT_DOMAIN = 'xpub-multi-channel-publisher';
 
     public function translate(string $message): string
     {
