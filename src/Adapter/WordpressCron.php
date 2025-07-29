@@ -15,30 +15,43 @@ use Psr\Log\NullLogger;
 
 final class WordpressCron
 {
-    public static function register(): void
-    {
-        add_action('xpub_run_job_runner', [self::class, 'run']);
-        if (!wp_next_scheduled('xpub_run_job_runner')) {
-            wp_schedule_event(time(), 'xpub_every_five_minutes', 'xpub_run_job_runner');
-        }
+    public const CRON_HOOK = 'xpub_run_job_runner';
+    public const CRON_SCHEDULE = 'xpub_every_five_minutes';
+    private const CRON_INTERVAL = 300;
 
-        add_filter('cron_schedules', function (array $schedules): array {
-            $schedules['xpub_every_five_minutes'] = [
-                'interval' => 300,
-                'display' => 'Every 5 Minutes',
-            ];
-            return $schedules;
-        });
+    public static function init(): void
+    {
+        add_filter('cron_schedules', [self::class, 'addSchedule']);
+        add_action(self::CRON_HOOK, [self::class, 'run']);
     }
 
-    public static function deregister(): void
+    public static function schedule(): void
     {
-        $timestamp = wp_next_scheduled('xpub_run_job_runner');
-        if ($timestamp !== false) {
-            wp_unschedule_event($timestamp, 'xpub_run_job_runner');
+        if (!self::isRegistered()) {
+            wp_schedule_event(time(), self::CRON_SCHEDULE, self::CRON_HOOK);
         }
-        
-        remove_action('xpub_run_job_runner', [self::class, 'run']);
+    }
+
+    public static function isRegistered(): bool
+    {
+        return wp_next_scheduled(self::CRON_HOOK) !== false;
+    }
+
+    public static function addSchedule(array $schedules): array
+    {
+        $schedules[self::CRON_SCHEDULE] = [
+            'interval' => self::CRON_INTERVAL,
+            'display' => 'Every 5 Minutes',
+        ];
+        return $schedules;
+    }
+
+    public static function unschedule(): void
+    {
+        $timestamp = wp_next_scheduled(self::CRON_HOOK);
+        if ($timestamp !== false) {
+            wp_unschedule_event($timestamp, self::CRON_HOOK);
+        }
     }
 
 

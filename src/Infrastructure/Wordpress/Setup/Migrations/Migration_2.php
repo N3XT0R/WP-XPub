@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Setup\Migrations;
 
+use N3XT0R\XPub\Adapter\WordpressCron;
 use wpdb;
 
 class Migration_2 extends AbstractMigration
@@ -28,6 +29,8 @@ class Migration_2 extends AbstractMigration
             );
         "
         );
+
+        WordpressCron::schedule();
     }
 
     protected function uninstall(WPDB $wpdb): void

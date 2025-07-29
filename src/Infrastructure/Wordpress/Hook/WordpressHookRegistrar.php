@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Hook;
 
+use N3XT0R\XPub\Adapter\WordpressCron;
 use N3XT0R\XPub\Adapter\WordpressPlugin;
 use N3XT0R\XPub\Domain\Hook\HookDispatcherInterface;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\MetaBox;
@@ -19,10 +20,18 @@ final readonly class WordpressHookRegistrar
 
     public function register(string $pluginFile): void
     {
+        // Runtime hook registration (e.g. custom cron hook handlers)
+        WordpressCron::init();
+
+        // Installation-related hooks (triggered by WP only once per lifecycle event)
         register_activation_hook($pluginFile, [WordpressPlugin::class, 'onActivate']);
         //register_deactivation_hook($pluginFile, [WordpressPlugin::class, 'onUninstall']);
         register_uninstall_hook($pluginFile, [WordpressPlugin::class, 'onUninstall']);
+
+        // Application-specific action hooks (e.g. post save listeners, API callbacks)
         $this->registerActions();
+
+        // Admin-related components (e.g. settings page, metaboxes)
         $this->registerAdminRegistrables();
     }
 
