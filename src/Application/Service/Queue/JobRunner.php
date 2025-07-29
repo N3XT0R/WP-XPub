@@ -56,7 +56,6 @@ class JobRunner
      * If a newer revision exists (e.g. a draft or scheduled update), the method returns false.
      *
      * @param  int  $postId  The ID of the parent (published) post.
-     *
      * @return bool True if the post is published and not outdated by a newer unpublished revision; false otherwise.
      */
     private function isPublishedAndNotOutdated(int $postId): bool
