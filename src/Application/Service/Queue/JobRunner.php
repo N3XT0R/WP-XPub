@@ -39,7 +39,7 @@ class JobRunner
                 $publisher->publish($article);
                 $this->queue->markAsDone($job);
             } catch (\Throwable $e) {
-                $this->logger?->warning(
+                $this->logger?->error(
                     sprintf("Failed to publish job %d: %s", $job->id, $e->getMessage()),
                     ['exception' => $e]
                 );
