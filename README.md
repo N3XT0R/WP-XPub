@@ -2,8 +2,8 @@
 
 [![CI](https://github.com/N3XT0R/wp-xpub/actions/workflows/ci.yml/badge.svg)](https://github.com/N3XT0R/wp-xpub/actions/workflows/ci.yml)
 [![Latest Stable Version](https://poser.pugx.org/n3xt0r/wp-xpub/v/stable)](https://packagist.org/packages/n3xt0r/wp-xpub)
-[![Code Coverage](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/coverage.svg)](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/coverage.svg)
-[![Maintainability](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/maintainability.svg)](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/maintainability.svg)
+[![Code Coverage](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/coverage.svg)](https://qlty.sh/gh/N3XT0R/projects/WP-XPub)
+[![Maintainability](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/maintainability.svg)](https://qlty.sh/gh/N3XT0R/projects/WP-XPub)
 
 **Flexible Multi-Channel Auto Publisher for WordPress**  
 Publish your blog posts to LinkedIn, Mastodon, Dev.to and more – automatically and without writing a single line of
