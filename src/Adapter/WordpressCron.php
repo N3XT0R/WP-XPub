@@ -11,7 +11,6 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\WPDBQueueRepository;
-use Psr\Log\NullLogger;
 
 final class WordpressCron
 {
@@ -62,7 +61,7 @@ final class WordpressCron
             publisherSelector: new PublisherSelector(
                 new PublisherRepository(),
                 new PublisherFactory(),
-                new NullLogger()
+                LoggerFactory::create()
             ),
             articleFactory: new ArticleFactory(new WpPostContentRenderer()),
             logger: LoggerFactory::create(),
