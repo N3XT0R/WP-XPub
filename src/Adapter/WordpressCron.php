@@ -16,8 +16,8 @@ use Psr\Log\NullLogger;
 final class WordpressCron
 {
     public const CRON_HOOK = 'xpub_run_job_runner';
-    public const CRON_SCHEDULE = 'xpub_every_five_minutes';
-    private const CRON_INTERVAL = 300;
+    public const CRON_SCHEDULE = 'xpub_every_minute';
+    private const CRON_INTERVAL = 60;
 
     public static function init(): void
     {
