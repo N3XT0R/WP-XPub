@@ -6,6 +6,7 @@ namespace N3XT0R\XPub\Infrastructure\Wordpress\Hook;
 
 use N3XT0R\XPub\Adapter\WordpressPlugin;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
+use N3XT0R\XPub\Infrastructure\Wordpress\Rest\OAuthController;
 use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
 
 final class HookProvider
@@ -29,6 +30,7 @@ final class HookProvider
                 (new SettingsSaveHandler())->handle();
             }),
             new HookDefinition('init', fn() => PluginUpdateManager::boot($this->pluginFile)),
+            new HookDefinition('rest_api_init', [OAuthController::class, 'register']),
         ];
     }
 }

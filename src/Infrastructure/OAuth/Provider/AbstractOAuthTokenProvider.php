@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\OAuth\Provider;
 
 use League\OAuth2\Client\Provider\GenericProvider;
+use League\OAuth2\Client\Token\AccessTokenInterface;
 use N3XT0R\XPub\Domain\Contracts\OAuth\OAuthTokenProviderInterface;
 use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
@@ -56,11 +57,7 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
                 'refresh_token' => $tokenData['refresh_token'],
             ]);
 
-            $this->settings->set($this->storageKey, [
-                'access_token' => $accessToken->getToken(),
-                'refresh_token' => $accessToken->getRefreshToken() ?? $tokenData['refresh_token'],
-                'expires' => $accessToken->getExpires(),
-            ]);
+            $this->storeAccessToken($accessToken);
 
             return true;
         } catch (\Throwable $e) {
@@ -68,4 +65,29 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
             return false;
         }
     }
+
+    public function storeAccessToken(AccessTokenInterface $accessToken): void
+    {
+        $this->settings->set($this->storageKey, [
+            'access_token' => $accessToken->getToken(),
+            'refresh_token' => $accessToken->getRefreshToken(),
+            'expires' => $accessToken->getExpires(),
+        ]);
+    }
+
+    public function getAuthorizationUrl(): string
+    {
+        return $this->provider->getAuthorizationUrl();
+    }
+
+    public function getState(): string
+    {
+        return $this->provider->getState();
+    }
+
+    public function fetchAccessTokenByCode(string $code): AccessTokenInterface
+    {
+        return $this->provider->getAccessToken('authorization_code', ['code' => $code]);
+    }
 }
+
