@@ -1,7 +1,7 @@
 # OAuth Integration
 
-This document explains how the OAuth flow is handled within the XPub plugin and how to use the available REST API
-endpoints to initiate and complete the authorization process.
+This document explains how WP-XPub handles OAuth and how you can extend the
+implementation or consume the flow in your own publishers.
 
 ---
 
@@ -115,23 +115,23 @@ is stored.
 
 ## 🛠 Configuration
 
-Provider config must be injected via WordPress filters:
+Provider credentials are stored in the publisher configuration. You can enter
+them via **Settings → XPUB** or seed them programmatically:
 
 ```php
-add_filter('wp_xpub_oauth_config', function () {
-    return [
-        'mastodon' => [
-            'clientId' => '...',
-            'clientSecret' => '...',
-            'urlAuthorize' => 'https://your.instance/oauth/authorize',
-            'urlAccessToken' => 'https://your.instance/oauth/token',
-            'urlResourceOwnerDetails' => 'https://your.instance/api/v1/accounts/verify_credentials',
-        ],
-    ];
-});
+use N3XT0R\XPub\Support\PublisherSeederHelper;
+
+PublisherSeederHelper::upsert('mastodon', 'Mastodon', [
+    'clientId' => '',
+    'clientSecret' => '',
+    'urlAuthorize' => 'https://your.instance/oauth/authorize',
+    'urlAccessToken' => 'https://your.instance/oauth/token',
+    'urlResourceOwnerDetails' => 'https://your.instance/api/v1/accounts/verify_credentials',
+]);
 ```
 
-> Note: The `redirectUri` will be automatically set to the correct REST callback URL based on the current site.
+The `redirectUri` is automatically set to the correct REST callback URL for the
+current site.
 
 ---
 
@@ -144,18 +144,36 @@ attacks.
 
 ## 🔧 Adding a New Provider
 
-1. Implement a new `OAuthTokenProviderInterface` class (extend `AbstractOAuthTokenProvider`)
+1. Implement a new `OAuthTokenProviderInterface` (usually extend
+   `AbstractOAuthTokenProvider`).
 2. Register it via the provider map filter:
 
 ```php
-add_filter('wp_xpub_oauth_provider_map', function ($map) {
+add_filter('wp_xpub_oauth_provider_map', static function (array $map): array {
     $map['yourprovider'] = \Your\Namespace\YourOAuthTokenProvider::class;
     return $map;
 });
 ```
 
-3. Provide config via `wp_xpub_oauth_config`
+3. Register the publisher slug and store its credentials via the XPUB settings
+   screen (or with `PublisherSeederHelper::upsert()` as shown above).
 4. Done! The REST endpoints now work automatically.
+
+---
+
+## ➡️ Using Providers in Custom Publishers
+
+Within your own publisher you can request a token provider for a given slug.
+This allows you to reuse the stored credentials and the automatic refresh logic.
+
+```php
+use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
+
+$provider = OAuthTokenProviderFactory::createFromPublisherSlug('mastodon');
+$token = $provider->getAccessToken();
+```
+
+Pass the provider into your publisher class or use it directly when publishing.
 
 ---
 
