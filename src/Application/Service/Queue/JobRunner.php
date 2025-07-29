@@ -30,7 +30,7 @@ class JobRunner
                 $article = $this->articleFactory->fromArray($job->payload);
 
                 // Skip if article is not published
-                if (!$this->isPublished($article->postId)) {
+                if (!$this->isPublishedAndNotOutdated($article->postId)) {
                     $this->logger?->info("Skipping job {$job->id} for unpublished post {$article->postId}");
                     continue;
                 }
@@ -49,10 +49,29 @@ class JobRunner
         }
     }
 
-    private function isPublished(int $postId): bool
+    private function isPublishedAndNotOutdated(int $postId): bool
     {
         $post = get_post($postId);
 
-        return $post instanceof \WP_Post && $post->post_status === 'publish';
+        if (!$post instanceof \WP_Post || $post->post_status !== 'publish') {
+            $this->logger?->info("Post {$postId} is not published");
+            return false;
+        }
+
+        $revisions = wp_get_post_revisions($postId);
+
+        foreach ($revisions as $rev) {
+            // Check if revision is newer and not published (i.e., still being edited)
+            if (
+                $rev->post_modified_gmt > $post->post_modified_gmt &&
+                $rev->post_status !== 'publish'
+            ) {
+                $this->logger?->info("Post {$postId} has newer unpublished revision {$rev->ID}");
+                return false;
+            }
+        }
+
+        return true;
     }
+
 }
