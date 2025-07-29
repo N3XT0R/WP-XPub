@@ -29,7 +29,7 @@ final class ArticleFactory implements ArticleFactoryInterface, WordpressArticleF
             url: (string)($data['url'] ?? ''),
             htmlContent: (string)($data['htmlContent'] ?? ''),
             tags: (array)($data['tags'] ?? []),
-            scheduledAt: $data['scheduledAt']
+            scheduledAt: $data['scheduledAt'],
         );
     }
 
@@ -67,6 +67,7 @@ final class ArticleFactory implements ArticleFactoryInterface, WordpressArticleF
             'url' => $article->url,
             'htmlContent' => $article->htmlContent,
             'tags' => $article->tags,
+            'scheduledAt' => $article->scheduledAt,
         ];
     }
 
