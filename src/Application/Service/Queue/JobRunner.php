@@ -22,7 +22,7 @@ class JobRunner
 
     public function run(): void
     {
-        $jobs = $this->queue->getDueJobs(new DateTimeImmutable());
+        $jobs = $this->queue->getAllDueJobs(new DateTimeImmutable());
 
         foreach ($jobs as $job) {
             try {

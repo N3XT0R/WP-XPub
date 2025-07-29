@@ -89,6 +89,14 @@ class WPDBQueueRepository implements QueueRepositoryInterface
         return !$isPending || !$samePayload || !$sameSchedule;
     }
 
+    public function getAllDueJobs(\DateTimeImmutable $now, int $maxAttempts = 5): array
+    {
+        $pending = $this->getDueJobs($now);
+        $retryable = $this->getRetryableFailedJobs($now, $maxAttempts);
+
+        return array_merge($pending, $retryable);
+    }
+
 
     /**
      * @param  \DateTimeImmutable  $now
@@ -119,6 +127,36 @@ class WPDBQueueRepository implements QueueRepositoryInterface
             $results
         );
     }
+
+    public function getRetryableFailedJobs(\DateTimeImmutable $now, int $maxAttempts = 5): array
+    {
+        $results = $this->db->get_results(
+            $this->db->prepare(
+                "SELECT * FROM {$this->db->prefix}xpub_queue 
+                         WHERE status = %s 
+                           AND attempts < %d 
+                           AND scheduled_at <= %s",
+                'failed',
+                $maxAttempts,
+                $now->format('Y-m-d H:i:s')
+            ),
+            ARRAY_A
+        );
+
+        return array_map(
+            fn(array $row) => new Job(
+                (int)$row['post_id'],
+                $row['publisher'],
+                json_decode($row['payload'], true),
+                new \DateTimeImmutable($row['scheduled_at']),
+                (int)$row['attempts'],
+                $row['last_error'] ?? null,
+                (int)$row['id']
+            ),
+            $results
+        );
+    }
+
 
     public function markAsDone(Job $job): void
     {
