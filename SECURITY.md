@@ -2,12 +2,13 @@
 
 ## Supported Versions
 
-We currently support the latest stable release of this plugin. Security fixes are only applied to the latest version unless explicitly announced otherwise.
+We currently support the latest stable release of this plugin. Security fixes are only applied to the latest version
+unless explicitly announced otherwise.
 
 | Version | Supported |
-| ------- | --------- |
-| 1.x.x  | ✅        |
-| Legacy  | ❌        |
+|---------|-----------|
+| 1.x.x   | ✅         |
+| Legacy  | ❌         |
 
 ---
 
@@ -19,10 +20,10 @@ If you discover a security vulnerability, **please report it responsibly**.
 
 ### ✅ Instead, contact us directly via:
 
-- **Email**: security@n3xt0r.dev  
-- **PGP Key**: [Coming soon]
+- **Email**: info@php-dev.info
 
-We aim to respond to all legitimate reports within **3 business days** and to provide a fix or mitigation within **7–14 days**, depending on severity.
+We aim to respond to all legitimate reports within **3 business days** and to provide a fix or mitigation within **7–14
+days**, depending on severity.
 
 ---
 
@@ -53,17 +54,18 @@ Vulnerabilities in third-party packages should be reported to their respective m
 
 ## Recognition
 
-We do not offer financial bounties, but we are happy to acknowledge responsible researchers publicly (upon request) once a patch has been released.
+We do not offer financial bounties, but we are happy to acknowledge responsible researchers publicly (upon request) once
+a patch has been released.
 
 ---
 
 Thank you for helping us keep xPub safe.
 
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| 5.1.x | :white_check_mark: |
+| 5.0.x | :x:                |
+| 4.0.x | :white_check_mark: |
+| < 4.0 | :x:                |
 
 ## Reporting a Vulnerability
 
