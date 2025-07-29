@@ -24,13 +24,13 @@ external platforms – either instantly or via scheduled jobs.
 ## 🚀 Features
 
 - 🔁 Auto-publish WordPress posts to external platforms
-- 🔌 Supports LinkedIn, Mastodon, Dev.to – and more via plugin drivers
+- 🔌 Supports Dev.to – and more via plugin drivers
 - 🧩 Modular client driver system (easily extend to new platforms)
-- ⏱️ Instant or scheduled publishing
-- 🧵 Pre- and post-publish hooks for full customization
+- ⏱️ Publish immediately or schedule for later
+- 🧵 Custom pre- and post-publish hooks
 - 📦 Composer-ready (PSR-4 autoloading, modern structure)
 - 🐘 Local logging via Monolog – no external tracking or APIs
-- 🔄 GitHub-based update mechanism with local changelog
+- 🔄 GitHub update integration with custom updater hooks
 
 ---
 
