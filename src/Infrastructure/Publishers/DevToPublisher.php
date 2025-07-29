@@ -24,6 +24,8 @@ class DevToPublisher extends PublisherAbstract
         $markdown = $renderer->convert($article->excerpt);
         $this->debug('Markdown: '.$markdown);
 
+        $markdown .= PHP_EOL.PHP_EOL.$article->url;
+
         $body = [
             'article' => [
                 'title' => $article->title,
