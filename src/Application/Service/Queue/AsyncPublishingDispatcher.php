@@ -23,7 +23,7 @@ final readonly class AsyncPublishingDispatcher
     public function dispatch(Article $article): void
     {
         $scheduledAt = $article->scheduledAt ?? new DateTimeImmutable();
-
+        
         foreach ($this->publisherSelector->getAll() as $key => $publisher) {
             $job = new Job(
                 postId: $article->postId,
