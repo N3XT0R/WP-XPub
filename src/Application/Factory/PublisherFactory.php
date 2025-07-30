@@ -72,7 +72,7 @@ final class PublisherFactory
     {
         return [
             'devto' => DevToPublisher::class,
-            'mastadon' => MastodonPublisher::class,
+            'mastodon' => MastodonPublisher::class,
         ];
     }
 
