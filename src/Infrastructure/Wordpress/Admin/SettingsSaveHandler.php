@@ -10,17 +10,23 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 
 final class SettingsSaveHandler
 {
+    public function __construct(
+        private SettingsFormRequestValidator $validator,
+        private WordpressSettingsRepository $settingsRepo,
+        private PublisherRepository $publisherRepo,
+    ) {
+    }
+
     public function handle(): void
     {
-        (new SettingsFormRequestValidator())->validate();
+        $this->validator->validate();
 
         $activePublisherSlugs = isset($_POST['active_publishers']) ? wp_unslash($_POST['active_publishers']) : [];
         $activePublisherSlugs = array_map('sanitize_text_field', $activePublisherSlugs);
 
         $publisherConfigs = isset($_POST['config']) ? wp_unslash($_POST['config']) : [];
 
-        $settingsRepo = new WordpressSettingsRepository();
-        $settingsRepo->set('xpub_publisher_targets', $activePublisherSlugs);
+        $this->settingsRepo->set('xpub_publisher_targets', $activePublisherSlugs);
 
         $this->persistPublisherConfigs($publisherConfigs);
 
@@ -31,14 +37,12 @@ final class SettingsSaveHandler
 
     private function persistPublisherConfigs(array $publisherConfigs): void
     {
-        $repository = new PublisherRepository();
-
         foreach ($publisherConfigs as $slug => $configs) {
             if (!is_array($configs) || empty($slug)) {
                 continue;
             }
 
-            $repository->updateConfig($slug, $configs);
+            $this->publisherRepo->updateConfig($slug, $configs);
         }
     }
 }

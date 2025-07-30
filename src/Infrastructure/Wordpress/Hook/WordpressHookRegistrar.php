@@ -7,15 +7,19 @@ namespace N3XT0R\XPub\Infrastructure\Wordpress\Hook;
 use N3XT0R\XPub\Adapter\WordpressCron;
 use N3XT0R\XPub\Adapter\WordpressPlugin;
 use N3XT0R\XPub\Domain\Hook\HookDispatcherInterface;
-use N3XT0R\XPub\Infrastructure\Wordpress\Admin\MetaBox;
-use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsPageRegistrar;
+use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookRegistrableInterface;
 
 final readonly class WordpressHookRegistrar
 {
+    /** @var HookRegistrableInterface[] */
+    private array $adminRegistrables;
+
     public function __construct(
         private HookProvider $provider,
-        private HookDispatcherInterface $dispatcher = new WordpressHookDispatcher()
+        private HookDispatcherInterface $dispatcher,
+        array $adminRegistrables = []
     ) {
+        $this->adminRegistrables = $adminRegistrables;
     }
 
     public function register(string $pluginFile): void
@@ -44,15 +48,8 @@ final readonly class WordpressHookRegistrar
 
     private function registerAdminRegistrables(): void
     {
-        $registrables = [
-            new SettingsPageRegistrar(),
-            new MetaBox(),
-        ];
-
-        foreach ($registrables as $registrable) {
-            if ($registrable instanceof HookRegistrableInterface) {
-                $registrable->register();
-            }
+        foreach ($this->adminRegistrables as $registrable) {
+            $registrable->register();
         }
     }
 }

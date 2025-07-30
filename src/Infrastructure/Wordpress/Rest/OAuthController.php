@@ -11,33 +11,37 @@ use WP_REST_Response;
 
 class OAuthController
 {
-    public static function register(): void
+    public function __construct(private OAuthTokenProviderFactory $factory)
+    {
+    }
+
+    public function register(): void
     {
         register_rest_route('xpub/v1', '/oauth/(?P<provider>[a-z0-9_-]+)/start', [
             'methods' => 'GET',
-            'callback' => [self::class, 'start'],
+            'callback' => [$this, 'start'],
             'permission_callback' => '__return_true',
         ]);
 
         register_rest_route('xpub/v1', '/oauth/(?P<provider>[a-z0-9_-]+)/callback', [
             'methods' => 'GET',
-            'callback' => [self::class, 'callback'],
+            'callback' => [$this, 'callback'],
             'permission_callback' => '__return_true',
         ]);
 
         register_rest_route('xpub/v1', '/oauth/(?P<provider>[a-z0-9_-]+)/client-token', [
             'methods' => 'POST',
-            'callback' => [self::class, 'clientCredentialsToken'],
+            'callback' => [$this, 'clientCredentialsToken'],
             'permission_callback' => '__return_true',
         ]);
     }
 
-    public static function start(WP_REST_Request $request): WP_REST_Response|WP_Error
+    public function start(WP_REST_Request $request): WP_REST_Response|WP_Error
     {
         $slug = $request->get_param('provider');
 
         try {
-            $provider = OAuthTokenProviderFactory::createFromPublisherSlug($slug);
+            $provider = $this->factory->createFromPublisherSlug($slug);
             $authUrl = $provider->getAuthorizationUrl();
             update_option("xpub_oauth_{$slug}_state", $provider->getState());
 
@@ -47,7 +51,7 @@ class OAuthController
         }
     }
 
-    public static function callback(WP_REST_Request $request): WP_REST_Response|WP_Error
+    public function callback(WP_REST_Request $request): WP_REST_Response|WP_Error
     {
         $slug = $request->get_param('provider');
         $expectedState = get_option("xpub_oauth_{$slug}_state");
@@ -57,7 +61,7 @@ class OAuthController
         }
 
         try {
-            $provider = OAuthTokenProviderFactory::createFromPublisherSlug($slug);
+            $provider = $this->factory->createFromPublisherSlug($slug);
             $accessToken = $provider->fetchAccessTokenByCode($request->get_param('code'));
             $provider->storeAccessToken($accessToken);
 
@@ -67,12 +71,12 @@ class OAuthController
         }
     }
 
-    public static function clientCredentialsToken(WP_REST_Request $request): WP_REST_Response|WP_Error
+    public function clientCredentialsToken(WP_REST_Request $request): WP_REST_Response|WP_Error
     {
         $slug = $request->get_param('provider');
 
         try {
-            $provider = OAuthTokenProviderFactory::createFromPublisherSlug($slug);
+            $provider = $this->factory->createFromPublisherSlug($slug);
             $accessToken = $provider->fetchAccessTokenByClientCredentials();
 
             return new WP_REST_Response([

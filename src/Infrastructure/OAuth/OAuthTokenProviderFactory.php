@@ -15,30 +15,40 @@ use RuntimeException;
 
 final class OAuthTokenProviderFactory
 {
-    protected static array $defaultProviderMap = [
-        'mastodon' => \N3XT0R\XPub\Infrastructure\OAuth\Provider\MastodonOAuthTokenProvider::class,
-    ];
+    /**
+     * @param array<string, class-string<OAuthTokenProviderInterface>> $providerMap
+     */
+    public function __construct(
+        private PublisherRepository $repository,
+        private WordpressSettingsRepository $settingsRepo,
+        private array $providerMap = [
+            'mastodon' => \N3XT0R\XPub\Infrastructure\OAuth\Provider\MastodonOAuthTokenProvider::class,
+        ],
+    ) {
+    }
 
-    public static function createFromPublisherSlug(string $slug): OAuthTokenProviderInterface
+    public function createFromPublisherSlug(string $slug): OAuthTokenProviderInterface
     {
-        $repository = new PublisherRepository();
-        $publisher = $repository->findBySlug($slug, PurposeType::OAUTH);
+        $publisher = $this->repository->findBySlug($slug, PurposeType::OAUTH);
 
         if (!$publisher) {
             throw new RuntimeException("Publisher '$slug' not found");
         }
 
-        return self::create($slug, $publisher->getConfigArray());
+        return $this->create($slug, $publisher->getConfigArray());
     }
 
-    protected static function getProviderMap(): array
+    /**
+     * @return array<string, class-string<OAuthTokenProviderInterface>>
+     */
+    private function getProviderMap(): array
     {
-        return apply_filters('wp_xpub_oauth_provider_map', self::$defaultProviderMap);
+        return apply_filters('wp_xpub_oauth_provider_map', $this->providerMap);
     }
 
-    public static function create(string $slug, array $config): OAuthTokenProviderInterface
+    public function create(string $slug, array $config): OAuthTokenProviderInterface
     {
-        $map = self::getProviderMap();
+        $map = $this->getProviderMap();
 
         if (!isset($map[$slug]) || !class_exists($map[$slug])) {
             throw new RuntimeException("No OAuthTokenProvider found for slug '$slug'");
@@ -55,7 +65,7 @@ final class OAuthTokenProviderFactory
 
         return new $class(
             new GenericProvider($providerConfig),
-            new WordpressSettingsRepository(),
+            $this->settingsRepo,
             $grantType
         );
     }
