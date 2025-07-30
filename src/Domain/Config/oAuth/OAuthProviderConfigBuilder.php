@@ -25,7 +25,11 @@ final class OAuthProviderConfigBuilder
         }
 
         if (!empty($config['scopes'])) {
-            $result['scopes'] = $config['scopes'];
+            $result['scopes'] = !is_array($config['scopes']) ? explode(' ', $config['scopes']) : $config['scopes'];
+        }
+
+        if (!empty($config['code'])) {
+            $result['code'] = $config['code'];
         }
 
         return $result;
