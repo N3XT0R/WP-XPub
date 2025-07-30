@@ -6,7 +6,6 @@ namespace N3XT0R\XPub\Infrastructure\OAuth\Provider;
 
 use League\OAuth2\Client\Provider\GenericProvider;
 use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
-use Psr\Log\LoggerInterface;
 
 class MastodonOAuthTokenProvider extends AbstractOAuthTokenProvider
 {
@@ -14,8 +13,7 @@ class MastodonOAuthTokenProvider extends AbstractOAuthTokenProvider
         GenericProvider $provider,
         SettingsRepositoryInterface $settings,
         string $grantType = 'authorization_code',
-        ?LoggerInterface $logger = null
     ) {
-        parent::__construct($provider, $settings, 'mastodon', $grantType, $logger);
+        parent::__construct($provider, $settings, 'mastodon', $grantType);
     }
 }

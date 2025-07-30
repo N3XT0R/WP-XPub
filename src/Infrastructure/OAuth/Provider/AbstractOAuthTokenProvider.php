@@ -8,7 +8,6 @@ use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 use N3XT0R\XPub\Domain\Contracts\OAuth\OAuthTokenProviderInterface;
 use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
-use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
@@ -23,26 +22,19 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
         GenericProvider $provider,
         SettingsRepositoryInterface $settings,
         string $storageKey,
-        string $grantType = 'authorization_code',
-        ?LoggerInterface $logger = null
+        string $grantType = 'authorization_code'
     ) {
         $this->provider = $provider;
         $this->settings = $settings;
         $this->storageKey = $storageKey;
         $this->grantType = $grantType;
-        $this->logger = $logger ?? LoggerFactory::create();
     }
 
     public function getAccessToken(): ?string
     {
         if ($this->grantType === 'client_credentials') {
-            try {
-                $accessToken = $this->provider->getAccessToken('client_credentials');
-                return $accessToken->getToken();
-            } catch (\Throwable $e) {
-                $this->logger->error('OAuth client_credentials flow failed: '.$e->getMessage(), ['exception' => $e]);
-                return null;
-            }
+            $accessToken = $this->provider->getAccessToken('client_credentials');
+            return $accessToken->getToken();
         }
 
         // Default: authorization_code
