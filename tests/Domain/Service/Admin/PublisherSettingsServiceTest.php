@@ -41,7 +41,7 @@ final class PublisherSettingsServiceTest extends TestCase
         $this->assertSame('devto', $result['publishers'][0]['slug']);
         $this->assertSame('Dev.to', $result['publishers'][0]['name']);
         $this->assertTrue($result['publishers'][0]['active']);
-        $this->assertSame(['api_key' => 'secret'], $result['publishers'][0]['config']);
+        $this->assertSame(['api_key' => 'secret'], $result['publishers'][0]['config']['default']);
 
         $this->assertSame(['devto'], $result['activePublisherSlugs']);
     }

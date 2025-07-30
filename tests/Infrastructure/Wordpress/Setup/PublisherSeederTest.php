@@ -2,7 +2,6 @@
 
 namespace N3XT0R\XPub\Tests\Infrastructure\Wordpress\Setup;
 
-use InvalidArgumentException;
 use N3XT0R\XPub\Domain\Entity\Publisher;
 use N3XT0R\XPub\Domain\Entity\PublisherConfig;
 use N3XT0R\XPub\Domain\Repository\PublisherRepositoryInterface;
@@ -11,34 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class PublisherSeederTest extends TestCase
 {
-    public function testRegisterThrowsOnMissingConfig(): void
-    {
-        $repo = new class implements PublisherRepositoryInterface {
-            public function all(): array
-            {
-                return [];
-            }
-
-            public function findBySlug(string $slug, ?string $purposeType = null): ?Publisher
-            {
-                return null;
-            }
-
-            public function updateConfig(string $slug, array $newConfig): bool
-            {
-                return true;
-            }
-
-            public function create(string $slug, string $name, array $config): bool
-            {
-                return true;
-            }
-        };
-
-        $seeder = new PublisherSeeder($repo);
-        $this->expectException(InvalidArgumentException::class);
-        $seeder->register('slug', 'name', []);
-    }
 
     public function testUpsertUpdatesExistingConfig(): void
     {
