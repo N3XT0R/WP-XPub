@@ -10,6 +10,7 @@ use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\SlugAwareInterface;
 use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
 use N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher;
+use N3XT0R\XPub\Infrastructure\Publishers\MastodonPublisher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use RuntimeException;
 
@@ -71,6 +72,7 @@ final class PublisherFactory
     {
         return [
             'devto' => DevToPublisher::class,
+            'mastadon' => MastodonPublisher::class,
         ];
     }
 
