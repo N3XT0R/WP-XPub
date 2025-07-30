@@ -13,7 +13,7 @@ class MastodonPublisher extends PublisherAbstract
 
     protected function handlePublish(Article $article): bool
     {
-        $provider = OAuthTokenProviderFactory::createFromPublisherSlug('mastadon');
+        $provider = OAuthTokenProviderFactory::createFromPublisherSlug('mastodon');
         $token = $provider->getAccessToken();
 
         if (empty($token)) {
