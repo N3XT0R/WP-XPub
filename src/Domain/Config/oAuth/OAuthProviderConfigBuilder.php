@@ -34,7 +34,13 @@ final class OAuthProviderConfigBuilder
     public static function requiredKeysForGrantType(string $grantType): array
     {
         return match ($grantType) {
-            'client_credentials' => ['clientId', 'clientSecret', 'urlAccessToken'],
+            'client_credentials' => [
+                'clientId',
+                'clientSecret',
+                'urlAccessToken',
+                'urlResourceOwnerDetails',
+                'urlAuthorize'
+            ],
             'authorization_code' => ['clientId', 'clientSecret', 'redirectUri', 'urlAuthorize', 'urlAccessToken'],
             default => throw new \InvalidArgumentException("Unsupported grant_type: $grantType"),
         };

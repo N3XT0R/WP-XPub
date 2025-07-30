@@ -9,6 +9,7 @@ use N3XT0R\XPub\Domain\Config\oAuth\OAuthProviderConfigBuilder;
 use N3XT0R\XPub\Domain\Config\PurposeType;
 use N3XT0R\XPub\Domain\Contracts\OAuth\OAuthTokenProviderInterface;
 use N3XT0R\XPub\Infrastructure\OAuth\Support\GrantTypeResolver;
+use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use RuntimeException;
@@ -56,8 +57,8 @@ final class OAuthTokenProviderFactory
         return new $class(
             new GenericProvider($providerConfig),
             new WordpressSettingsRepository(),
-            $slug,
-            $grantType
+            $grantType,
+            LoggerFactory::create($slug)
         );
     }
 }

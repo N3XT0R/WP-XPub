@@ -41,7 +41,10 @@ class Migration_3 extends AbstractMigration
             'clientId' => '',
             'clientSecret' => '',
             'urlAccessToken' => 'https://mastodon.social/oauth/token',
+            'urlAuthorize' => 'https://mastodon.social/oauth/authorize',
+            'urlResourceOwnerDetails' => 'https://mastodon.social/oauth/userinfo',
             'scopes' => 'profile write:statuses',
+
         ]);
     }
 
