@@ -42,6 +42,6 @@ final readonly class WordpressPublisherFactory
             }
         }
 
-        return new ArticlePublisher($instances);
+        return new ArticlePublisher($instances, $this->loggerInterface);
     }
 }
