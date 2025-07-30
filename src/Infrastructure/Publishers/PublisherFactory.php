@@ -9,12 +9,12 @@ use N3XT0R\XPub\Domain\Contracts\ConfigurablePublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\SlugAwareInterface;
 use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
-use N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher;
-use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
+use N3XT0R\XPub\Domain\Publisher\Contracts\PublisherFactoryInterface;
 use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
+use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use RuntimeException;
 
-final class PublisherFactory
+final class PublisherFactory implements PublisherFactoryInterface
 {
     private static ?FilterDispatcherInterface $filterDispatcher = null;
 
