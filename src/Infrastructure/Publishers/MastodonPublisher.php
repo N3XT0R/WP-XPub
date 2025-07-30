@@ -4,23 +4,17 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Publishers;
 
-use N3XT0R\XPub\Domain\Contracts\OAuth\OAuthTokenProviderInterface;
 use N3XT0R\XPub\Domain\Entity\Article;
+use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
 
 class MastodonPublisher extends PublisherAbstract
 {
     private const API_ENDPOINT = 'https://mastodon.social/api/v1/statuses';
 
-    private OAuthTokenProviderInterface $tokenProvider;
-
-    public function __construct(OAuthTokenProviderInterface $tokenProvider)
-    {
-        $this->tokenProvider = $tokenProvider;
-    }
-
     protected function handlePublish(Article $article): bool
     {
-        $token = $this->tokenProvider->getAccessToken();
+        $provider = OAuthTokenProviderFactory::createFromPublisherSlug('mastadon');
+        $token = $provider->getAccessToken();
 
         if (empty($token)) {
             $this->error('Missing or invalid access token for Mastodon.');
