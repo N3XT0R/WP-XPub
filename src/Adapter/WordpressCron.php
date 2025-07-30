@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Adapter;
 
 use DI\Container;
-use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactory;
 use N3XT0R\XPub\Application\Service\Queue\JobRunner;
 use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
 use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
+use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactory;
 
 final class WordpressCron
 {
@@ -50,7 +50,7 @@ final class WordpressCron
     {
         $schedules[self::CRON_SCHEDULE] = [
             'interval' => self::CRON_INTERVAL,
-            'display' => 'Every 5 Minutes',
+            'display' => 'Every Minute',
         ];
         return $schedules;
     }
