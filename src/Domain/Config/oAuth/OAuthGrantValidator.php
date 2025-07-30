@@ -18,11 +18,11 @@ final class OAuthGrantValidator implements ConfigValidatorInterface
     {
         $grantType = $config['grant_type'] ?? 'authorization_code';
 
-        $required = match ($grantType) {
-            'client_credentials' => ['clientId', 'clientSecret', 'urlAccessToken'],
-            'authorization_code' => ['clientId', 'clientSecret', 'redirectUri', 'urlAuthorize', 'urlAccessToken'],
-            default => throw new InvalidArgumentException("Unsupported grant_type: $grantType"),
-        };
+        try {
+            $required = OAuthProviderConfigBuilder::requiredKeysForGrantType($grantType);
+        } catch (\InvalidArgumentException $e) {
+            throw new InvalidArgumentException("Unsupported grant_type: $grantType", 0, $e);
+        }
 
         $missing = array_filter(
             $required,

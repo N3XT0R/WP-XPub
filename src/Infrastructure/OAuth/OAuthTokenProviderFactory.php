@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\OAuth;
 
 use League\OAuth2\Client\Provider\GenericProvider;
+use N3XT0R\XPub\Domain\Config\oAuth\OAuthProviderConfigBuilder;
 use N3XT0R\XPub\Domain\Contracts\OAuth\OAuthTokenProviderInterface;
 use N3XT0R\XPub\Infrastructure\OAuth\Support\GrantTypeResolver;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use RuntimeException;
 
-class OAuthTokenProviderFactory
+final class OAuthTokenProviderFactory
 {
     protected static array $defaultProviderMap = [
         'mastodon' => \N3XT0R\XPub\Infrastructure\OAuth\Provider\MastodonOAuthTokenProvider::class,
+        // weitere Provider bei Bedarf ergänzen
     ];
 
     public static function createFromPublisherSlug(string $slug): OAuthTokenProviderInterface
@@ -42,33 +44,13 @@ class OAuthTokenProviderFactory
             throw new RuntimeException("No OAuthTokenProvider found for slug '$slug'");
         }
 
-
         $class = $map[$slug];
 
         if (!is_subclass_of($class, OAuthTokenProviderInterface::class)) {
             throw new RuntimeException("Class '$class' must implement OAuthTokenProviderInterface");
         }
 
-        $requiredKeys = ['clientId', 'clientSecret', 'redirectUri', 'urlAuthorize', 'urlAccessToken'];
-        foreach ($requiredKeys as $key) {
-            if (empty($config[$key])) {
-                throw new RuntimeException("Missing required config key: '$key'");
-            }
-        }
-
-        $providerConfig = [
-            'clientId' => $config['clientId'],
-            'clientSecret' => $config['clientSecret'],
-            'redirectUri' => $config['redirectUri'] ?? null,
-            'urlAuthorize' => $config['urlAuthorize'] ?? null,
-            'urlAccessToken' => $config['urlAccessToken'],
-        ];
-
-        if (!empty($config['urlResourceOwnerDetails'])) {
-            $providerConfig['urlResourceOwnerDetails'] = $config['urlResourceOwnerDetails'];
-        }
-
-
+        $providerConfig = OAuthProviderConfigBuilder::build($config);
         $grantType = GrantTypeResolver::resolve($config);
 
         return new $class(
