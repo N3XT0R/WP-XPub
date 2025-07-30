@@ -146,9 +146,24 @@ class PublisherRepository implements PublisherRepositoryInterface
             ? maybe_serialize($item['value'])
             : maybe_serialize($item);
 
-        $purpose = is_array($item) && array_key_exists('purpose_type', $item)
-            ? $item['purpose_type']
-            : PurposeType::DEFAULT;
+        // Default purpose fallback
+        $purpose = PurposeType::DEFAULT;
+
+        if (is_array($item) && array_key_exists('purpose_type', $item)) {
+            $purpose = $item['purpose_type'];
+        } elseif ($checkExisting) {
+            // Try to retrieve existing purpose_type from DB
+            $existingPurpose = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT purpose_type FROM $table WHERE publisher_id = %d AND config_key = %s",
+                    $publisherId,
+                    $key
+                )
+            );
+            if ($existingPurpose !== null && PurposeType::isValid($existingPurpose)) {
+                $purpose = $existingPurpose;
+            }
+        }
 
         if (!PurposeType::isValid($purpose)) {
             $purpose = PurposeType::DEFAULT;
