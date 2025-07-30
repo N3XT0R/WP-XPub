@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Application\Factory;
+namespace N3XT0R\XPub\Infrastructure\Publishers;
 
 use LogicException;
 use N3XT0R\XPub\Domain\Contracts\ConfigurablePublisherInterface;

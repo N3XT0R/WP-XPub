@@ -4,8 +4,8 @@ namespace N3XT0R\XPub\Domain\Service;
 
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Entity\Article;
-use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 final class ArticlePublisher
 {
@@ -20,7 +20,7 @@ final class ArticlePublisher
     public function __construct(array $publishers, ?LoggerInterface $logger = null)
     {
         $this->publishers = $publishers;
-        $this->logger = $logger ?? LoggerFactory::create();
+        $this->logger = $logger ?? new NullLogger();
     }
 
     public function publish(Article $article): void

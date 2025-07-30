@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Application\Publisher;
 
-use N3XT0R\XPub\Application\Factory\PublisherFactory;
+use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactory;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Repository\PublisherRepositoryInterface;
 use N3XT0R\XPub\Domain\Service\Publishing\PublisherTargetProvider;
