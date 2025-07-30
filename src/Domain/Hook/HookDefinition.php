@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Infrastructure\Wordpress\Hook;
+namespace N3XT0R\XPub\Domain\Hook;
 
 final readonly class HookDefinition
 {

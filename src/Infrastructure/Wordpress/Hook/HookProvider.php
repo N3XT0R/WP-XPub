@@ -8,6 +8,7 @@ use N3XT0R\XPub\Adapter\WordpressPlugin;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
 use N3XT0R\XPub\Infrastructure\Wordpress\Rest\OAuthController;
 use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
+use N3XT0R\XPub\Domain\Hook\HookDefinition;
 
 final class HookProvider
 {

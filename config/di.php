@@ -18,6 +18,7 @@ use N3XT0R\XPub\Domain\Contracts\ViewInterface;
 use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
 use N3XT0R\XPub\Domain\Hook\HookDispatcherInterface;
 use N3XT0R\XPub\Domain\Repository\PublisherRepositoryInterface;
+use N3XT0R\XPub\Domain\Repository\PostStatusRepositoryInterface;
 use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
 use N3XT0R\XPub\Domain\Contracts\QueueRepositoryInterface;
 use N3XT0R\XPub\Infrastructure\Markdown\HtmlToMarkdownRendererFactory;
@@ -36,6 +37,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookProvider;
 use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
+use N3XT0R\XPub\Infrastructure\Wordpress\Repository\WpPostStatusRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\WPDBQueueRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
@@ -47,6 +49,7 @@ return [
     SettingsRepositoryInterface::class => autowire(WordpressSettingsRepository::class),
     PublisherRepositoryInterface::class => autowire(PublisherRepository::class),
     QueueRepositoryInterface::class => factory(fn () => new WPDBQueueRepository(Database::get())),
+    PostStatusRepositoryInterface::class => autowire(WpPostStatusRepository::class),
 
     // Factories and helpers
     ArticleFactoryInterface::class => autowire(ArticleFactory::class),
