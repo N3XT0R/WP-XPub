@@ -5,12 +5,15 @@ namespace N3XT0R\XPub\Adapter;
 use N3XT0R\XPub\Application\Factory\PublisherFactory;
 use N3XT0R\XPub\Application\Publisher\PublisherSelector;
 use N3XT0R\XPub\Application\Service\Queue\JobRunner;
+use N3XT0R\XPub\Domain\Service\Publishing\PublisherTargetProvider;
 use N3XT0R\XPub\Infrastructure\Wordpress\Content\WpPostContentRenderer;
 use N3XT0R\XPub\Infrastructure\Wordpress\Database\Database;
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
+use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressFilterDispatcher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\WPDBQueueRepository;
+use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 
 final class WordpressCron
 {
@@ -56,10 +59,12 @@ final class WordpressCron
 
     public static function run(): void
     {
+        PublisherFactory::setFilterDispatcher(new WordpressFilterDispatcher());
         $jobRunner = new JobRunner(
             queue: new WPDBQueueRepository(Database::get()),
             publisherSelector: new PublisherSelector(
                 new PublisherRepository(),
+                new PublisherTargetProvider(new WordpressSettingsRepository()),
                 new PublisherFactory(),
                 LoggerFactory::create()
             ),

@@ -7,6 +7,7 @@ namespace N3XT0R\XPub\Adapter;
 use N3XT0R\XPub\Application\Factory\PublisherFactory;
 use N3XT0R\XPub\Application\Publisher\PublisherSelector;
 use N3XT0R\XPub\Application\Service\Queue\AsyncPublishingDispatcher;
+use N3XT0R\XPub\Domain\Service\Publishing\PublisherTargetProvider;
 use N3XT0R\XPub\Infrastructure\Wordpress\Content\WpPostContentRenderer;
 use N3XT0R\XPub\Infrastructure\Wordpress\Database\Database;
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
@@ -107,7 +108,11 @@ final class WordpressPlugin
     {
         return new AsyncPublishingDispatcher(
             new WPDBQueueRepository(Database::get()),
-            new PublisherSelector(new PublisherRepository(), new PublisherFactory()),
+            new PublisherSelector(
+                new PublisherRepository(),
+                new PublisherTargetProvider(new WordpressSettingsRepository()),
+                new PublisherFactory()
+            ),
             new ArticleFactory(new WpPostContentRenderer())
         );
     }

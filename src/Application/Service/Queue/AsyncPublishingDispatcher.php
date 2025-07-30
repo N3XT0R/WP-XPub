@@ -25,7 +25,7 @@ final readonly class AsyncPublishingDispatcher
         $scheduledAt = $article->scheduledAt ?? new \DateTimeImmutable();
         $article->scheduledAt = $scheduledAt;
 
-        foreach ($this->publisherSelector->getAll() as $key => $publisher) {
+        foreach ($this->publisherSelector->getActive() as $key => $publisher) {
             $job = new Job(
                 postId: $postId,
                 publisherKey: $key,
