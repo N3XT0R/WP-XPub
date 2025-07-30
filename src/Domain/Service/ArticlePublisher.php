@@ -5,7 +5,6 @@ namespace N3XT0R\XPub\Domain\Service;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Entity\Article;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 final class ArticlePublisher
 {
@@ -17,10 +16,10 @@ final class ArticlePublisher
 
     private LoggerInterface $logger;
 
-    public function __construct(array $publishers, ?LoggerInterface $logger = null)
+    public function __construct(array $publishers, LoggerInterface $logger)
     {
         $this->publishers = $publishers;
-        $this->logger = $logger ?? new NullLogger();
+        $this->logger = $logger;
     }
 
     public function publish(Article $article): void

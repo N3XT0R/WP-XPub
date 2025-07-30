@@ -8,6 +8,7 @@ use Monolog\Logger;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Entity\Article;
 use N3XT0R\XPub\Domain\Service\ArticlePublisher;
+use Psr\Log\NullLogger;
 use PHPUnit\Framework\TestCase;
 
 class ArticlePublisherTest extends TestCase
@@ -19,7 +20,7 @@ class ArticlePublisherTest extends TestCase
             ->method('publish')
             ->willReturn(true);
 
-        $articlePublisher = new ArticlePublisher([$publisher]);
+        $articlePublisher = new ArticlePublisher([$publisher], new NullLogger());
         $articlePublisher->publish(new Article(1, 0, 'title', 'content'));
     }
 
