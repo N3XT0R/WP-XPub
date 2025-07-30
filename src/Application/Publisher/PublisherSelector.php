@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Application\Publisher;
 
-use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactory;
+use N3XT0R\XPub\Domain\Contracts\PublisherFactoryInterface;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Repository\PublisherRepositoryInterface;
 use N3XT0R\XPub\Domain\Service\Publishing\PublisherTargetProvider;
@@ -15,7 +15,7 @@ final readonly class PublisherSelector
     public function __construct(
         private PublisherRepositoryInterface $repository,
         private PublisherTargetProvider $provider,
-        private PublisherFactory $factory,
+        private PublisherFactoryInterface $factory,
         private ?LoggerInterface $logger = null
     ) {
     }
