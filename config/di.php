@@ -43,6 +43,8 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
 use N3XT0R\XPub\Infrastructure\Wordpress\I18n\Translator;
 use Psr\Log\LoggerInterface;
+use N3XT0R\XPub\Domain\Contracts\PublisherFactoryInterface;
+use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactoryService;
 
 return [
     // Core repositories and services
@@ -56,6 +58,7 @@ return [
     WordpressArticleFactoryInterface::class => get(ArticleFactory::class),
     RendersPostContentInterface::class => autowire(WpPostContentRenderer::class),
     HtmlToMarkdownRendererInterface::class => factory([HtmlToMarkdownRendererFactory::class, 'create']),
+    PublisherFactoryInterface::class => autowire(PublisherFactoryService::class),
 
     // Views & translations
     ViewInterface::class => create(View::class),
