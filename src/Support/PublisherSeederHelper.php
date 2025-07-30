@@ -25,4 +25,11 @@ final class PublisherSeederHelper
 
         return $seeder->upsert($slug, $name, $config);
     }
+
+    public static function registerOAuthWithGrantType(string $slug, string $name, array $config = []): bool
+    {
+        $seeder = new PublisherSeeder(new PublisherRepository());
+        
+        return $seeder->registerOAuthWithGrantType($slug, $name, $config);
+    }
 }
