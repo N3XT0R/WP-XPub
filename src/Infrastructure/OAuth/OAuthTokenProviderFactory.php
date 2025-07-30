@@ -16,7 +16,6 @@ final class OAuthTokenProviderFactory
 {
     protected static array $defaultProviderMap = [
         'mastodon' => \N3XT0R\XPub\Infrastructure\OAuth\Provider\MastodonOAuthTokenProvider::class,
-        // weitere Provider bei Bedarf ergänzen
     ];
 
     public static function createFromPublisherSlug(string $slug): OAuthTokenProviderInterface
