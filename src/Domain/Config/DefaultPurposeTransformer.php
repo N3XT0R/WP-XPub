@@ -14,15 +14,9 @@ final class DefaultPurposeTransformer implements ConfigTransformerInterface
 
     public function transform(array $config): array
     {
-        $result = [];
-
-        foreach ($config as $key => $value) {
-            $result[$key] = [
-                'value' => $value,
-                'purpose_type' => PurposeType::DEFAULT,
-            ];
-        }
-
-        return $result;
+        return array_map(
+            fn($v) => ['value' => $v, 'purpose_type' => PurposeType::DEFAULT],
+            $config
+        );
     }
 }

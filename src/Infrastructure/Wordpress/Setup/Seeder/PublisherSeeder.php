@@ -57,9 +57,7 @@ final readonly class PublisherSeeder
     private function transformConfig(array $config): array
     {
         foreach ($this->transformers as $transformer) {
-            if ($transformer->supports($config)) {
-                return $transformer->transform($config);
-            }
+            return $transformer->transform($config);
         }
 
         return $config;
