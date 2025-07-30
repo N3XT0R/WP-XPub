@@ -13,6 +13,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsPageRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\MetaBox;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
 use N3XT0R\XPub\Infrastructure\Wordpress\Rest\OAuthController;
+use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
@@ -51,12 +52,20 @@ final class WordpressPlugin
         PublisherFactory::setFilterDispatcher(
             self::container()->get(FilterDispatcherInterface::class)
         );
+        $updateManager = self::container()->make(PluginUpdateManager::class, [
+            'pluginFile' => plugin_basename($pluginFile),
+            'pluginSlug' => 'xpub-multi-channel-publisher',
+            'pluginInfoUrl' => 'https://github.com/N3XT0R/WP-XPub',
+        ]);
+
+        $hookProvider = self::container()->make(HookProvider::class, [
+            'saveHandler' => self::container()->get(SettingsSaveHandler::class),
+            'oauthController' => self::container()->get(OAuthController::class),
+            'updateManager' => $updateManager,
+        ]);
+
         $registrar = new WordpressHookRegistrar(
-            new HookProvider(
-                $pluginFile,
-                self::container()->get(SettingsSaveHandler::class),
-                self::container()->get(\N3XT0R\XPub\Infrastructure\Wordpress\Rest\OAuthController::class),
-            ),
+            $hookProvider,
             self::container()->get(HookDispatcherInterface::class),
             [
                 self::container()->get(SettingsPageRegistrar::class),

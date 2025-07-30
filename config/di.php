@@ -34,6 +34,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Rest\OAuthController;
 use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookProvider;
+use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\WPDBQueueRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
@@ -66,5 +67,6 @@ return [
     MetaBox::class => autowire(MetaBox::class),
     OAuthTokenProviderFactory::class => autowire(OAuthTokenProviderFactory::class),
     OAuthController::class => autowire(OAuthController::class),
+    PluginUpdateManager::class => autowire(PluginUpdateManager::class),
     LoggerInterface::class => factory([LoggerFactory::class, 'create']),
 ];

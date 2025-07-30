@@ -11,6 +11,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsPageRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\MetaBox;
 use N3XT0R\XPub\Infrastructure\Wordpress\Rest\OAuthController;
 use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
+use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\Validator\SettingsFormRequestValidator;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
@@ -21,9 +22,7 @@ final class WordpressHookRegistrarTest extends TestCase
 {
     public function testItDispatchesAllHooksFromProvider(): void
     {
-        $dummyPluginFile = 'my-plugin/my-plugin.php';
         $provider = new HookProvider(
-            $dummyPluginFile,
             new SettingsSaveHandler(
                 new SettingsFormRequestValidator(),
                 new WordpressSettingsRepository(),
@@ -34,6 +33,12 @@ final class WordpressHookRegistrarTest extends TestCase
                     new PublisherRepository(),
                     new WordpressSettingsRepository(),
                 )
+            ),
+            new PluginUpdateManager(
+                'plugin.php',
+                'xpub-multi-channel-publisher',
+                'https://example.com',
+                new \N3XT0R\XPub\Application\Update\ReleaseService()
             )
         );
         $dispatcher = new DummyDispatcher();
