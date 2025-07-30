@@ -190,3 +190,8 @@ if (!class_exists('wpdb')) {
         }
     }
 }
+
+if (!class_exists('http\\Exception\\InvalidArgumentException')) {
+    class HttpInvalidArgumentException extends \InvalidArgumentException {}
+    class_alias(HttpInvalidArgumentException::class, 'http\\Exception\\InvalidArgumentException');
+}
