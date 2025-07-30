@@ -56,7 +56,7 @@ class PublisherSeederTest extends TestCase
                 return [];
             }
 
-            public function findBySlug(string $slug): ?Publisher
+            public function findBySlug(string $slug, ?string $purposeType = null): ?Publisher
             {
                 return new Publisher($slug, 'name', [new PublisherConfig('api_key', '')]);
             }
