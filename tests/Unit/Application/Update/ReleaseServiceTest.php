@@ -36,4 +36,11 @@ class ReleaseServiceTest extends TestCase
         $service = new ReleaseService();
         $this->assertNull($service->fetchLatestRelease());
     }
+
+    public function testFetchLatestReleaseReturnsNullForInvalidData(): void
+    {
+        self::$content = json_encode(['foo' => 'bar']);
+        $service = new ReleaseService();
+        $this->assertNull($service->fetchLatestRelease());
+    }
 }

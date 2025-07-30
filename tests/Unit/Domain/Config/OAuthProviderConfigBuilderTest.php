@@ -2,7 +2,7 @@
 
 namespace N3XT0R\XPub\Tests\Domain\Config;
 
-require_once __DIR__ . '/../../../src/Domain/Config/oAuth/OAuthProviderConfigBuilder.php';
+require_once __DIR__ . '/../../../../src/Domain/Config/oAuth/OAuthProviderConfigBuilder.php';
 
 use N3XT0R\XPub\Domain\Config\OAuth\OAuthProviderConfigBuilder;
 use PHPUnit\Framework\TestCase;
@@ -40,6 +40,25 @@ class OAuthProviderConfigBuilderTest extends TestCase
         $result = OAuthProviderConfigBuilder::build($config);
         $this->assertArrayNotHasKey('redirectUri', $result);
         $this->assertSame('http://details', $result['urlResourceOwnerDetails']);
+    }
+
+    public function testBuildDefaultsAndOptionalFields(): void
+    {
+        $config = [
+            'clientId' => 'id',
+            'clientSecret' => 'secret',
+            'redirectUri' => 'http://example.com',
+            'urlAuthorize' => 'http://auth',
+            'urlAccessToken' => 'http://token',
+            'scopes' => ['read', 'write'],
+            'code' => 'abc'
+        ];
+
+        $result = OAuthProviderConfigBuilder::build($config);
+
+        $this->assertSame(['read', 'write'], $result['scopes']);
+        $this->assertSame('abc', $result['code']);
+        $this->assertArrayNotHasKey('urlResourceOwnerDetails', $result);
     }
 
     public function testRequiredKeysForUnknownGrantTypeThrows(): void
