@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Setup\Migrations;
 
-use N3XT0R\XPub\Support\PublisherSeederHelper;
+use N3XT0R\XPub\Support\DefaultPublisherSeederHelper;
 use wpdb;
 
 class Migration_1 extends AbstractMigration
@@ -67,7 +67,7 @@ class Migration_1 extends AbstractMigration
         );
 
         // Ensure default publisher is present
-        PublisherSeederHelper::upsert('devto', 'Dev.to', ['api_key' => '']);
+        DefaultPublisherSeederHelper::upsert('devto', 'Dev.to', ['api_key' => '']);
     }
 
     protected function uninstall(wpdb $wpdb): void

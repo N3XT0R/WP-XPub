@@ -119,9 +119,9 @@ Provider credentials are stored in the publisher configuration. You can enter
 them via **Settings → XPUB** or seed them programmatically:
 
 ```php
-use N3XT0R\XPub\Support\PublisherSeederHelper;
+use N3XT0R\XPub\Support\DefaultPublisherSeederHelper;
 
-PublisherSeederHelper::upsert('mastodon', 'Mastodon', [
+DefaultPublisherSeederHelper::upsert('mastodon', 'Mastodon', [
     'clientId' => '',
     'clientSecret' => '',
     'urlAuthorize' => 'https://your.instance/oauth/authorize',
