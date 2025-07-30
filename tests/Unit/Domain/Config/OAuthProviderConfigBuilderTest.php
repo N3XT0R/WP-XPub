@@ -2,7 +2,7 @@
 
 namespace N3XT0R\XPub\Tests\Domain\Config;
 
-require_once __DIR__ . '/../../../src/Domain/Config/oAuth/OAuthProviderConfigBuilder.php';
+require_once __DIR__ . '/../../../../src/Domain/Config/oAuth/OAuthProviderConfigBuilder.php';
 
 use N3XT0R\XPub\Domain\Config\OAuth\OAuthProviderConfigBuilder;
 use PHPUnit\Framework\TestCase;
