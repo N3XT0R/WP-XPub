@@ -24,6 +24,10 @@ final class OAuthProviderConfigBuilder
             $result['urlResourceOwnerDetails'] = $config['urlResourceOwnerDetails'];
         }
 
+        if (!empty($config['scopes'])) {
+            $result['scopes'] = $config['scopes'];
+        }
+
         return $result;
     }
 
