@@ -15,40 +15,28 @@ class PublisherRepository implements PublisherRepositoryInterface
 {
     public function all(): array
     {
-        /** @var wpdb $wpdb */
         $wpdb = Database::get();
-
         $publisherTable = $wpdb->prefix.'xpub_publishers';
-        $configTable = $wpdb->prefix.'xpub_publisher_config';
 
         $rows = $wpdb->get_results("SELECT * FROM $publisherTable");
-
         if (!is_array($rows)) {
             return [];
         }
 
-        $result = [];
-
-        foreach ($rows as $row) {
-            $configs = $wpdb->get_results(
-                $wpdb->prepare("SELECT * FROM $configTable WHERE publisher_id = %d", $row->id)
-            );
-
-            $configObjects = array_map([$this, 'mapRowToConfigObject'], $configs);
-
-            $result[] = new Publisher($row->slug, $row->name, $configObjects);
-        }
-
-        return $result;
+        return array_map(
+            fn($row) => new Publisher(
+                $row->slug,
+                $row->name,
+                $this->fetchConfigObjects((int)$row->id)
+            ),
+            $rows
+        );
     }
 
     public function findBySlug(string $slug, ?string $purposeType = null): ?Publisher
     {
-        /** @var wpdb $wpdb */
         $wpdb = Database::get();
-
         $publisherTable = $wpdb->prefix.'xpub_publishers';
-        $configTable = $wpdb->prefix.'xpub_publisher_config';
 
         $row = $wpdb->get_row(
             $wpdb->prepare("SELECT * FROM $publisherTable WHERE slug = %s", $slug)
@@ -58,28 +46,13 @@ class PublisherRepository implements PublisherRepositoryInterface
             return null;
         }
 
-        $sql = "SELECT * FROM $configTable WHERE publisher_id = %d";
-        $params = [$row->id];
-
-        if ($purposeType !== null) {
-            $sql .= " AND purpose_type = %s";
-            $params[] = $purposeType;
-        }
-
-        $configs = $wpdb->get_results(
-            $wpdb->prepare($sql, ...$params)
-        );
-
-        $configObjects = array_map([$this, 'mapRowToConfigObject'], $configs);
-
-        return new Publisher($row->slug, $row->name, $configObjects);
+        $configs = $this->fetchConfigObjects((int)$row->id, $purposeType);
+        return new Publisher($row->slug, $row->name, $configs);
     }
 
     public function updateConfig(string $slug, array $newConfig): bool
     {
-        /** @var wpdb $wpdb */
         $wpdb = Database::get();
-
         $publisherTable = $wpdb->prefix.'xpub_publishers';
         $configTable = $wpdb->prefix.'xpub_publisher_config';
 
@@ -91,14 +64,12 @@ class PublisherRepository implements PublisherRepositoryInterface
             return false;
         }
 
-        $result = true;
-
+        $success = true;
         foreach ($newConfig as $key => $item) {
-            $success = $this->upsertConfig($wpdb, $configTable, $publisherId, $key, $item);
-            $result = $result && $success;
+            $success = $success && $this->upsertConfig($wpdb, $configTable, $publisherId, $key, $item);
         }
 
-        return $result;
+        return $success;
     }
 
     public function create(string $slug, string $name, array $config): bool
@@ -116,13 +87,31 @@ class PublisherRepository implements PublisherRepositoryInterface
             return false;
         }
 
-        $publisherId = $wpdb->insert_id;
+        $publisherId = (int)$wpdb->insert_id;
 
         foreach ($config as $key => $item) {
             $this->upsertConfig($wpdb, $configTable, $publisherId, $key, $item, false);
         }
 
         return true;
+    }
+
+    private function fetchConfigObjects(int $publisherId, ?string $purposeType = null): array
+    {
+        $wpdb = Database::get();
+        $configTable = $wpdb->prefix.'xpub_publisher_config';
+
+        $sql = "SELECT * FROM $configTable WHERE publisher_id = %d";
+        $params = [$publisherId];
+
+        if ($purposeType !== null) {
+            $sql .= " AND purpose_type = %s";
+            $params[] = $purposeType;
+        }
+
+        $rows = $wpdb->get_results($wpdb->prepare($sql, ...$params)) ?: [];
+
+        return array_map([$this, 'mapRowToConfigObject'], $rows);
     }
 
     private function mapRowToConfigObject(object $row): PublisherConfig
@@ -146,31 +135,10 @@ class PublisherRepository implements PublisherRepositoryInterface
             ? maybe_serialize($item['value'])
             : maybe_serialize($item);
 
-        // Default purpose fallback
-        $purpose = PurposeType::DEFAULT;
-
-        if (is_array($item) && array_key_exists('purpose_type', $item)) {
-            $purpose = $item['purpose_type'];
-        } elseif ($checkExisting) {
-            // Try to retrieve existing purpose_type from DB
-            $existingPurpose = $wpdb->get_var(
-                $wpdb->prepare(
-                    "SELECT purpose_type FROM $table WHERE publisher_id = %d AND config_key = %s",
-                    $publisherId,
-                    $key
-                )
-            );
-            if ($existingPurpose !== null && PurposeType::isValid($existingPurpose)) {
-                $purpose = $existingPurpose;
-            }
-        }
-
-        if (!PurposeType::isValid($purpose)) {
-            $purpose = PurposeType::DEFAULT;
-        }
+        $purpose = $this->determinePurposeType($wpdb, $table, $publisherId, $key, $item, $checkExisting);
 
         if ($checkExisting) {
-            $exists = $wpdb->get_var(
+            $exists = (int)$wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT COUNT(*) FROM $table WHERE publisher_id = %d AND config_key = %s",
                     $publisherId,
@@ -178,7 +146,7 @@ class PublisherRepository implements PublisherRepositoryInterface
                 )
             );
 
-            if ((int)$exists > 0) {
+            if ($exists > 0) {
                 return (bool)$wpdb->update(
                     $table,
                     ['config_value' => $value, 'purpose_type' => $purpose],
@@ -187,14 +155,40 @@ class PublisherRepository implements PublisherRepositoryInterface
             }
         }
 
-        return (bool)$wpdb->insert(
-            $table,
-            [
-                'publisher_id' => $publisherId,
-                'config_key' => $key,
-                'config_value' => $value,
-                'purpose_type' => $purpose,
-            ]
-        );
+        return (bool)$wpdb->insert($table, [
+            'publisher_id' => $publisherId,
+            'config_key' => $key,
+            'config_value' => $value,
+            'purpose_type' => $purpose,
+        ]);
+    }
+
+    private function determinePurposeType(
+        wpdb $wpdb,
+        string $table,
+        int $publisherId,
+        string $key,
+        mixed $item,
+        bool $checkExisting
+    ): string {
+        if (is_array($item) && array_key_exists('purpose_type', $item) && PurposeType::isValid($item['purpose_type'])) {
+            return $item['purpose_type'];
+        }
+
+        if ($checkExisting) {
+            $existingPurpose = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT purpose_type FROM $table WHERE publisher_id = %d AND config_key = %s",
+                    $publisherId,
+                    $key
+                )
+            );
+
+            if ($existingPurpose !== null && PurposeType::isValid($existingPurpose)) {
+                return $existingPurpose;
+            }
+        }
+
+        return PurposeType::DEFAULT;
     }
 }
