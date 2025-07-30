@@ -8,7 +8,8 @@ final class PublisherConfig
 {
     public function __construct(
         private string $key,
-        private string $value
+        private string $value,
+        public string $purposeType = 'default',
     ) {
     }
 
@@ -21,4 +22,19 @@ final class PublisherConfig
     {
         return $this->value;
     }
+
+    public function getPurposeType(): string
+    {
+        return $this->purposeType;
+    }
+
+    public function asArray(): array
+    {
+        return [
+            'key' => $this->key,
+            'value' => $this->value,
+            'purpose_type' => $this->purposeType,
+        ];
+    }
+
 }
