@@ -111,7 +111,8 @@ final class WordpressPlugin
             new PublisherSelector(
                 new PublisherRepository(),
                 new PublisherTargetProvider(new WordpressSettingsRepository()),
-                new PublisherFactory()
+                new PublisherFactory(),
+                LoggerFactory::create()
             ),
             new ArticleFactory(new WpPostContentRenderer())
         );
