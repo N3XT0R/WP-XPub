@@ -28,6 +28,12 @@ class Migration_3 extends AbstractMigration
             "
             );
         }
+        $wpdb->query(
+            "
+                    ALTER TABLE {$table}
+                    MODIFY COLUMN config_value TEXT NOT NULL
+                "
+        );
     }
 
     protected function uninstall(WPDB $wpdb): void
@@ -49,5 +55,12 @@ class Migration_3 extends AbstractMigration
             "
             );
         }
+
+        $wpdb->query(
+            "
+                    ALTER TABLE {$table}
+                    MODIFY COLUMN config_value VARCHAR(100) NOT NULL
+                "
+        );
     }
 }
