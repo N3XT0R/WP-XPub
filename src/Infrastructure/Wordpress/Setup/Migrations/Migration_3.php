@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Setup\Migrations;
 
-use N3XT0R\XPub\Support\OAuthPublisherSeederHelper;
 use wpdb;
 
 class Migration_3 extends AbstractMigration
@@ -35,7 +34,7 @@ class Migration_3 extends AbstractMigration
                     MODIFY COLUMN config_value TEXT NOT NULL
                 "
         );
-
+        /*
         OAuthPublisherSeederHelper::register('mastodon', 'Mastodon', [
             'grant_type' => 'client_credentials',
             'clientId' => '',
@@ -45,7 +44,7 @@ class Migration_3 extends AbstractMigration
             'urlResourceOwnerDetails' => 'https://mastodon.social/oauth/userinfo',
             'scopes' => 'profile write:statuses',
 
-        ]);
+        ]);*/
     }
 
     protected function uninstall(WPDB $wpdb): void
