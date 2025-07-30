@@ -14,7 +14,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
 use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
-use N3XT0R\XPub\Infrastructure\Wordpress\DI\ContainerProvider;
+use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
 use DI\Container;
 use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
 use N3XT0R\XPub\Domain\Hook\HookDispatcherInterface;

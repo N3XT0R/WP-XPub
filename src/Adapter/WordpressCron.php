@@ -1,19 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace N3XT0R\XPub\Adapter;
 
+use DI\Container;
 use N3XT0R\XPub\Application\Factory\PublisherFactory;
-use N3XT0R\XPub\Application\Publisher\PublisherSelector;
 use N3XT0R\XPub\Application\Service\Queue\JobRunner;
-use N3XT0R\XPub\Domain\Service\Publishing\PublisherTargetProvider;
-use N3XT0R\XPub\Infrastructure\Wordpress\Content\WpPostContentRenderer;
-use N3XT0R\XPub\Infrastructure\Wordpress\Database\Database;
-use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
-use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressFilterDispatcher;
-use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
-use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
-use N3XT0R\XPub\Infrastructure\Wordpress\Repository\WPDBQueueRepository;
-use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
+use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
+use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
 
 final class WordpressCron
 {
@@ -21,8 +16,20 @@ final class WordpressCron
     public const CRON_SCHEDULE = 'xpub_every_minute';
     private const CRON_INTERVAL = 60;
 
+    private static ?Container $container = null;
+
+    private static function container(): Container
+    {
+        if (self::$container === null) {
+            self::$container = ContainerProvider::getContainer();
+        }
+
+        return self::$container;
+    }
+
     public static function init(): void
     {
+        self::container();
         add_filter('cron_schedules', [self::class, 'addSchedule']);
         add_action(self::CRON_HOOK, [self::class, 'run']);
     }
@@ -56,22 +63,12 @@ final class WordpressCron
         }
     }
 
-
     public static function run(): void
     {
-        PublisherFactory::setFilterDispatcher(new WordpressFilterDispatcher());
-        $jobRunner = new JobRunner(
-            queue: new WPDBQueueRepository(Database::get()),
-            publisherSelector: new PublisherSelector(
-                new PublisherRepository(),
-                new PublisherTargetProvider(new WordpressSettingsRepository()),
-                new PublisherFactory(),
-                LoggerFactory::create()
-            ),
-            articleFactory: new ArticleFactory(new WpPostContentRenderer()),
-            logger: LoggerFactory::create(),
+        PublisherFactory::setFilterDispatcher(
+            self::container()->get(FilterDispatcherInterface::class)
         );
-
+        $jobRunner = self::container()->get(JobRunner::class);
         $jobRunner->run();
     }
 }
