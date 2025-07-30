@@ -13,4 +13,15 @@ class PublisherConfigTest extends TestCase
         $this->assertSame('api_key', $config->getKey());
         $this->assertSame('secret', $config->getValue());
     }
+
+    public function testPurposeTypeAndAsArray(): void
+    {
+        $config = new PublisherConfig('k', 'v', 'custom');
+        $this->assertSame('custom', $config->getPurposeType());
+        $this->assertSame([
+            'key' => 'k',
+            'value' => 'v',
+            'purpose_type' => 'custom',
+        ], $config->asArray());
+    }
 }
