@@ -17,21 +17,35 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
     protected GenericProvider $provider;
     protected LoggerInterface $logger;
     protected string $storageKey;
+    protected string $grantType;
 
     public function __construct(
         GenericProvider $provider,
         SettingsRepositoryInterface $settings,
         string $storageKey,
+        string $grantType = 'authorization_code',
         ?LoggerInterface $logger = null
     ) {
         $this->provider = $provider;
         $this->settings = $settings;
         $this->storageKey = $storageKey;
+        $this->grantType = $grantType;
         $this->logger = $logger ?? LoggerFactory::create();
     }
 
     public function getAccessToken(): ?string
     {
+        if ($this->grantType === 'client_credentials') {
+            try {
+                $accessToken = $this->provider->getAccessToken('client_credentials');
+                return $accessToken->getToken();
+            } catch (\Throwable $e) {
+                $this->logger->error('OAuth client_credentials flow failed: '.$e->getMessage(), ['exception' => $e]);
+                return null;
+            }
+        }
+
+        // Default: authorization_code
         $tokenData = $this->settings->get($this->storageKey);
         if (!is_array($tokenData) || empty($tokenData['access_token'])) {
             return null;
@@ -47,6 +61,10 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
 
     public function refreshToken(): bool
     {
+        if ($this->grantType !== 'authorization_code') {
+            return false;
+        }
+
         $tokenData = $this->settings->get($this->storageKey);
         if (empty($tokenData['refresh_token'])) {
             return false;
@@ -68,6 +86,10 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
 
     public function storeAccessToken(AccessTokenInterface $accessToken): void
     {
+        if ($this->grantType === 'client_credentials') {
+            return;
+        }
+
         $this->settings->set($this->storageKey, [
             'access_token' => $accessToken->getToken(),
             'refresh_token' => $accessToken->getRefreshToken(),
@@ -89,5 +111,10 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
     {
         return $this->provider->getAccessToken('authorization_code', ['code' => $code]);
     }
-}
 
+    public function fetchAccessTokenByClientCredentials(): AccessTokenInterface
+    {
+        return $this->provider->getAccessToken('client_credentials');
+    }
+
+}

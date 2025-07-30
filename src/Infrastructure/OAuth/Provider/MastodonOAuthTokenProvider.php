@@ -13,8 +13,9 @@ class MastodonOAuthTokenProvider extends AbstractOAuthTokenProvider
     public function __construct(
         GenericProvider $provider,
         SettingsRepositoryInterface $settings,
+        string $grantType = 'authorization_code',
         ?LoggerInterface $logger = null
     ) {
-        parent::__construct($provider, $settings, 'mastodon', $logger);
+        parent::__construct($provider, $settings, 'mastodon', $grantType, $logger);
     }
 }

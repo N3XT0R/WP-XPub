@@ -24,6 +24,12 @@ class OAuthController
             'callback' => [self::class, 'callback'],
             'permission_callback' => '__return_true',
         ]);
+
+        register_rest_route('xpub/v1', '/oauth/(?P<provider>[a-z0-9_-]+)/client-token', [
+            'methods' => 'POST',
+            'callback' => [self::class, 'clientCredentialsToken'],
+            'permission_callback' => '__return_true',
+        ]);
     }
 
     public static function start(WP_REST_Request $request): WP_REST_Response|WP_Error
@@ -56,6 +62,25 @@ class OAuthController
             $provider->storeAccessToken($accessToken);
 
             return new WP_REST_Response(['success' => true]);
+        } catch (\Throwable $e) {
+            return new WP_Error('oauth_error', $e->getMessage(), ['status' => 500]);
+        }
+    }
+
+    public static function clientCredentialsToken(WP_REST_Request $request): WP_REST_Response|WP_Error
+    {
+        $slug = $request->get_param('provider');
+
+        try {
+            $provider = OAuthTokenProviderFactory::createFromPublisherSlug($slug);
+            $accessToken = $provider->fetchAccessTokenByClientCredentials();
+
+            return new WP_REST_Response([
+                'access_token' => $accessToken->getToken(),
+                'expires' => $accessToken->getExpires(),
+                'token_type' => 'Bearer',
+                'success' => true,
+            ]);
         } catch (\Throwable $e) {
             return new WP_Error('oauth_error', $e->getMessage(), ['status' => 500]);
         }

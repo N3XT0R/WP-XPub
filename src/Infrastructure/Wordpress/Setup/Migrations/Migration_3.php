@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Setup\Migrations;
 
+use N3XT0R\XPub\Domain\Config\PurposeType;
+use N3XT0R\XPub\Support\PublisherSeederHelper;
 use wpdb;
 
 class Migration_3 extends AbstractMigration
@@ -34,6 +36,14 @@ class Migration_3 extends AbstractMigration
                     MODIFY COLUMN config_value TEXT NOT NULL
                 "
         );
+
+        PublisherSeederHelper::upsert('mastodon', 'Mastodon', [
+            'clientId' => ['value' => '', 'purpose_type' => PurposeType::DEFAULT],
+            'clientSecret' => ['value' => '', 'purpose_type' => PurposeType::DEFAULT],
+            'urlAuthorize' => 'https://your.instance/oauth/authorize',
+            'urlAccessToken' => 'https://your.instance/oauth/token',
+            'urlResourceOwnerDetails' => 'https://your.instance/api/v1/accounts/verify_credentials',
+        ]);
     }
 
     protected function uninstall(WPDB $wpdb): void

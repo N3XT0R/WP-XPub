@@ -6,7 +6,7 @@ namespace N3XT0R\XPub\Infrastructure\OAuth;
 
 use League\OAuth2\Client\Provider\GenericProvider;
 use N3XT0R\XPub\Domain\Contracts\OAuth\OAuthTokenProviderInterface;
-use N3XT0R\XPub\Infrastructure\OAuth\Provider\AbstractOAuthTokenProvider;
+use N3XT0R\XPub\Infrastructure\OAuth\Support\GrantTypeResolver;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use RuntimeException;
@@ -55,19 +55,27 @@ class OAuthTokenProviderFactory
                 throw new RuntimeException("Missing required config key: '$key'");
             }
         }
-        /**
-         * @var AbstractOAuthTokenProvider $class
-         */
+
+        $providerConfig = [
+            'clientId' => $config['clientId'],
+            'clientSecret' => $config['clientSecret'],
+            'redirectUri' => $config['redirectUri'] ?? null,
+            'urlAuthorize' => $config['urlAuthorize'] ?? null,
+            'urlAccessToken' => $config['urlAccessToken'],
+        ];
+
+        if (!empty($config['urlResourceOwnerDetails'])) {
+            $providerConfig['urlResourceOwnerDetails'] = $config['urlResourceOwnerDetails'];
+        }
+
+
+        $grantType = GrantTypeResolver::resolve($config);
+
         return new $class(
-            new GenericProvider([
-                'clientId' => $config['clientId'],
-                'clientSecret' => $config['clientSecret'],
-                'redirectUri' => $config['redirectUri'],
-                'urlAuthorize' => $config['urlAuthorize'],
-                'urlAccessToken' => $config['urlAccessToken'],
-                'urlResourceOwnerDetails' => $config['urlResourceOwnerDetails'] ?? '',
-            ]),
-            new WordpressSettingsRepository()
+            new GenericProvider($providerConfig),
+            new WordpressSettingsRepository(),
+            $slug,
+            $grantType
         );
     }
 }
