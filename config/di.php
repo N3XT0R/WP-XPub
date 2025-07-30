@@ -27,6 +27,11 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressFilterDispatcher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookDispatcher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
+use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
+use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsPageRegistrar;
+use N3XT0R\XPub\Infrastructure\Wordpress\Admin\MetaBox;
+use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
+use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookProvider;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\WPDBQueueRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
@@ -54,5 +59,8 @@ return [
     ReleaseProviderInterface::class => autowire(ReleaseService::class),
     FilterDispatcherInterface::class => create(WordpressFilterDispatcher::class),
     HookDispatcherInterface::class => create(WordpressHookDispatcher::class),
+    SettingsSaveHandler::class => autowire(SettingsSaveHandler::class),
+    SettingsPageRegistrar::class => autowire(SettingsPageRegistrar::class),
+    MetaBox::class => autowire(MetaBox::class),
     LoggerInterface::class => factory([LoggerFactory::class, 'create']),
 ];

@@ -9,6 +9,9 @@ use N3XT0R\XPub\Application\Service\Queue\AsyncPublishingDispatcher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookProvider;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
+use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsPageRegistrar;
+use N3XT0R\XPub\Infrastructure\Wordpress\Admin\MetaBox;
+use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
@@ -48,8 +51,15 @@ final class WordpressPlugin
             self::container()->get(FilterDispatcherInterface::class)
         );
         $registrar = new WordpressHookRegistrar(
-            new HookProvider($pluginFile),
-            self::container()->get(HookDispatcherInterface::class)
+            new HookProvider(
+                $pluginFile,
+                self::container()->get(SettingsSaveHandler::class)
+            ),
+            self::container()->get(HookDispatcherInterface::class),
+            [
+                self::container()->get(SettingsPageRegistrar::class),
+                self::container()->get(MetaBox::class),
+            ]
         );
         $registrar->register($pluginFile);
     }
