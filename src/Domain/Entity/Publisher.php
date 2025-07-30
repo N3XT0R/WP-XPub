@@ -48,6 +48,25 @@ final class Publisher
         return $out;
     }
 
+    public function getCategorizedConfigArray(): array
+    {
+        $categorized = [];
+
+        foreach ($this->configs as $config) {
+            $purposeType = $config->getPurposeType();
+            $key = $config->getKey();
+            $value = $config->getValue();
+
+            if (!isset($categorized[$purposeType])) {
+                $categorized[$purposeType] = [];
+            }
+
+            $categorized[$purposeType][$key] = $value;
+        }
+
+        return $categorized;
+    }
+
     public function getConfigByKey(string $key): ?string
     {
         foreach ($this->configs as $config) {

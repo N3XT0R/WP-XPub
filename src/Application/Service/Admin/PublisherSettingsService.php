@@ -26,7 +26,7 @@ final class PublisherSettingsService
                     'slug' => $publisher->getSlug(),
                     'name' => $publisher->getName(),
                     'active' => in_array($publisher->getSlug(), $active, true),
-                    'config' => $publisher->getConfigArray(),
+                    'config' => $publisher->getCategorizedConfigArray(),
                 ];
             }, $publishers),
             'activePublisherSlugs' => $active
