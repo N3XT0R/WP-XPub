@@ -42,7 +42,7 @@ class PublisherRepository implements PublisherRepositoryInterface
         return $result;
     }
 
-    public function findBySlug(string $slug): ?Publisher
+    public function findBySlug(string $slug, ?string $purposeType = null): ?Publisher
     {
         /** @var wpdb $wpdb */
         $wpdb = Database::get();
@@ -58,8 +58,16 @@ class PublisherRepository implements PublisherRepositoryInterface
             return null;
         }
 
+        $sql = "SELECT * FROM $configTable WHERE publisher_id = %d";
+        $params = [$row->id];
+
+        if ($purposeType !== null) {
+            $sql .= " AND purpose_type = %s";
+            $params[] = $purposeType;
+        }
+
         $configs = $wpdb->get_results(
-            $wpdb->prepare("SELECT * FROM $configTable WHERE publisher_id = %d", $row->id)
+            $wpdb->prepare($sql, ...$params)
         );
 
         $configObjects = array_map([$this, 'mapRowToConfigObject'], $configs);

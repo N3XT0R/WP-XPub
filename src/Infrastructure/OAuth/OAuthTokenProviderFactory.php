@@ -6,6 +6,7 @@ namespace N3XT0R\XPub\Infrastructure\OAuth;
 
 use League\OAuth2\Client\Provider\GenericProvider;
 use N3XT0R\XPub\Domain\Config\oAuth\OAuthProviderConfigBuilder;
+use N3XT0R\XPub\Domain\Config\PurposeType;
 use N3XT0R\XPub\Domain\Contracts\OAuth\OAuthTokenProviderInterface;
 use N3XT0R\XPub\Infrastructure\OAuth\Support\GrantTypeResolver;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
@@ -21,7 +22,7 @@ final class OAuthTokenProviderFactory
     public static function createFromPublisherSlug(string $slug): OAuthTokenProviderInterface
     {
         $repository = new PublisherRepository();
-        $publisher = $repository->findBySlug($slug);
+        $publisher = $repository->findBySlug($slug, PurposeType::OAUTH);
 
         if (!$publisher) {
             throw new RuntimeException("Publisher '$slug' not found");

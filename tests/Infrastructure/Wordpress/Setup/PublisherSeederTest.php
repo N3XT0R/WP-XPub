@@ -19,7 +19,7 @@ class PublisherSeederTest extends TestCase
                 return [];
             }
 
-            public function findBySlug(string $slug): ?Publisher
+            public function findBySlug(string $slug, ?string $purposeType = null): ?Publisher
             {
                 return null;
             }

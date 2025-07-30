@@ -13,7 +13,7 @@ interface PublisherRepositoryInterface
      */
     public function all(): array;
 
-    public function findBySlug(string $slug): ?Publisher;
+    public function findBySlug(string $slug, ?string $purposeType = null): ?Publisher;
 
     public function updateConfig(string $slug, array $newConfig): bool;
 
