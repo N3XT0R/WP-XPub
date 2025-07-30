@@ -14,6 +14,7 @@ final class HookProvider
     public function __construct(
         private readonly string $pluginFile,
         private readonly SettingsSaveHandler $saveHandler,
+        private readonly OAuthController $oauthController,
     ) {
     }
 
@@ -29,7 +30,7 @@ final class HookProvider
             new HookDefinition('publish_post', [WordpressPlugin::class, 'handlePublishFromPost'], 10, 2),
             new HookDefinition('admin_post_xpub_save_settings', fn() => $this->saveHandler->handle()),
             new HookDefinition('init', fn() => PluginUpdateManager::boot($this->pluginFile)),
-            new HookDefinition('rest_api_init', [OAuthController::class, 'register']),
+            new HookDefinition('rest_api_init', [$this->oauthController, 'register']),
         ];
     }
 }

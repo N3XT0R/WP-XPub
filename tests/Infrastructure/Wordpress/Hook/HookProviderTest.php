@@ -7,6 +7,8 @@ namespace N3XT0R\XPub\Tests\Infrastructure\Wordpress\Hook;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookDefinition;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookProvider;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
+use N3XT0R\XPub\Infrastructure\Wordpress\Rest\OAuthController;
+use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\Validator\SettingsFormRequestValidator;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
@@ -23,6 +25,12 @@ class HookProviderTest extends TestCase
                 new SettingsFormRequestValidator(),
                 new WordpressSettingsRepository(),
                 new PublisherRepository(),
+            ),
+            new OAuthController(
+                new OAuthTokenProviderFactory(
+                    new PublisherRepository(),
+                    new WordpressSettingsRepository(),
+                )
             )
         );
         $hooks = $provider->getHooks();
