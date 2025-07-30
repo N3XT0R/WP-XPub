@@ -5,23 +5,19 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Adapter;
 
 use N3XT0R\XPub\Application\Factory\PublisherFactory;
-use N3XT0R\XPub\Application\Publisher\PublisherSelector;
 use N3XT0R\XPub\Application\Service\Queue\AsyncPublishingDispatcher;
-use N3XT0R\XPub\Domain\Service\Publishing\PublisherTargetProvider;
-use N3XT0R\XPub\Infrastructure\Wordpress\Content\WpPostContentRenderer;
-use N3XT0R\XPub\Infrastructure\Wordpress\Database\Database;
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookProvider;
-use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressFilterDispatcher;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
-use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
-use N3XT0R\XPub\Infrastructure\Wordpress\Repository\WPDBQueueRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
-use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
 use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
+use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
+use DI\Container;
+use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
+use N3XT0R\XPub\Domain\Hook\HookDispatcherInterface;
 use WP_Post;
 
 /**
@@ -30,15 +26,31 @@ use WP_Post;
  */
 final class WordpressPlugin
 {
+    private static ?Container $container = null;
+
+    private static function container(): Container
+    {
+        if (self::$container === null) {
+            self::$container = ContainerProvider::getContainer();
+        }
+
+        return self::$container;
+    }
 
     /**
      * Initializes the plugin and registers hooks.
      */
     public static function init(string $pluginFile): void
     {
+        self::container();
         View::setBasePath(plugin_dir_path(__FILE__).'../../resources/views');
-        PublisherFactory::setFilterDispatcher(new WordpressFilterDispatcher());
-        $registrar = new WordpressHookRegistrar(new HookProvider($pluginFile));
+        PublisherFactory::setFilterDispatcher(
+            self::container()->get(FilterDispatcherInterface::class)
+        );
+        $registrar = new WordpressHookRegistrar(
+            new HookProvider($pluginFile),
+            self::container()->get(HookDispatcherInterface::class)
+        );
         $registrar->register($pluginFile);
     }
 
@@ -47,8 +59,9 @@ final class WordpressPlugin
      */
     public static function boot(): void
     {
-        $bootstrapper = new PluginBootstrapService(new WordpressSettingsRepository());
-        $bootstrapper->bootstrap();
+        self::container()
+            ->get(PluginBootstrapService::class)
+            ->bootstrap();
     }
 
     /**
@@ -56,11 +69,9 @@ final class WordpressPlugin
      */
     public static function onActivate(string $channel = 'xpub'): void
     {
-        $runner = new SetupRunner(
-            LoggerFactory::create($channel),
-            new WordpressSettingsRepository()
-        );
-        $runner->install();
+        self::container()
+            ->make(SetupRunner::class, ['logger' => LoggerFactory::create($channel)])
+            ->install();
         WordpressCron::schedule();
     }
 
@@ -69,11 +80,9 @@ final class WordpressPlugin
      */
     public static function onUninstall(string $channel = 'xpub'): void
     {
-        $runner = new SetupRunner(
-            LoggerFactory::create($channel),
-            new WordpressSettingsRepository()
-        );
-        $runner->uninstall();
+        self::container()
+            ->make(SetupRunner::class, ['logger' => LoggerFactory::create($channel)])
+            ->uninstall();
         WordpressCron::unschedule();
     }
 
@@ -82,8 +91,9 @@ final class WordpressPlugin
      */
     public static function showAdminNotice(): void
     {
-        $presenter = new AdminNoticePresenter(new WordpressSettingsRepository());
-        $presenter->showIfAvailable();
+        self::container()
+            ->get(AdminNoticePresenter::class)
+            ->showIfAvailable();
     }
 
     public static function handlePublishFromPost(int $postId, ?WP_Post $post): void
@@ -98,24 +108,16 @@ final class WordpressPlugin
             return;
         }
 
-
         $dispatcher = self::getDispatcher();
-        $article = (new ArticleFactory(new WpPostContentRenderer()))->fromWpPost($post);
+        $article = self::container()
+            ->get(ArticleFactory::class)
+            ->fromWpPost($post);
         $dispatcher->dispatch($article);
     }
 
     private static function getDispatcher(): AsyncPublishingDispatcher
     {
-        return new AsyncPublishingDispatcher(
-            new WPDBQueueRepository(Database::get()),
-            new PublisherSelector(
-                new PublisherRepository(),
-                new PublisherTargetProvider(new WordpressSettingsRepository()),
-                new PublisherFactory(),
-                LoggerFactory::create()
-            ),
-            new ArticleFactory(new WpPostContentRenderer())
-        );
+        return self::container()->get(AsyncPublishingDispatcher::class);
     }
 
 }
