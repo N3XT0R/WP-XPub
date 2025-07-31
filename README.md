@@ -5,9 +5,8 @@
 [![Code Coverage](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/coverage.svg)](https://qlty.sh/gh/N3XT0R/projects/WP-XPub)
 [![Maintainability](https://qlty.sh/gh/N3XT0R/projects/WP-XPub/maintainability.svg)](https://qlty.sh/gh/N3XT0R/projects/WP-XPub)
 
-**Flexible Multi-Channel Auto Publisher for WordPress**  
-Publish your blog posts to LinkedIn, Mastodon, Dev.to and more – automatically and without writing a single line of
-code.
+**Flexible Multi-Channel Auto Publisher for WordPress**
+Publish your blog posts to Dev.to or any custom target – automatically and without writing a single line of code.
 
 ---
 
@@ -24,7 +23,7 @@ external platforms – either instantly or via scheduled jobs.
 ## 🚀 Features
 
 - 🔁 Auto-publish WordPress posts to external platforms
-- 🔌 Supports Dev.to – and more via plugin drivers
+- 🔌 Built-in Dev.to driver (Mastodon example included) – extendable via plugin drivers
 - 🧩 Modular client driver system (easily extend to new platforms)
 - ⏱️ Publish immediately or schedule for later
 - 🧵 Custom pre- and post-publish hooks
@@ -76,7 +75,7 @@ external platforms – either instantly or via scheduled jobs.
 ## ✅ Requirements
 
 - PHP 8.2+
-- WordPress 6.8.2+
+- WordPress 6.0+ (tested with 6.8.2)
 - Composer (optional, for development or extensions)
 
 ---
