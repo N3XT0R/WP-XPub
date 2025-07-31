@@ -40,6 +40,11 @@
   "extra": {
     "branch-alias": {
       "dev-master": "1.0.x-dev"
+    },
+    "installer-paths": {
+      "wp-content/plugins/{$name}/": [
+        "type:wordpress-plugin"
+      ]
     }
   },
   "minimum-stability": "stable",

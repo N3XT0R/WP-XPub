@@ -39,6 +39,14 @@ external platforms – either instantly or via scheduled jobs.
 2. Activate it via the WordPress admin panel.
 3. Go to **Settings > XPUB** and connect your desired platforms.
 
+or
+
+```bash
+composer require n3xt0r/wp-xpub
+```
+
+If you're using [Bedrock](https://roots.io/bedrock/) or similar Composer-managed WP setups, you're ready to go.
+
 📄 See the full [installation guide](docs/installation.md) for details.
 
 > ⚠️ **Note:** WP-XPub is *not* listed on the official WordPress Plugin Directory.  
