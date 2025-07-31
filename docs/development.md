@@ -25,7 +25,8 @@ The PHPUnit configuration is stored in `phpunit.xml`.
 
 ## Dependency Injection Container
 
-WP-XPub uses [PHP-DI](https://php-di.org/) to wire its services. The container is built by `ContainerProvider` from the `\*ContainerConfigurator` classes under `src/*/DI/`.
+WP-XPub uses [PHP-DI](https://php-di.org/) to wire its services. The container is built by `ContainerProvider` from the
+`\*ContainerConfigurator` classes under `src/*/DI/`.
 
 You can register your own services or override existing ones by implementing the `ContainerConfiguratorInterface`:
 
@@ -45,14 +46,4 @@ class MyConfigurator implements ContainerConfiguratorInterface
 ```
 
 Pass your configurator instance to the plugin bootstrap before calling `boot()`.
-
-## Packaging the Plugin
-
-A convenience script at `build/build.sh` creates a production-ready zip archive. Execute:
-
-```bash
-./build/build.sh
-```
-
-The script places the final package under `build/dist/`.
 
