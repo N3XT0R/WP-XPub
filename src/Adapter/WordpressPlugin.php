@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Adapter;
 
-use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactory;
+use DI\Container;
 use N3XT0R\XPub\Application\Service\Queue\AsyncPublishingDispatcher;
+use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
+use N3XT0R\XPub\Domain\Hook\HookDispatcherInterface;
+use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
+use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactory;
+use N3XT0R\XPub\Infrastructure\Wordpress\Admin\MetaBox;
+use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsPageRegistrar;
+use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookProvider;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
-use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsPageRegistrar;
-use N3XT0R\XPub\Infrastructure\Wordpress\Admin\MetaBox;
-use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
-use N3XT0R\XPub\Infrastructure\Wordpress\Rest\OAuthController;
-use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
+use N3XT0R\XPub\Infrastructure\Wordpress\Rest\OAuthController;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
+use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
 use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
-use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
-use DI\Container;
-use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
-use N3XT0R\XPub\Domain\Hook\HookDispatcherInterface;
 use WP_Post;
 
 /**
