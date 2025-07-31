@@ -45,5 +45,5 @@ class MyConfigurator implements ContainerConfiguratorInterface
 }
 ```
 
-Pass your configurator instance to the plugin bootstrap before calling `boot()`.
+Pass your configurator instance to the plugin bootstrap before calling `init()`.
 
