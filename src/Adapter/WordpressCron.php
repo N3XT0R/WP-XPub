@@ -7,7 +7,6 @@ namespace N3XT0R\XPub\Adapter;
 use DI\Container;
 use N3XT0R\XPub\Application\Service\Queue\JobRunner;
 use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
-use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
 use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactory;
 
 final class WordpressCron
@@ -18,10 +17,15 @@ final class WordpressCron
 
     private static ?Container $container = null;
 
+    public static function setContainer(Container $container): void
+    {
+        self::$container = $container;
+    }
+
     private static function container(): Container
     {
         if (self::$container === null) {
-            self::$container = ContainerProvider::getContainer();
+            throw new \RuntimeException('Container not initialized');
         }
 
         return self::$container;
