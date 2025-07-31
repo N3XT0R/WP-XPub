@@ -12,8 +12,7 @@ class ApplicationContainerConfigurator implements ContainerConfiguratorInterface
     public function configure(ContainerBuilder $builder): void
     {
         $builder->addDefinitions([
-            // Application Services hier registrieren
-            \N3XT0R\XPub\Application\Service\SomeApplicationService::class => \DI\autowire(),
+            // Application Services
         ]);
     }
 }

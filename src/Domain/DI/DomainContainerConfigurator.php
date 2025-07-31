@@ -13,7 +13,6 @@ class DomainContainerConfigurator implements ContainerConfiguratorInterface
     {
         $builder->addDefinitions([
             // Domain Services, Entities oder Policies
-            \N3XT0R\XPub\Domain\Model\MyService::class => \DI\autowire(),
         ]);
     }
 }

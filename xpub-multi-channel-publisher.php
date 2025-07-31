@@ -14,19 +14,23 @@
  * Stable tag: 1.1.1
  */
 
-use N3XT0R\XPub\Adapter\WordpressPlugin;
 use N3XT0R\XPub\Adapter\WordpressCron;
+use N3XT0R\XPub\Adapter\WordpressPlugin;
 use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
 use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactory;
+use N3XT0R\XPub\Shared\Plugin\PluginContext;
 
 defined('ABSPATH') or die('No script kiddies please!');
 require_once __DIR__.'/vendor/autoload.php';
 
-ContainerProvider::setPluginMetadata(
-    __FILE__,
-    'xpub-multi-channel-publisher',
-    'https://github.com/N3XT0R/WP-XPub'
+ContainerProvider::setPluginContext(
+    new PluginContext(
+        __FILE__,
+        'xpub-multi-channel-publisher',
+        'https://github.com/N3XT0R/WP-XPub'
+    )
 );
+
 $container = ContainerProvider::getContainer();
 WordpressPlugin::setContainer($container);
 WordpressCron::setContainer($container);
