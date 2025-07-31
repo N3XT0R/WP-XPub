@@ -8,6 +8,7 @@ use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Entity\Publisher;
 use N3XT0R\XPub\Domain\Repository\PublisherRepositoryInterface;
 use N3XT0R\XPub\Domain\Service\Publishing\PublisherTargetProvider;
+use N3XT0R\XPub\Tests\Stubs\InMemorySettingsRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
@@ -23,11 +24,9 @@ class PublisherSelectorTest extends TestCase
         $publisherInstance = $this->createMock(PublisherInterface::class);
         $factory->method('createWithConfig')->with('test', [])->willReturn($publisherInstance);
 
-        $settings = new class implements \N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface {
-            public function get(string $key, mixed $default = null): mixed { return []; }
-            public function set(string $key, mixed $value): bool { return true; }
-            public function delete(string $key): bool { return true; }
-        };
+        $settings = new InMemorySettingsRepository([
+            'xpub_publisher_targets' => [],
+        ]);
         $targetProvider = new PublisherTargetProvider($settings);
         $selector = new PublisherSelector($repository, $targetProvider, $factory, new NullLogger());
         $this->assertSame($publisherInstance, $selector->get('test'));
@@ -38,11 +37,9 @@ class PublisherSelectorTest extends TestCase
         $repository = $this->createMock(PublisherRepositoryInterface::class);
         $repository->method('findBySlug')->willReturn(null);
 
-        $settings = new class implements \N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface {
-            public function get(string $key, mixed $default = null): mixed { return []; }
-            public function set(string $key, mixed $value): bool { return true; }
-            public function delete(string $key): bool { return true; }
-        };
+        $settings = new InMemorySettingsRepository([
+            'xpub_publisher_targets' => [],
+        ]);
         $targetProvider = new PublisherTargetProvider($settings);
         $selector = new PublisherSelector($repository, $targetProvider, $this->createMock(PublisherFactoryInterface::class));
         $this->expectException(\RuntimeException::class);
@@ -56,11 +53,9 @@ class PublisherSelectorTest extends TestCase
         $repository->method('findBySlug')->with('active')->willReturn($publisherEntity);
         $repository->method('all')->willReturn([$publisherEntity]);
 
-        $settings = new class implements \N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface {
-            public function get(string $key, mixed $default = null): mixed { return ['active']; }
-            public function set(string $key, mixed $value): bool { return true; }
-            public function delete(string $key): bool { return true; }
-        };
+        $settings = new InMemorySettingsRepository([
+            'xpub_publisher_targets' => ['active'],
+        ]);
         $targetProvider = new PublisherTargetProvider($settings);
 
         $factory = $this->createMock(PublisherFactoryInterface::class);

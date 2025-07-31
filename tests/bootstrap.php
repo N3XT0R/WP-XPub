@@ -36,6 +36,13 @@ if (!function_exists('wp_remote_post')) {
         return $GLOBALS['wp_remote_post_response'];
     }
 }
+
+if (!function_exists('plugin_basename')) {
+    function plugin_basename(string $path): string
+    {
+        return basename($path);
+    }
+}
 if (!function_exists('is_wp_error')) {
     function is_wp_error($thing)
     {

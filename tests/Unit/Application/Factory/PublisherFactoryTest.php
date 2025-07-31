@@ -4,6 +4,7 @@ namespace N3XT0R\XPub\Tests\Application\Factory;
 
 use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactory;
 use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
+use N3XT0R\XPub\Shared\Plugin\PluginContext;
 use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
 use N3XT0R\XPub\Infrastructure\Publishers\DevToPublisher;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +22,7 @@ class PublisherFactoryTest extends TestCase
         };
 
         PublisherFactory::setFilterDispatcher($mockDispatcher);
-        ContainerProvider::setPluginMetadata(__FILE__, 'test', 'info');
+        ContainerProvider::setPluginContext(new PluginContext(__FILE__, 'test', 'info'));
         PublisherFactory::setContainer(ContainerProvider::getContainer());
     }
 
