@@ -98,6 +98,7 @@ See the [developer docs](docs/index.md) for more:
 - [Architecture Overview](docs/architecture.md)
 - [Hooks & Filters](docs/hooks.md)
 - [Translations](docs/translations.md)
+- [Development Guide](docs/development.md)
 
 ---
 
@@ -112,6 +113,7 @@ All documentation is available in the `docs/` folder:
 - [Architecture](docs/architecture.md)
 - [Hooks & Filters](docs/hooks.md)
 - [Languages](docs/translations.md)
+- [Development Guide](docs/development.md)
 
 ---
 
