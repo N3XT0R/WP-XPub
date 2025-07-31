@@ -8,7 +8,6 @@ use DI\Container;
 use N3XT0R\XPub\Application\Service\Queue\AsyncPublishingDispatcher;
 use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
 use N3XT0R\XPub\Domain\Hook\HookDispatcherInterface;
-use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
 use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\MetaBox;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsPageRegistrar;
@@ -33,10 +32,15 @@ final class WordpressPlugin
 {
     private static ?Container $container = null;
 
+    public static function setContainer(Container $container): void
+    {
+        self::$container = $container;
+    }
+
     private static function container(): Container
     {
         if (self::$container === null) {
-            self::$container = ContainerProvider::getContainer();
+            throw new \RuntimeException('Container not initialized');
         }
 
         return self::$container;

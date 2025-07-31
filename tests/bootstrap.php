@@ -6,6 +6,13 @@ require __DIR__.'/../vendor/autoload.php';
 $GLOBALS['wp_options'] = [];
 $GLOBALS['wp_remote_post_response'] = ['response' => ['code' => 200], 'body' => ''];
 
+if (!function_exists('wp_get_environment_type')) {
+    function wp_get_environment_type(): string
+    {
+        return 'development';
+    }
+}
+
 if (!function_exists('apply_filters')) {
     function apply_filters($tag, $value)
     {

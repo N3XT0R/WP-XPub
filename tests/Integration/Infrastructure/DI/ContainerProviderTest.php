@@ -10,6 +10,7 @@ class ContainerProviderTest extends TestCase
 {
     public function testReturnsSingletonContainer(): void
     {
+        ContainerProvider::setPluginMetadata(__FILE__, 'test', 'info');
         $c1 = ContainerProvider::getContainer();
         $c2 = ContainerProvider::getContainer();
         $this->assertInstanceOf(Container::class, $c1);

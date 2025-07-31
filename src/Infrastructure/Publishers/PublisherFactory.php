@@ -9,17 +9,23 @@ use N3XT0R\XPub\Domain\Contracts\ConfigurablePublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\SlugAwareInterface;
 use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
-use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
+use DI\Container;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use RuntimeException;
 
 final class PublisherFactory
 {
     private static ?FilterDispatcherInterface $filterDispatcher = null;
+    private static ?Container $container = null;
 
     public static function setFilterDispatcher(FilterDispatcherInterface $dispatcher): void
     {
         self::$filterDispatcher = $dispatcher;
+    }
+
+    public static function setContainer(Container $container): void
+    {
+        self::$container = $container;
     }
 
     public static function create(string $target): PublisherInterface
@@ -77,7 +83,11 @@ final class PublisherFactory
 
     private static function instantiatePublisher(string $slug, string $class, array $config = []): PublisherInterface
     {
-        $instance = ContainerProvider::getContainer()->get($class);
+        if (!self::$container) {
+            throw new RuntimeException('Container not set');
+        }
+
+        $instance = self::$container->get($class);
 
         if (!$instance instanceof PublisherInterface) {
             throw new RuntimeException("Class '$class' must implement PublisherInterface");

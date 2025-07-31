@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Updater;
 
-use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
+use DI\Container;
 use N3XT0R\XPub\Domain\Contracts\ReleaseProviderInterface;
 
 use function get_plugin_data;
@@ -28,9 +28,9 @@ class PluginUpdateManager
         $this->releaseService = $releaseService;
     }
 
-    public static function boot(string $pluginFile): void
+    public static function boot(string $pluginFile, Container $container): void
     {
-        ContainerProvider::getContainer()->make(self::class, [
+        $container->make(self::class, [
             'pluginFile' => plugin_basename($pluginFile),
             'pluginSlug' => 'xpub-multi-channel-publisher',
             'pluginInfoUrl' => 'https://github.com/N3XT0R/WP-XPub',
