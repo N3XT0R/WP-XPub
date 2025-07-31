@@ -13,8 +13,8 @@ use N3XT0R\XPub\Domain\Entity\Article;
 use N3XT0R\XPub\Domain\Entity\Publisher;
 use N3XT0R\XPub\Domain\Repository\PublisherRepositoryInterface;
 use N3XT0R\XPub\Domain\Service\Publishing\PublisherTargetProvider;
-use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
 use N3XT0R\XPub\Tests\Stubs\InMemoryQueue;
+use N3XT0R\XPub\Tests\Stubs\InMemorySettingsRepository;
 use N3XT0R\XPub\Tests\Stubs\SimplePublisher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -33,11 +33,9 @@ final class AsyncPublishingDispatcherTest extends TestCase
             public function create(string $slug, string $name, array $config): bool { return true; }
         };
 
-        $settings = new class implements SettingsRepositoryInterface {
-            public function get(string $key, mixed $default = null): mixed { return ['simple']; }
-            public function set(string $key, mixed $value): bool { return true; }
-            public function delete(string $key): bool { return true; }
-        };
+        $settings = new InMemorySettingsRepository([
+            'xpub_publisher_targets' => ['simple'],
+        ]);
 
         $provider = new PublisherTargetProvider($settings);
 
