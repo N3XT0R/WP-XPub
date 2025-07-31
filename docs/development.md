@@ -25,7 +25,7 @@ The PHPUnit configuration is stored in `phpunit.xml`.
 
 ## Dependency Injection Container
 
-WP-XPub uses [PHP-DI](https://php-di.org/) to wire its services. Default definitions live in `config/di.php` and the `\*ContainerConfigurator` classes under `src/*/DI/`.
+WP-XPub uses [PHP-DI](https://php-di.org/) to wire its services. The container is built by `ContainerProvider` from the `\*ContainerConfigurator` classes under `src/*/DI/`.
 
 You can register your own services or override existing ones by implementing the `ContainerConfiguratorInterface`:
 

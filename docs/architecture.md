@@ -27,12 +27,14 @@ This way, we keep the WordPress integration where it belongs – but the rest of
 
 ```
 src/
-├── Application/       # Use cases, factories, orchestration
-├── Domain/            # Entities and contracts (PublisherInterface, Article, etc.)
+├── Adapter/          # WordPress bootstrap and cron wrappers
+├── Application/      # Use cases, factories, orchestration
+├── Domain/           # Entities and contracts (PublisherInterface, Article, etc.)
 ├── Infrastructure/
 │   ├── Publishers/    # Implementations of publishing platforms (Dev.to, etc.)
 │   ├── Wordpress/     # WP-specific logic (hooks, admin, DB, logging)
-├── Support/           # Reusable utilities (Seeder, helpers)
+├── Shared/           # Plugin context, DI contracts
+├── Support/          # Helpers for seeding and utilities
 ```
 
 ## Queue & Scheduling
@@ -43,9 +45,9 @@ that articles are published asynchronously without blocking the editor.
 
 ## Dependency Injection
 
-All services are wired through [PHP-DI](https://php-di.org/). Default
-definitions live in `config/di.php` and in the `*ContainerConfigurator` classes
-under `src/*/DI/`.
+All services are wired through [PHP-DI](https://php-di.org/). The container is
+built by `ContainerProvider` using the `*ContainerConfigurator` classes under
+`src/*/DI/`.
 
 You can register your own configurator implementing
 `ContainerConfiguratorInterface` to override services or provide additional
