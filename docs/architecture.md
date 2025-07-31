@@ -41,6 +41,16 @@ When a post is saved, WP-XPub stores publishing jobs in its own queue table. A
 WordPress cron task runs every minute and processes pending jobs. This ensures
 that articles are published asynchronously without blocking the editor.
 
+## Dependency Injection
+
+All services are wired through [PHP-DI](https://php-di.org/). Default
+definitions live in `config/di.php` and in the `*ContainerConfigurator` classes
+under `src/*/DI/`.
+
+You can register your own configurator implementing
+`ContainerConfiguratorInterface` to override services or provide additional
+definitions.
+
 ---
 
 ## Benefits

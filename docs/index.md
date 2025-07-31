@@ -12,3 +12,4 @@ Welcome to the documentation for WP-XPub, the flexible multi-channel auto publis
 - [Architecture](architecture.md)
 - [Queue & Scheduling](architecture.md#queue--scheduling)
 - [Translations](translations.md)
+- [Development Guide](development.md)
