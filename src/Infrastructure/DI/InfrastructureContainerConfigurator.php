@@ -36,10 +36,12 @@ final readonly class InfrastructureContainerConfigurator implements ContainerCon
                 $this->pluginContext->pluginInfoUrl,
                 autowire(ReleaseService::class)
             ),
-            FilterDispatcherInterface::class => autowire(WordpressFilterDispatcher::class),
-            HookDispatcherInterface::class => autowire(WordpressHookDispatcher::class),
+            // Core repositories and services
             PublisherRepositoryInterface::class => autowire(PublisherRepository::class),
             SettingsRepositoryInterface::class => autowire(WordpressSettingsRepository::class),
+            // Other utilities
+            FilterDispatcherInterface::class => autowire(WordpressFilterDispatcher::class),
+            HookDispatcherInterface::class => autowire(WordpressHookDispatcher::class),
         ]);
     }
 }
