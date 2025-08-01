@@ -8,12 +8,21 @@ use DI\Container;
 use DI\ContainerBuilder;
 use N3XT0R\XPub\Application\DI\ApplicationContainerConfigurator;
 use N3XT0R\XPub\Domain\DI\DomainContainerConfigurator;
+use N3XT0R\XPub\Shared\DI\ContainerConfiguratorInterface;
 use N3XT0R\XPub\Shared\Plugin\PluginContext;
 
 final class ContainerProvider
 {
     private static ?Container $container = null;
     private static ?PluginContext $pluginContext = null;
+
+    /** @var array<ContainerConfiguratorInterface> */
+    private static array $customConfigurators = [];
+
+    public static function addConfigurator(ContainerConfiguratorInterface $configurator): void
+    {
+        self::$customConfigurators[] = $configurator;
+    }
 
     public static function setPluginContext(PluginContext $context): void
     {
@@ -56,6 +65,7 @@ final class ContainerProvider
             new ApplicationContainerConfigurator(),
             new DomainContainerConfigurator(),
             new InfrastructureContainerConfigurator(self::$pluginContext),
+            ...self::$customConfigurators,
         ];
 
         foreach ($configurators as $configurator) {
