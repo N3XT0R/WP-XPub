@@ -34,6 +34,12 @@ class OAuthController
             'callback' => [$this, 'clientCredentialsToken'],
             'permission_callback' => '__return_true',
         ]);
+
+        register_rest_route('xpub/v1', '/oauth/(?P<provider>[a-z0-9_-]+)/status', [
+            'methods' => 'GET',
+            'callback' => [$this, 'status'],
+            'permission_callback' => '__return_true',
+        ]);
     }
 
     public function start(WP_REST_Request $request): WP_REST_Response|WP_Error
@@ -65,6 +71,8 @@ class OAuthController
             $accessToken = $provider->fetchAccessTokenByCode($request->get_param('code'));
             $provider->storeAccessToken($accessToken);
 
+            update_user_meta(get_current_user_id(), 'xpub_oauth_'.$slug.'_connected', true);
+
             return new WP_REST_Response(['success' => true]);
         } catch (\Throwable $e) {
             return new WP_Error('oauth_error', $e->getMessage(), ['status' => 500]);
@@ -89,4 +97,15 @@ class OAuthController
             return new WP_Error('oauth_error', $e->getMessage(), ['status' => 500]);
         }
     }
+
+    public function status(WP_REST_Request $request): WP_REST_Response
+    {
+        $slug = $request->get_param('provider');
+        $connected = get_user_meta(get_current_user_id(), 'xpub_oauth_'.$slug.'_connected', true);
+
+        return new WP_REST_Response([
+            'connected' => (bool)$connected,
+        ]);
+    }
+
 }

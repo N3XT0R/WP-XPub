@@ -79,5 +79,17 @@ use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
                 console.error('OAuth error:', err);
                 alert('OAuth start failed.');
             });
+
+        const interval = setInterval(() => {
+            fetch(`${restRoot}/xpub/v1/oauth/${encodeURIComponent(slug)}/status`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.connected) {
+                        clearInterval(interval);
+                        alert('OAuth erfolgreich!');
+                        location.reload();
+                    }
+                });
+        }, 1000);
     }
 </script>
