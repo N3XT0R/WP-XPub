@@ -47,7 +47,8 @@ class MyConfigurator implements ContainerConfiguratorInterface
 }
 ```
 
-Pass your configurator instance to the plugin bootstrap before calling `init()`.
+Pass your configurator instance to the plugin bootstrap before calling
+`ContainerProvider::getContainer();`.
 
 ```php
 use MyPlugin\DI\MyConfigurator;
