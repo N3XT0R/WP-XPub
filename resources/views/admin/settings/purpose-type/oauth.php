@@ -8,9 +8,7 @@
 
 ?>
 
-    <h4 style="margin-top: 1.5rem;"><?= esc_html(
-            ucfirst($purposeType)
-        ) ?> <?= $translator->translateEscaped('Settings') ?></h4>
+    <h4 style="margin-top: 1.5rem;">oAuth <?= $translator->translateEscaped('Settings') ?></h4>
 <?php
 foreach ($group as $key => $value): ?>
     <?php
@@ -22,7 +20,7 @@ foreach ($group as $key => $value): ?>
             <?= $translator->translateEscaped($key) ?>:
         </label>
         <input
-                type="text"
+                type="<?= $key === 'clientSecret' ? 'password' : 'text' ?>"
                 id="<?= $inputId ?>"
                 name="config[<?= esc_attr($publisher['slug']) ?>][<?= esc_attr($key) ?>]"
                 value="<?= esc_attr($value) ?>"
