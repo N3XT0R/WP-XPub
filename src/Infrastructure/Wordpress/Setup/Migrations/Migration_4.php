@@ -14,7 +14,6 @@ class Migration_4 extends AbstractMigration
         OAuthPublisherSeederHelper::upsert('mastodon', 'Mastodon', [
             'grant_type' => 'authorization_code',
             'clientId' => '',
-            'clientSecret' => '',
             'urlAccessToken' => 'https://mastodon.social/oauth/token',
             'urlAuthorize' => 'https://mastodon.social/oauth/authorize',
             'urlResourceOwnerDetails' => 'https://mastodon.social/api/v1/accounts/verify_credentials',
