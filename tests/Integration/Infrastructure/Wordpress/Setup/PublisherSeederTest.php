@@ -42,6 +42,11 @@ class PublisherSeederTest extends TestCase
             {
                 return true;
             }
+
+            public function delete(string $slug): bool
+            {
+                return true;
+            }
         };
 
         $seeder = new PublisherSeeder($repo);
