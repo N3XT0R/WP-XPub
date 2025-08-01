@@ -26,11 +26,34 @@ final class AsyncPublishingDispatcherTest extends TestCase
         $publisherEntity = new Publisher('simple', 'Simple');
 
         $repo = new class($publisherEntity) implements PublisherRepositoryInterface {
-            public function __construct(private Publisher $p) {}
-            public function all(): array { return [$this->p]; }
-            public function findBySlug(string $slug, ?string $purposeType = null): ?Publisher { return $this->p; }
-            public function updateConfig(string $slug, array $newConfig): bool { return true; }
-            public function create(string $slug, string $name, array $config): bool { return true; }
+            public function __construct(private Publisher $p)
+            {
+            }
+
+            public function all(): array
+            {
+                return [$this->p];
+            }
+
+            public function findBySlug(string $slug, ?string $purposeType = null): ?Publisher
+            {
+                return $this->p;
+            }
+
+            public function updateConfig(string $slug, array $newConfig): bool
+            {
+                return true;
+            }
+
+            public function create(string $slug, string $name, array $config): bool
+            {
+                return true;
+            }
+
+            public function delete(string $slug): bool
+            {
+                return true;
+            }
         };
 
         $settings = new InMemorySettingsRepository([
@@ -40,9 +63,19 @@ final class AsyncPublishingDispatcherTest extends TestCase
         $provider = new PublisherTargetProvider($settings);
 
         $factory = new class($publisher) implements PublisherFactoryInterface {
-            public function __construct(private PublisherInterface $p) {}
-            public function create(string $slug): PublisherInterface { return $this->p; }
-            public function createWithConfig(string $slug, array $config): PublisherInterface { return $this->p; }
+            public function __construct(private PublisherInterface $p)
+            {
+            }
+
+            public function create(string $slug): PublisherInterface
+            {
+                return $this->p;
+            }
+
+            public function createWithConfig(string $slug, array $config): PublisherInterface
+            {
+                return $this->p;
+            }
         };
 
         return new PublisherSelector($repo, $provider, $factory, new NullLogger());
