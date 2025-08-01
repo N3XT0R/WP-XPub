@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var array $publisher
+ * @var \N3XT0R\XPub\Infrastructure\Wordpress\I18n\Translator $translator
+ */
+
+?>
 <fieldset style="margin-top: 2rem; padding: 1rem; border: 1px solid #ccc;">
     <legend><strong><?= esc_html($publisher['name']) ?> <?= $translator->translateEscaped(
                 'Configuration'

@@ -37,7 +37,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
         <?php
         if (in_array($publisher['slug'], $activePublisherSlugs, true)): ?>
             <?php
-            View::render('admin.settings.oauth', ['publisher' => $publisher])
+            View::render('admin.settings.fieldset', ['publisher' => $publisher])
             ?>
         <?php
         endif; ?>
