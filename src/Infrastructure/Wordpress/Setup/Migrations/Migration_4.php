@@ -11,15 +11,15 @@ class Migration_4 extends AbstractMigration
 {
     protected function install(WPDB $wpdb): void
     {
-        OAuthPublisherSeederHelper::register('mastodon', 'Mastodon', [
+        OAuthPublisherSeederHelper::upsert('mastodon', 'Mastodon', [
             'grant_type' => 'authorization_code',
             'clientId' => '',
             'clientSecret' => '',
             'urlAccessToken' => 'https://mastodon.social/oauth/token',
             'urlAuthorize' => 'https://mastodon.social/oauth/authorize',
-            'urlResourceOwnerDetails' => 'https://mastodon.social/oauth/userinfo',
+            'urlResourceOwnerDetails' => 'https://mastodon.social/api/v1/accounts/verify_credentials',
             'scopes' => 'profile write:statuses',
-
+            'redirectUri' => get_rest_url(null, '/xpub/v1/oauth/mastodon/callback'),
         ]);
     }
 
@@ -27,5 +27,4 @@ class Migration_4 extends AbstractMigration
     {
         OAuthPublisherSeederHelper::unregister('mastodon');
     }
-
 }
