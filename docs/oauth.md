@@ -74,6 +74,38 @@ If state validation fails or an error occurs during token exchange, a `403` or `
 
 ---
 
+### 3. Request Client Credentials Token
+
+**URL:**
+
+```
+POST /wp-json/xpub/v1/oauth/{provider}/client-token
+```
+
+**Description:**
+
+Retrieves an access token using the client credentials grant. This is useful for server-to-server communication or
+automated publishing flows.
+
+**Body Parameters:**
+
+None.
+
+**Response:**
+
+```json
+{
+  "access_token": "abcdef...",
+  "expires": 1729999999,
+  "token_type": "Bearer",
+  "success": true
+}
+```
+
+If an error occurs, a `500` response is returned with details.
+
+---
+
 ### Endpoint: Token Status
 
 **URL:**
