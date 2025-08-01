@@ -37,5 +37,6 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
             'content' => fn() => View::render('admin.settings-page', $this->service->getSettingsViewData()),
         ]);
     }
+
 }
 

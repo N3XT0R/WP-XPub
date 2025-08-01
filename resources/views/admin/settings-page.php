@@ -50,3 +50,34 @@ use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
         </button>
     </p>
 </form>
+<script>
+    function xpubStartOAuthPopup(slug) {
+        const restRoot = <?= json_encode(rest_url()) ?>.replace(/\/$/, '');
+        const url = `${restRoot}/xpub/v1/oauth/${encodeURIComponent(slug)}/start`;
+
+        fetch(url)
+            .then(res => {
+                if (!res.ok) throw new Error(`OAuth start failed: ${res.status}`);
+                return res.json();
+            })
+            .then(data => {
+                if (data.url) {
+                    const width = 600;
+                    const height = 700;
+                    const left = (screen.width - width) / 2;
+                    const top = (screen.height - height) / 2;
+                    window.open(
+                        data.url,
+                        'xpubOAuthPopup',
+                        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
+                    );
+                } else {
+                    alert('No redirect URL received.');
+                }
+            })
+            .catch(err => {
+                console.error('OAuth error:', err);
+                alert('OAuth start failed.');
+            });
+    }
+</script>

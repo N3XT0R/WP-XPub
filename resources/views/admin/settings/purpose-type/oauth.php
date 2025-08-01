@@ -38,16 +38,13 @@ foreach ($group as $key => $value): ?>
 endforeach;
 
 
-$clientId = trim($group['clientId'] ?? '');
-if ($clientId !== ''):
-    $restStartUrl = esc_url(
-        rest_url('/xpub/v1/oauth/'.urlencode($publisher['slug']).'/start')
-    );
-    ?>
-    <div style="margin-top: 1.5rem;">
-        <a href="<?= $restStartUrl ?>" class="button button-secondary">
-            🔐 <?= $translator->translateEscaped('Authenticate with') ?> <?= esc_html($publisher['name']) ?>
-        </a>
+if (!empty($group['clientId'])): ?>
+    <div style="margin-top: 1rem;">
+        <button type="button"
+                class="button button-secondary"
+                onclick="xpubStartOAuthPopup('<?= esc_js($publisher['slug']) ?>')">
+            <?= $translator->translateEscaped('Authenticate with').' '.$publisher['name'] ?>
+        </button>
     </div>
 <?php
 endif; ?>
