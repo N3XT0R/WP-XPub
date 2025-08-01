@@ -8,11 +8,17 @@
 
 ?>
 
-    <h4 style="margin-top: 1.5rem;">oAuth <?= $translator->translateEscaped('Settings') ?></h4>
+<h4 style="margin-top: 1.5rem;">OAuth <?= $translator->translateEscaped('Settings') ?></h4>
+
 <?php
 foreach ($group as $key => $value): ?>
     <?php
     $inputId = 'config_'.esc_attr($publisher['slug'].'_'.$purposeType.'_'.$key);
+    $inputType = match ($key) {
+        'clientSecret' => 'password',
+        'redirectUri', 'urlAccessToken', 'urlAuthorize', 'urlResourceOwnerDetails' => 'url',
+        default => 'text',
+    };
     ?>
     <div style="margin-bottom: 1rem;">
         <label for="<?= $inputId ?>"
@@ -20,12 +26,28 @@ foreach ($group as $key => $value): ?>
             <?= $translator->translateEscaped($key) ?>:
         </label>
         <input
-                type="<?= $key === 'clientSecret' ? 'password' : 'text' ?>"
+                type="<?= $inputType ?>"
                 id="<?= $inputId ?>"
                 name="config[<?= esc_attr($publisher['slug']) ?>][<?= esc_attr($key) ?>]"
                 value="<?= esc_attr($value) ?>"
                 style="width: 100%; max-width: 400px;"
+            <?= $key === 'clientSecret' ? 'autocomplete="off"' : '' ?>
         >
     </div>
 <?php
 endforeach;
+
+
+$clientId = trim($group['clientId'] ?? '');
+if ($clientId !== ''):
+    $restStartUrl = esc_url(
+        rest_url('/xpub/v1/oauth/'.urlencode($publisher['slug']).'/start')
+    );
+    ?>
+    <div style="margin-top: 1.5rem;">
+        <a href="<?= $restStartUrl ?>" class="button button-secondary">
+            🔐 <?= $translator->translateEscaped('Authenticate with') ?> <?= esc_html($publisher['name']) ?>
+        </a>
+    </div>
+<?php
+endif; ?>
