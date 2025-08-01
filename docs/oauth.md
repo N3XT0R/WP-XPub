@@ -74,6 +74,33 @@ If state validation fails or an error occurs during token exchange, a `403` or `
 
 ---
 
+### Endpoint: Token Status
+
+**URL:**
+
+```
+GET /wp-json/xpub/v1/oauth/{provider}/status
+```
+
+**Description:**
+Checks whether a token for the given provider is currently stored and valid.
+
+**Response:**
+
+```json
+{
+  "connected": true
+}
+```
+
+or
+
+```json
+{
+  "connected": false
+}
+```
+
 ## 🧠 Internals
 
 ### Factory-based Provider Resolution
