@@ -28,20 +28,53 @@ final class JobRunnerTest extends TestCase
     {
         $entity = new Publisher('simple', 'Simple');
         $repo = new class($entity) implements PublisherRepositoryInterface {
-            public function __construct(private Publisher $p) {}
-            public function all(): array { return [$this->p]; }
-            public function findBySlug(string $slug, ?string $purposeType = null): ?Publisher { return $this->p; }
-            public function updateConfig(string $slug, array $newConfig): bool { return true; }
-            public function create(string $slug, string $name, array $config): bool { return true; }
+            public function __construct(private Publisher $p)
+            {
+            }
+
+            public function all(): array
+            {
+                return [$this->p];
+            }
+
+            public function findBySlug(string $slug, ?string $purposeType = null): ?Publisher
+            {
+                return $this->p;
+            }
+
+            public function updateConfig(string $slug, array $newConfig): bool
+            {
+                return true;
+            }
+
+            public function create(string $slug, string $name, array $config): bool
+            {
+                return true;
+            }
+
+            public function delete(string $slug): bool
+            {
+                return true;
+            }
         };
         $settings = new InMemorySettingsRepository([
             'xpub_publisher_targets' => ['simple'],
         ]);
         $provider = new PublisherTargetProvider($settings);
         $factory = new class($publisher) implements PublisherFactoryInterface {
-            public function __construct(private PublisherInterface $p) {}
-            public function create(string $slug): PublisherInterface { return $this->p; }
-            public function createWithConfig(string $slug, array $config): PublisherInterface { return $this->p; }
+            public function __construct(private PublisherInterface $p)
+            {
+            }
+
+            public function create(string $slug): PublisherInterface
+            {
+                return $this->p;
+            }
+
+            public function createWithConfig(string $slug, array $config): PublisherInterface
+            {
+                return $this->p;
+            }
         };
         return new PublisherSelector($repo, $provider, $factory, new NullLogger());
     }
@@ -51,8 +84,14 @@ final class JobRunnerTest extends TestCase
         $selector = $this->createSelector($publisher);
         $factory = new ArticleFactory();
         $statusRepo = new class($published) implements PostStatusRepositoryInterface {
-            public function __construct(private bool $ok) {}
-            public function isPublishedAndNotOutdated(int $postId): bool { return $this->ok; }
+            public function __construct(private bool $ok)
+            {
+            }
+
+            public function isPublishedAndNotOutdated(int $postId): bool
+            {
+                return $this->ok;
+            }
         };
         return new JobRunner($queue, $selector, $factory, $statusRepo, new NullLogger());
     }
