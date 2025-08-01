@@ -149,6 +149,7 @@ them via **Settings → XPUB** or seed them programmatically:
 use N3XT0R\XPub\Support\DefaultPublisherSeederHelper;
 
 DefaultPublisherSeederHelper::upsert('mastodon', 'Mastodon', [
+    'grant_type' => 'authorization_code', //or client_credentials
     'clientId' => '',
     'clientSecret' => '',
     'urlAuthorize' => 'https://your.instance/oauth/authorize',
