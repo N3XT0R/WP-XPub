@@ -33,6 +33,11 @@ final readonly class PublisherSeeder
         return $this->repository->create($slug, $name, $transformed);
     }
 
+    public function unregister(string $slug): bool
+    {
+        return $this->repository->delete($slug);
+    }
+
     public function upsert(string $slug, string $name, array $config = []): bool
     {
         $this->validateConfig($config);

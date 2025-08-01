@@ -33,4 +33,9 @@ final class OAuthPublisherSeederHelper implements OAuthPublisherSeederHelperInte
     {
         return self::makeSeeder()->upsert($slug, $name, $config);
     }
+
+    public static function unregister(string $slug): bool
+    {
+        return self::makeSeeder()->unregister($slug);
+    }
 }

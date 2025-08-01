@@ -29,4 +29,9 @@ final class DefaultPublisherSeederHelper implements OAuthPublisherSeederHelperIn
         return self::makeSeeder()->upsert($slug, $name, $config);
     }
 
+    public static function unregister(string $slug): bool
+    {
+        return self::makeSeeder()->unregister($slug);
+    }
+
 }

@@ -191,4 +191,13 @@ class PublisherRepository implements PublisherRepositoryInterface
 
         return PurposeType::DEFAULT;
     }
+
+    public function delete(string $slug): bool
+    {
+        $publisher = $this->findBySlug($slug);
+        $wpdb = Database::get();
+        $publisherTable = $wpdb->prefix.'xpub_publishers';
+
+        return false !== $wpdb->delete($publisherTable, ['slug' => $publisher->getSlug()]);
+    }
 }
