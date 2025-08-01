@@ -31,6 +31,8 @@ WP-XPub uses [PHP-DI](https://php-di.org/) to wire its services. The container i
 You can register your own services or override existing ones by implementing the `ContainerConfiguratorInterface`:
 
 ```php
+namespace MyPlugin\DI;
+
 use DI\ContainerBuilder;
 use N3XT0R\XPub\Shared\DI\ContainerConfiguratorInterface;
 
@@ -47,3 +49,9 @@ class MyConfigurator implements ContainerConfiguratorInterface
 
 Pass your configurator instance to the plugin bootstrap before calling `init()`.
 
+```php
+use MyPlugin\DI\MyConfigurator;
+use N3XT0R\XPub\Infrastructure\DI\ContainerProvider;
+
+ContainerProvider::addConfigurator(new MyConfigurator());
+```
