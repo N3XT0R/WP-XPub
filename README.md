@@ -23,7 +23,7 @@ external platforms – either instantly or via scheduled jobs.
 ## 🚀 Features
 
 - 🔁 Auto-publish WordPress posts to external platforms
-- 🔌 Built-in Dev.to driver (Mastodon example included) – extendable via plugin drivers
+- 🔌 Built-in Dev.to and Mastodon driver – extendable via plugin drivers
 - 🧩 Modular client driver system (easily extend to new platforms)
 - ⏱️ Publish immediately or schedule for later
 - 🧵 Custom pre- and post-publish hooks
