@@ -224,13 +224,28 @@ add_filter('wp_xpub_oauth_provider_map', static function (array $map): array {
 ## ➡️ Using Providers in Custom Publishers
 
 Within your own publisher you can request a token provider for a given slug.
-This allows you to reuse the stored credentials and the automatic refresh logic.
+Publishers that rely on OAuth must implement
+`SupportsOAuthFactoryInterface`, which causes the `PublisherFactory` to inject
+an `OAuthTokenProviderFactory` instance automatically. To avoid writing the
+boilerplate getter and setter, include the `SupportsOAuthFactoryTrait`.
 
 ```php
+use N3XT0R\XPub\Domain\Publishers\Contracts\SupportsOAuthFactoryInterface;
+use N3XT0R\XPub\Domain\Publishers\Traits\SupportsOAuthFactoryTrait;
 use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
 
-$provider = OAuthTokenProviderFactory::createFromPublisherSlug('mastodon');
-$token = $provider->getAccessToken();
+class MyPublisher extends PublisherAbstract implements SupportsOAuthFactoryInterface
+{
+    use SupportsOAuthFactoryTrait;
+
+    protected function handlePublish(Article $article): bool
+    {
+        $provider = $this->getOAuthTokenProviderFactory()->createFromPublisherSlug('mastodon');
+        $token = $provider->getAccessToken();
+        // ...
+        return true;
+    }
+}
 ```
 
 Pass the provider into your publisher class or use it directly when publishing.

@@ -48,7 +48,9 @@ composer require n3xt0r/wp-xpub
    ```
 
 3. Activate the plugin via WordPress Admin > Plugins.
-4. WP-XPub registers a cron task automatically. Ensure WP Cron runs on your site or configure a real cron job to trigger it.
+4. WP-XPub registers cron tasks automatically (one for the job queue and one for
+   token refresh). Ensure WP Cron runs on your site or configure a real cron job
+   to trigger them.
 
 ---
 
