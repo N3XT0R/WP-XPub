@@ -66,7 +66,10 @@ class PublisherRepository implements PublisherRepositoryInterface
 
         $success = true;
         foreach ($newConfig as $key => $item) {
-            $success = $success && $this->upsertConfig($wpdb, $configTable, $publisherId, $key, $item);
+            $result = $this->upsertConfig($wpdb, $configTable, $publisherId, $key, $item);
+            if (!$result) {
+                $success = false;
+            }
         }
 
         return $success;
