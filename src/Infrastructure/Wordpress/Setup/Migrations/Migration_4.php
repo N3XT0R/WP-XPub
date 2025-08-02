@@ -17,7 +17,7 @@ class Migration_4 extends AbstractMigration
             'urlAccessToken' => 'https://mastodon.social/oauth/token',
             'urlAuthorize' => 'https://mastodon.social/oauth/authorize',
             'urlResourceOwnerDetails' => 'https://mastodon.social/api/v1/accounts/verify_credentials',
-            'scopes' => 'profile write:statuses',
+            'scopes' => 'write:statuses',
             'redirectUri' => get_rest_url(null, '/xpub/v1/oauth/mastodon/callback'),
         ]);
     }
