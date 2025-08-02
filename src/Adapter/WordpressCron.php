@@ -46,11 +46,20 @@ final class WordpressCron
         if (!self::isRegistered()) {
             wp_schedule_event(time(), self::CRON_SCHEDULE, self::CRON_HOOK);
         }
+
+        if (!self::isRefreshRegistered()) {
+            wp_schedule_event(time(), 'xpub_every_ten_minutes', self::CRON_REFRESH_HOOK);;
+        }
     }
 
     public static function isRegistered(): bool
     {
         return wp_next_scheduled(self::CRON_HOOK) !== false;
+    }
+
+    private static function isRefreshRegistered(): bool
+    {
+        return wp_next_scheduled(self::CRON_REFRESH_HOOK) !== false;
     }
 
     public static function addSchedule(array $schedules): array
@@ -59,6 +68,12 @@ final class WordpressCron
             'interval' => self::CRON_INTERVAL,
             'display' => 'Every Minute',
         ];
+
+        $schedules['xpub_every_ten_minutes'] = [
+            'interval' => 600,
+            'display' => 'Every 10 Minutes',
+        ];
+
         return $schedules;
     }
 
@@ -67,6 +82,11 @@ final class WordpressCron
         $timestamp = wp_next_scheduled(self::CRON_HOOK);
         if ($timestamp !== false) {
             wp_unschedule_event($timestamp, self::CRON_HOOK);
+        }
+
+        $refreshTimestamp = wp_next_scheduled(self::CRON_REFRESH_HOOK);
+        if ($refreshTimestamp !== false) {
+            wp_unschedule_event($refreshTimestamp, self::CRON_REFRESH_HOOK);
         }
     }
 
