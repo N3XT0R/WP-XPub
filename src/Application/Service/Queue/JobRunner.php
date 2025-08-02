@@ -58,19 +58,23 @@ class JobRunner
 
         foreach ($publishers as $slug => $publisher) {
             if (!$publisher instanceof SupportsOAuthFactoryInterface) {
+                error_log('no support oauth interface'.$slug);
                 continue;
             }
 
             $factory = $publisher->getOAuthTokenProviderFactory();
             if (!$factory) {
+                error_log('no factory'.$slug);
                 continue;
             }
 
             try {
                 $provider = $factory->createFromPublisherSlug($slug);
-                if ($provider->hasRefreshToken() && $provider->shouldRefreshToken()) {
-                    if ($provider->refreshToken()) {
+                if ($provider->hasRefreshToken()) {
+                    if ($provider->shouldRefreshToken() && $provider->refreshToken()) {
                         $this->logger?->info("Token refreshed for $slug");
+                    } else {
+                        $this->logger?->info("No need to refresh token for $slug");
                     }
                 }
             } catch (\Throwable $e) {
