@@ -35,10 +35,8 @@ final class OAuthTokenProviderFactory
             throw new RuntimeException("Publisher '$slug' not found");
         }
 
-        $config = $publisher->getConfigArray();
-
-
-        return $this->create($slug, array_replace_recursive($config, $mergeConfig));
+        $config = array_replace_recursive($publisher->getConfigArray(), $mergeConfig);
+        return $this->create($slug, $config);
     }
 
     /**

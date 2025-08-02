@@ -45,7 +45,7 @@ final class OAuthProviderConfigBuilder
                 'urlResourceOwnerDetails',
                 'urlAuthorize'
             ],
-            'authorization_code' => ['clientId', 'redirectUri', 'urlAuthorize', 'urlAccessToken'],
+            'authorization_code' => ['clientId', 'clientSecret', 'redirectUri', 'urlAuthorize', 'urlAccessToken'],
             default => throw new \InvalidArgumentException("Unsupported grant_type: $grantType"),
         };
     }

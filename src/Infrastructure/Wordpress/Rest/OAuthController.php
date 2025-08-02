@@ -69,7 +69,7 @@ class OAuthController
         }
 
         try {
-            $provider = $this->factory->createFromPublisherSlug($slug, ['grant_type' => 'client_credentials']);
+            $provider = $this->factory->createFromPublisherSlug($slug, ['grant_type' => 'authorization_code']);
             $accessToken = $provider->fetchAccessTokenByCode($request->get_param('code'));
             $provider->storeAccessToken($accessToken);
 
