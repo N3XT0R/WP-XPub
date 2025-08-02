@@ -40,8 +40,22 @@ src/
 ## Queue & Scheduling
 
 When a post is saved, WP-XPub stores publishing jobs in its own queue table. A
-WordPress cron task runs every minute and processes pending jobs. This ensures
-that articles are published asynchronously without blocking the editor.
+WordPress cron task `xpub_run_job_runner` runs every minute (`xpub_every_minute`)
+and processes pending jobs.
+
+OAuth tokens are kept up to date by a second task `xpub_refresh_tokens`, which
+is scheduled every ten minutes (`xpub_every_ten_minutes`).
+
+Together these tasks ensure that articles are published asynchronously without
+blocking the editor and that token-based publishers stay authenticated.
+
+## OAuth-aware Publishers
+
+Publishers that work with OAuth tokens signal support by implementing
+`SupportsOAuthFactoryInterface`. The `PublisherFactory` automatically injects an
+`OAuthTokenProviderFactory` for these classes. To reduce boilerplate, publishers
+can include the `SupportsOAuthFactoryTrait`, which provides the required
+getter/setter implementation.
 
 ## Dependency Injection
 
