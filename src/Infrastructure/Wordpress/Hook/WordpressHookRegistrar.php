@@ -28,7 +28,10 @@ final readonly class WordpressHookRegistrar
 
         // Installation-related hooks (triggered by WP only once per lifecycle event)
         register_activation_hook($pluginFile, [WordpressPlugin::class, 'onActivate']);
-        //register_deactivation_hook($pluginFile, [WordpressPlugin::class, 'onUninstall']);
+        if (defined('WP_DEVELOPMENT_MODE') && WP_DEVELOPMENT_MODE === true) {
+            register_deactivation_hook($pluginFile, [WordpressPlugin::class, 'onUninstall']);
+        }
+        
         register_uninstall_hook($pluginFile, [WordpressPlugin::class, 'onUninstall']);
 
         // Application-specific action hooks (e.g. post save listeners, API callbacks)
