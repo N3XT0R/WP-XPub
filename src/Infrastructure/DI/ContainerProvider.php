@@ -48,7 +48,8 @@ final class ContainerProvider
             ? wp_get_environment_type()
             : 'production';
 
-        if (!in_array($env, ['local', 'development'], true)) {
+        if (!in_array($env, ['local', 'development'], true) ||
+            defined('WP_DEVELOPMENT_MODE') && WP_DEVELOPMENT_MODE !== true) {
             $builder->writeProxiesToFile(true, $cacheDir.'/proxies');
             $builder->enableCompilation($cacheDir.'/compiled');
         }

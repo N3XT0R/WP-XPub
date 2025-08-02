@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Rest;
 
 use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
+use Psr\Log\LoggerInterface;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
 class OAuthController
 {
-    public function __construct(private OAuthTokenProviderFactory $factory)
+    public function __construct(private OAuthTokenProviderFactory $factory, private LoggerInterface $logger)
     {
     }
 
@@ -53,6 +54,7 @@ class OAuthController
 
             return new WP_REST_Response(['url' => $authUrl]);
         } catch (\Throwable $e) {
+            $this->logger->error('oAuth Error: '.$e->getMessage(), ['exception' => $e]);
             return new WP_Error('oauth_error', $e->getMessage(), ['status' => 500]);
         }
     }
@@ -67,7 +69,7 @@ class OAuthController
         }
 
         try {
-            $provider = $this->factory->createFromPublisherSlug($slug);
+            $provider = $this->factory->createFromPublisherSlug($slug, ['grant_type' => 'client_credentials']);
             $accessToken = $provider->fetchAccessTokenByCode($request->get_param('code'));
             $provider->storeAccessToken($accessToken);
 
@@ -75,6 +77,7 @@ class OAuthController
 
             return new WP_REST_Response(['success' => true]);
         } catch (\Throwable $e) {
+            $this->logger->error('oAuth Error: '.$e->getMessage(), ['exception' => $e]);
             return new WP_Error('oauth_error', $e->getMessage(), ['status' => 500]);
         }
     }
@@ -94,6 +97,7 @@ class OAuthController
                 'success' => true,
             ]);
         } catch (\Throwable $e) {
+            $this->logger->error('oAuth Error: '.$e->getMessage(), ['exception' => $e]);
             return new WP_Error('oauth_error', $e->getMessage(), ['status' => 500]);
         }
     }

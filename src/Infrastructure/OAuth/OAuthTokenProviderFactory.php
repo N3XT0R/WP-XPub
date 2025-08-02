@@ -16,7 +16,7 @@ use RuntimeException;
 final class OAuthTokenProviderFactory
 {
     /**
-     * @param array<string, class-string<OAuthTokenProviderInterface>> $providerMap
+     * @param  array<string, class-string<OAuthTokenProviderInterface>>  $providerMap
      */
     public function __construct(
         private PublisherRepository $repository,
@@ -27,7 +27,7 @@ final class OAuthTokenProviderFactory
     ) {
     }
 
-    public function createFromPublisherSlug(string $slug): OAuthTokenProviderInterface
+    public function createFromPublisherSlug(string $slug, array $mergeConfig = []): OAuthTokenProviderInterface
     {
         $publisher = $this->repository->findBySlug($slug, PurposeType::OAUTH);
 
@@ -35,7 +35,10 @@ final class OAuthTokenProviderFactory
             throw new RuntimeException("Publisher '$slug' not found");
         }
 
-        return $this->create($slug, $publisher->getConfigArray());
+        $config = $publisher->getConfigArray();
+
+
+        return $this->create($slug, array_replace_recursive($config, $mergeConfig));
     }
 
     /**

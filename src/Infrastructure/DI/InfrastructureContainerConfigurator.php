@@ -86,8 +86,8 @@ final readonly class InfrastructureContainerConfigurator implements ContainerCon
             SettingsSaveHandler::class => autowire(SettingsSaveHandler::class),
             SettingsPageRegistrar::class => autowire(SettingsPageRegistrar::class),
             MetaBox::class => autowire(MetaBox::class),
+            LoggerInterface::class => factory(fn() => LoggerFactory::create()),
             OAuthController::class => autowire(OAuthController::class),
-            LoggerInterface::class => factory([LoggerFactory::class, 'create']),
         ]);
     }
 }
