@@ -10,6 +10,8 @@ use N3XT0R\XPub\Domain\Contracts\ConfigurablePublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\SlugAwareInterface;
 use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
+use N3XT0R\XPub\Domain\Publisher\Contracts\SupportsOAuthFactoryInterface;
+use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use RuntimeException;
 
@@ -100,6 +102,10 @@ final class PublisherFactory
 
         if ($instance instanceof SlugAwareInterface) {
             $instance->setSlug($slug);
+        }
+
+        if ($instance instanceof SupportsOAuthFactoryInterface) {
+            $instance->setOAuthTokenProviderFactory(self::$container->get(OAuthTokenProviderFactory::class));
         }
 
         return $instance;

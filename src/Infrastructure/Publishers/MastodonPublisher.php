@@ -5,15 +5,25 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\Publishers;
 
 use N3XT0R\XPub\Domain\Entity\Article;
-use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
+use N3XT0R\XPub\Domain\Publisher\Contracts\SupportsOAuthFactoryInterface;
+use N3XT0R\XPub\Domain\Publisher\Traits\SupportsOAuthFactoryTrait;
 
-class MastodonPublisher extends PublisherAbstract
+class MastodonPublisher extends PublisherAbstract implements SupportsOAuthFactoryInterface
 {
+
+    use SupportsOAuthFactoryTrait;
+
     private const API_ENDPOINT = 'https://mastodon.social/api/v1/statuses';
 
     protected function handlePublish(Article $article): bool
     {
-        $provider = OAuthTokenProviderFactory::createFromPublisherSlug('mastodon');
+        $factory = $this->getOAuthTokenProviderFactory();
+        if (!$factory) {
+            $this->error('OAuthTokenProviderFactory not available for Mastodon.');
+            return false;
+        }
+
+        $provider = $factory->createFromPublisherSlug('mastodon');
         $token = $provider->getAccessToken();
 
         if (empty($token)) {
@@ -41,9 +51,10 @@ class MastodonPublisher extends PublisherAbstract
         }
 
         $code = wp_remote_retrieve_response_code($response);
-        if ($code !== 200) {
+        if ($code !== 200 && $code !== 201) {
             $body = wp_remote_retrieve_body($response);
-            $this->error("Mastodon response ($code): $body");
+            $errorMsg = json_decode($body, true)['error'] ?? $body;
+            $this->error("Mastodon response ($code): $errorMsg");
             return false;
         }
 
