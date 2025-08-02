@@ -34,17 +34,6 @@ class Migration_3 extends AbstractMigration
                     MODIFY COLUMN config_value TEXT NOT NULL
                 "
         );
-        /*
-        OAuthPublisherSeederHelper::register('mastodon', 'Mastodon', [
-            'grant_type' => 'client_credentials',
-            'clientId' => '',
-            'clientSecret' => '',
-            'urlAccessToken' => 'https://mastodon.social/oauth/token',
-            'urlAuthorize' => 'https://mastodon.social/oauth/authorize',
-            'urlResourceOwnerDetails' => 'https://mastodon.social/oauth/userinfo',
-            'scopes' => 'profile write:statuses',
-
-        ]);*/
     }
 
     protected function uninstall(WPDB $wpdb): void

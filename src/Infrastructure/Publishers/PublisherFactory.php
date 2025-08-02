@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Publishers;
 
+use DI\Container;
 use LogicException;
 use N3XT0R\XPub\Domain\Contracts\ConfigurablePublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\PublisherInterface;
 use N3XT0R\XPub\Domain\Contracts\SlugAwareInterface;
 use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
-use DI\Container;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use RuntimeException;
 
@@ -77,7 +77,7 @@ final class PublisherFactory
     {
         return [
             'devto' => DevToPublisher::class,
-            //'mastodon' => MastodonPublisher::class,
+            'mastodon' => MastodonPublisher::class,
         ];
     }
 
