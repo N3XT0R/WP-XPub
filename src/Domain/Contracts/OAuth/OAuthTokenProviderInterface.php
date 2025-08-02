@@ -19,4 +19,8 @@ interface OAuthTokenProviderInterface
     public function getState(): string;
 
     public function fetchAccessTokenByCode(string $code): AccessTokenInterface;
+
+    public function hasRefreshToken(): bool;
+
+    public function shouldRefreshToken(): bool;
 }

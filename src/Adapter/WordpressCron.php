@@ -15,6 +15,8 @@ final class WordpressCron
     public const CRON_SCHEDULE = 'xpub_every_minute';
     private const CRON_INTERVAL = 60;
 
+    public const CRON_REFRESH_HOOK = 'xpub_refresh_tokens';
+
     private static ?Container $container = null;
 
     public static function setContainer(Container $container): void
@@ -36,6 +38,7 @@ final class WordpressCron
         self::container();
         add_filter('cron_schedules', [self::class, 'addSchedule']);
         add_action(self::CRON_HOOK, [self::class, 'run']);
+        add_action(self::CRON_REFRESH_HOOK, [self::class, 'refreshTokens']);
     }
 
     public static function schedule(): void
@@ -75,4 +78,15 @@ final class WordpressCron
         $jobRunner = self::container()->get(JobRunner::class);
         $jobRunner->run();
     }
+
+    public static function refreshTokens(): void
+    {
+        PublisherFactory::setFilterDispatcher(
+            self::container()->get(FilterDispatcherInterface::class)
+        );
+        $jobRunner = self::container()->get(JobRunner::class);
+        $jobRunner->refreshTokens();
+    }
+
+
 }

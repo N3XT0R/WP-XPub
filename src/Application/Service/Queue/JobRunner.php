@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use N3XT0R\XPub\Application\Publisher\PublisherSelector;
 use N3XT0R\XPub\Domain\Contracts\Factory\ArticleFactoryInterface;
 use N3XT0R\XPub\Domain\Contracts\QueueRepositoryInterface;
+use N3XT0R\XPub\Domain\Publishers\Contracts\SupportsOAuthFactoryInterface;
 use N3XT0R\XPub\Domain\Repository\PostStatusRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
@@ -51,5 +52,33 @@ class JobRunner
         }
     }
 
+    public function refreshTokens(): void
+    {
+        $publishers = $this->publisherSelector->getActive();
 
+        foreach ($publishers as $slug => $publisher) {
+            if (!$publisher instanceof SupportsOAuthFactoryInterface) {
+                continue;
+            }
+
+            $factory = $publisher->getOAuthTokenProviderFactory();
+            if (!$factory) {
+                continue;
+            }
+
+            try {
+                $provider = $factory->createFromPublisherSlug($slug);
+                if ($provider->hasRefreshToken() && $provider->shouldRefreshToken()) {
+                    if ($provider->refreshToken()) {
+                        $this->logger?->info("Token refreshed for $slug");
+                    }
+                }
+            } catch (\Throwable $e) {
+                $this->logger?->error(
+                    sprintf("Failed to refresh token for %s: %s", $slug, $e->getMessage()),
+                    ['exception' => $e]
+                );
+            }
+        }
+    }
 }

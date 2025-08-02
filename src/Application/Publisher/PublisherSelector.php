@@ -53,6 +53,9 @@ final readonly class PublisherSelector
         return $instances;
     }
 
+    /**
+     * @return array<PublisherInterface>
+     */
     public function getActive(): array
     {
         $instances = [];

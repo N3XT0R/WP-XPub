@@ -109,4 +109,26 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
         return $this->provider->getAccessToken('client_credentials');
     }
 
+    public function hasRefreshToken(): bool
+    {
+        $tokenData = $this->settings->get($this->storageKey);
+        return !empty($tokenData['refresh_token']);
+    }
+
+    public function shouldRefreshToken(): bool
+    {
+        $tokenData = $this->settings->get($this->storageKey);
+        if (!is_array($tokenData)) {
+            return false;
+        }
+
+        $expires = $tokenData['expires'] ?? null;
+        if ($expires === null) {
+            return false;
+        }
+
+        return time() >= ((int)$expires - 60);
+    }
+
+
 }

@@ -89,6 +89,12 @@ class WPDBQueueRepository implements QueueRepositoryInterface
         return !$isPending || !$samePayload || !$sameSchedule;
     }
 
+    /**
+     * @param  \DateTimeImmutable  $now
+     * @param  int  $maxAttempts
+     * @return array<Job>
+     * @throws \Exception
+     */
     public function getAllDueJobs(\DateTimeImmutable $now, int $maxAttempts = 5): array
     {
         $pending = $this->getDueJobs($now);
