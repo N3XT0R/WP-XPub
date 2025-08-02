@@ -47,6 +47,7 @@ private static function getDefaultPublisherArray(): array
 {
     return [
         'devto' => DevToPublisher::class,
+        'mastodon' => MastodonPublisher::class,
     ];
 }
 
