@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\Publishers;
 
 use N3XT0R\XPub\Domain\Entity\Article;
-use N3XT0R\XPub\Domain\Publisher\Contracts\SupportsOAuthFactoryInterface;
-use N3XT0R\XPub\Domain\Publisher\Traits\SupportsOAuthFactoryTrait;
+use N3XT0R\XPub\Domain\Publishers\Contracts\SupportsOAuthFactoryInterface;
+use N3XT0R\XPub\Domain\Publishers\Traits\SupportsOAuthFactoryTrait;
 
 class MastodonPublisher extends PublisherAbstract implements SupportsOAuthFactoryInterface
 {

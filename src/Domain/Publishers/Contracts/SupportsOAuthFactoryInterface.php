@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Domain\Publisher\Contracts;
+namespace N3XT0R\XPub\Domain\Publishers\Contracts;
 
 use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
 
