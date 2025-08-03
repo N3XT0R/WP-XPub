@@ -8,6 +8,7 @@ use League\OAuth2\Client\Provider\GenericProvider;
 use N3XT0R\XPub\Domain\Config\oAuth\OAuthProviderConfigBuilder;
 use N3XT0R\XPub\Domain\Config\PurposeType;
 use N3XT0R\XPub\Domain\Contracts\OAuth\OAuthTokenProviderInterface;
+use N3XT0R\XPub\Infrastructure\OAuth\Provider\LinkedInOAuthTokenProvider;
 use N3XT0R\XPub\Infrastructure\OAuth\Support\GrantTypeResolver;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
@@ -23,6 +24,7 @@ final class OAuthTokenProviderFactory
         private WordpressSettingsRepository $settingsRepo,
         private array $providerMap = [
             'mastodon' => \N3XT0R\XPub\Infrastructure\OAuth\Provider\MastodonOAuthTokenProvider::class,
+            'linkedin' => LinkedInOAuthTokenProvider::class,
         ],
     ) {
     }
