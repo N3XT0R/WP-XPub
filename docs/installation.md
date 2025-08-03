@@ -94,10 +94,12 @@ OAuth tokens are stored securely via your configured `SettingsRepository`.
 
 ### Available Publishers (OAuth)
 
-| Publisher Slug | Platform | Grant Type           | Scopes Example                           |
-|----------------|----------|----------------------|------------------------------------------|
-| `linkedin`     | LinkedIn | `authorization_code` | `w_member_social`, `r_liteprofile`, etc. |
-| `mastodon`     | Mastodon | `authorization_code` | `write:statuses`                         |
+### Available Publishers (OAuth)
+
+| Publisher Slug | Platform | Grant Type           | Scopes Example                           | Setup Link                             |
+|----------------|----------|----------------------|------------------------------------------|----------------------------------------|
+| `linkedin`     | LinkedIn | `authorization_code` | `w_member_social`, `r_liteprofile`, etc. | [setup/linkedin.md](setup/linkedin.md) |
+| `mastodon`     | Mastodon | `authorization_code` | `write:statuses`                         | [setup/mastodon.md](setup/mastodon.md) |
 
 More platforms can be added by extending `PublisherAbstract` and using `SupportsOAuthFactoryTrait`.
 
