@@ -2,13 +2,14 @@
 
 namespace N3XT0R\XPub\Tests\Infrastructure\OAuth;
 
-use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
 use N3XT0R\XPub\Domain\Config\PurposeType;
 use N3XT0R\XPub\Domain\Entity\Publisher;
+use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
 use N3XT0R\XPub\Infrastructure\OAuth\Provider\MastodonOAuthTokenProvider;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 class OAuthTokenProviderFactoryTest extends TestCase
 {
@@ -26,7 +27,7 @@ class OAuthTokenProviderFactoryTest extends TestCase
         $repository->method('findBySlug')->with('mastodon', PurposeType::OAUTH)->willReturn($publisher);
         $settings = $this->createMock(WordpressSettingsRepository::class);
 
-        $factory = new OAuthTokenProviderFactory($repository, $settings);
+        $factory = new OAuthTokenProviderFactory($repository, $settings, new NullLogger());
         $provider = $factory->createFromPublisherSlug('mastodon');
         $this->assertInstanceOf(MastodonOAuthTokenProvider::class, $provider);
     }
@@ -37,7 +38,7 @@ class OAuthTokenProviderFactoryTest extends TestCase
         $repository->method('findBySlug')->willReturn(null);
         $settings = $this->createMock(WordpressSettingsRepository::class);
 
-        $factory = new OAuthTokenProviderFactory($repository, $settings);
+        $factory = new OAuthTokenProviderFactory($repository, $settings, new NullLogger());
         $this->expectException(\RuntimeException::class);
         $factory->createFromPublisherSlug('unknown');
     }
