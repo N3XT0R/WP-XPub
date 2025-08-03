@@ -13,6 +13,7 @@ use N3XT0R\XPub\Infrastructure\OAuth\Provider\MastodonOAuthTokenProvider;
 use N3XT0R\XPub\Infrastructure\OAuth\Support\GrantTypeResolver;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 
 final class OAuthTokenProviderFactory
@@ -23,6 +24,7 @@ final class OAuthTokenProviderFactory
     public function __construct(
         private PublisherRepository $repository,
         private WordpressSettingsRepository $settingsRepo,
+        private LoggerInterface $logger,
         private array $providerMap = [
             'mastodon' => MastodonOAuthTokenProvider::class,
             'linkedin' => LinkedInOAuthTokenProvider::class,
@@ -70,6 +72,7 @@ final class OAuthTokenProviderFactory
         return new $class(
             new GenericProvider($providerConfig),
             $this->settingsRepo,
+            $this->logger,
             $grantType
         );
     }

@@ -21,6 +21,7 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
     public function __construct(
         GenericProvider $provider,
         SettingsRepositoryInterface $settings,
+        LoggerInterface $logger,
         string $storageKey,
         string $grantType = 'authorization_code'
     ) {
@@ -28,6 +29,7 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
         $this->settings = $settings;
         $this->storageKey = $storageKey;
         $this->grantType = $grantType;
+        $this->logger = $logger;
     }
 
     public function getAccessToken(): ?string
