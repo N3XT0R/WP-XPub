@@ -11,6 +11,8 @@ use N3XT0R\XPub\Domain\DI\DomainContainerConfigurator;
 use N3XT0R\XPub\Shared\DI\ContainerConfiguratorInterface;
 use N3XT0R\XPub\Shared\Plugin\PluginContext;
 
+use function DI\value;
+
 final class ContainerProvider
 {
     private static ?Container $container = null;
@@ -62,6 +64,10 @@ final class ContainerProvider
 
     private static function configure(ContainerBuilder $builder): void
     {
+        $builder->addDefinitions([
+            PluginContext::class => value(self::$pluginContext),
+        ]);
+
         $configurators = [
             new ApplicationContainerConfigurator(),
             new DomainContainerConfigurator(),

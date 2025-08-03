@@ -56,11 +56,7 @@ final class WordpressPlugin
         PublisherFactory::setFilterDispatcher(
             self::container()->get(FilterDispatcherInterface::class)
         );
-        $updateManager = self::container()->make(PluginUpdateManager::class, [
-            'pluginFile' => plugin_basename($pluginFile),
-            'pluginSlug' => 'xpub-multi-channel-publisher',
-            'pluginInfoUrl' => 'https://github.com/N3XT0R/WP-XPub',
-        ]);
+        $updateManager = self::container()->get(PluginUpdateManager::class);
 
         $hookProvider = self::container()->make(HookProvider::class, [
             'saveHandler' => self::container()->get(SettingsSaveHandler::class),

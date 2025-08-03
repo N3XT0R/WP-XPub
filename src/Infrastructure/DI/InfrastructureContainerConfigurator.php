@@ -84,13 +84,12 @@ final readonly class InfrastructureContainerConfigurator implements ContainerCon
             MetaBox::class => autowire(MetaBox::class),
             LoggerInterface::class => factory(fn() => LoggerFactory::create()),
             OAuthController::class => autowire(OAuthController::class),
-            ClearContainerCacheInterface::class => static function () {
-                return new ContainerCacheCleaner($this->pluginContext);
-            },
+            ClearContainerCacheInterface::class => create(ContainerCacheCleaner::class)
+                ->constructor(get(PluginContext::class)),
             PluginUpdateManager::class => create()->constructor(
-                $this->pluginContext,
+                get(PluginContext::class),
                 autowire(ReleaseService::class),
-                autowire(ClearContainerCacheInterface::class)
+                get(ClearContainerCacheInterface::class)
             ),
         ]);
     }
