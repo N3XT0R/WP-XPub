@@ -80,6 +80,7 @@ final class PublisherFactory
         return [
             'devto' => DevToPublisher::class,
             'mastodon' => MastodonPublisher::class,
+            'linkedin' => LinkedInPublisher::class,
         ];
     }
 
