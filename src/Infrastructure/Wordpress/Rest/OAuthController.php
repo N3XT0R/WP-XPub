@@ -70,7 +70,7 @@ class OAuthController
 
         try {
             $provider = $this->factory->createFromPublisherSlug($slug, ['grant_type' => 'authorization_code']);
-            $accessToken = $provider->fetchAccessTokenByCode($request->get_param('code'));
+            $accessToken = $provider->fetchAccessTokenByCode((string)$request->get_param('code'));
             $provider->storeAccessToken($accessToken);
 
             update_user_meta(get_current_user_id(), 'xpub_oauth_'.$slug.'_connected', true);
