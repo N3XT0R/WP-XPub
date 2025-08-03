@@ -215,8 +215,6 @@ use N3XT0R\XPub\Infrastructure\OAuth\AbstractOAuthTokenProvider;
 
 declare(strict_types=1);
 
-namespace N3XT0R\XPub\Infrastructure\OAuth\Provider;
-
 use League\OAuth2\Client\Provider\GenericProvider;
 use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
 
