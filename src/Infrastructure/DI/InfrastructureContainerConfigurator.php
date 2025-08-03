@@ -58,12 +58,6 @@ final readonly class InfrastructureContainerConfigurator implements ContainerCon
     public function configure(ContainerBuilder $builder): void
     {
         $builder->addDefinitions([
-            PluginUpdateManager::class => create()->constructor(
-                plugin_basename($this->pluginContext->pluginFile),
-                $this->pluginContext->pluginSlug,
-                $this->pluginContext->pluginInfoUrl,
-                autowire(ReleaseService::class)
-            ),
             // Core repositories and services
             PublisherRepositoryInterface::class => autowire(PublisherRepository::class),
             SettingsRepositoryInterface::class => autowire(WordpressSettingsRepository::class),
@@ -93,6 +87,11 @@ final readonly class InfrastructureContainerConfigurator implements ContainerCon
             ClearContainerCacheInterface::class => static function () {
                 return new ContainerCacheCleaner($this->pluginContext);
             },
+            PluginUpdateManager::class => create()->constructor(
+                $this->pluginContext,
+                autowire(ReleaseService::class),
+                autowire(ClearContainerCacheInterface::class)
+            ),
         ]);
     }
 }

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Updater;
 
 use DI\Container;
+use N3XT0R\XPub\Application\Cache\ClearContainerCacheInterface;
 use N3XT0R\XPub\Domain\Contracts\ReleaseProviderInterface;
+use N3XT0R\XPub\Shared\Plugin\PluginContext;
 
 use function get_plugin_data;
 
@@ -16,16 +18,18 @@ class PluginUpdateManager
     private string $pluginInfoUrl;
     private ReleaseProviderInterface $releaseService;
 
+    private ClearContainerCacheInterface $clearContainerCache;
+
     public function __construct(
-        string $pluginFile,
-        string $pluginSlug,
-        string $pluginInfoUrl,
+        PluginContext $pluginContext,
         ReleaseProviderInterface $releaseService,
+        ClearContainerCacheInterface $clearContainerCache,
     ) {
-        $this->pluginFile = $pluginFile;
-        $this->pluginSlug = $pluginSlug;
-        $this->pluginInfoUrl = $pluginInfoUrl;
+        $this->pluginFile = $pluginContext->pluginFile;
+        $this->pluginSlug = $pluginContext->pluginSlug;
+        $this->pluginInfoUrl = $pluginContext->pluginInfoUrl;
         $this->releaseService = $releaseService;
+        $this->clearContainerCache = $clearContainerCache;
     }
 
     public static function boot(string $pluginFile, Container $container): void
@@ -60,6 +64,7 @@ class PluginUpdateManager
         if (isset($_GET['manual_xpub_update_check'])) {
             delete_site_transient('update_plugins');
             wp_update_plugins();
+            $this->clearContainerCache->clear();
             wp_safe_redirect(admin_url('plugins.php?xpub_update_checked=1'));
             exit;
         }
