@@ -71,7 +71,7 @@ final class ContainerProvider
         $configurators = [
             new ApplicationContainerConfigurator(),
             new DomainContainerConfigurator(),
-            new InfrastructureContainerConfigurator(self::$pluginContext),
+            new InfrastructureContainerConfigurator(),
             ...self::$customConfigurators,
         ];
 

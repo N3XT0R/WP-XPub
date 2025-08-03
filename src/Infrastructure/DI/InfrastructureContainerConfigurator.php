@@ -51,10 +51,6 @@ use function DI\value;
 
 final readonly class InfrastructureContainerConfigurator implements ContainerConfiguratorInterface
 {
-    public function __construct(private PluginContext $pluginContext)
-    {
-    }
-
     public function configure(ContainerBuilder $builder): void
     {
         $builder->addDefinitions([
