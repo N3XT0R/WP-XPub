@@ -76,6 +76,33 @@ You may then symlink it into your WordPress `plugins/` directory or load via Bed
 
 ---
 
+## 🔐 OAuth Publisher Configuration
+
+WP-XPub supports OAuth2-based publishing to platforms like **LinkedIn**, **Mastodon**, and others.  
+Each publisher is modular and can be configured independently via a migration or admin UI.
+
+To enable an OAuth-based publisher:
+
+1. Make sure the corresponding migration exists (e.g. `Migration_5` for LinkedIn)
+2. Ensure proper `clientId`, `clientSecret`, and redirect URIs are configured
+3. Use `OAuthPublisherSeederHelper::upsert()` to register the service
+4. Authenticate the publisher via the WordPress backend once credentials are set
+
+OAuth tokens are stored securely via your configured `SettingsRepository`.
+
+> 📄 See [`setup/linkedin.md`](setup/linkedin.md) for a full example on how to configure the LinkedIn Publisher.
+
+### Available Publishers (OAuth)
+
+| Publisher Slug | Platform | Grant Type           | Scopes Example                           |
+|----------------|----------|----------------------|------------------------------------------|
+| `linkedin`     | LinkedIn | `authorization_code` | `w_member_social`, `r_liteprofile`, etc. |
+| `mastodon`     | Mastodon | `authorization_code` | `write:statuses`                         |
+
+More platforms can be added by extending `PublisherAbstract` and using `SupportsOAuthFactoryTrait`.
+
+---
+
 ## ❗ Known WordPress Linter Limitations
 
 This plugin is built following clean, hexagonal architecture.  
