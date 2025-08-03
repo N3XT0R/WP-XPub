@@ -133,6 +133,8 @@ or
 }
 ```
 
+---
+
 ## 🧠 Internals
 
 ### Factory-based Provider Resolution
@@ -204,59 +206,79 @@ attacks.
 
 ## 🔧 Adding a New Provider
 
-1. Implement a new `OAuthTokenProviderInterface` (usually extend
-   `AbstractOAuthTokenProvider`).
-2. Register it via the provider map filter:
+### 1. Create a Provider Class
+
+```php
+use N3XT0R\XPub\Infrastructure\OAuth\AbstractOAuthTokenProvider;
+
+class MyCustomOAuthProvider extends AbstractOAuthTokenProvider
+{
+    protected function getProviderInstance(array $options): AbstractProvider
+    {
+        return new \League\OAuth2\Client\Provider\GenericProvider([
+            'clientId' => $options['clientId'],
+            'clientSecret' => $options['clientSecret'],
+            'redirectUri' => $options['redirectUri'],
+            'urlAuthorize' => $options['urlAuthorize'],
+            'urlAccessToken' => $options['urlAccessToken'],
+            'urlResourceOwnerDetails' => $options['urlResourceOwnerDetails'],
+        ]);
+    }
+
+    public function getSlug(): string
+    {
+        return 'mycustom';
+    }
+}
+```
+
+### 2. Register the Provider
 
 ```php
 add_filter('wp_xpub_oauth_provider_map', static function (array $map): array {
-    $map['yourprovider'] = \Your\Namespace\YourOAuthTokenProvider::class;
+    $map['mycustom'] = \My\Namespace\MyCustomOAuthProvider::class;
     return $map;
 });
 ```
 
-3. Register the publisher slug and store its credentials via the XPUB settings
-   screen (or with `PublisherSeederHelper::upsert()` as shown above).
-4. Done! The REST endpoints now work automatically.
+### 3. Seed the Publisher
+
+```php
+DefaultPublisherSeederHelper::upsert('mycustom', 'My Custom Provider', [
+    'grant_type' => 'authorization_code',
+    'clientId' => '...',
+    'clientSecret' => '...',
+    'urlAuthorize' => 'https://example.com/oauth/authorize',
+    'urlAccessToken' => 'https://example.com/oauth/token',
+    'urlResourceOwnerDetails' => 'https://example.com/api/me',
+]);
+```
 
 ---
 
 ## ➡️ Using Providers in Custom Publishers
 
-Within your own publisher you can request a token provider for a given slug.
-Publishers that rely on OAuth must implement
-`SupportsOAuthFactoryInterface`, which causes the `PublisherFactory` to inject
-an `OAuthTokenProviderFactory` instance automatically. To avoid writing the
-boilerplate getter and setter, include the `SupportsOAuthFactoryTrait`.
+Within your publisher:
 
 ```php
-use N3XT0R\XPub\Domain\Publishers\Contracts\SupportsOAuthFactoryInterface;
-use N3XT0R\XPub\Domain\Publishers\Traits\SupportsOAuthFactoryTrait;
-use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
-
 class MyPublisher extends PublisherAbstract implements SupportsOAuthFactoryInterface
 {
     use SupportsOAuthFactoryTrait;
 
     protected function handlePublish(Article $article): bool
     {
-        $provider = $this->getOAuthTokenProviderFactory()->createFromPublisherSlug('mastodon');
+        $provider = $this->getOAuthTokenProviderFactory()->createFromPublisherSlug('mycustom');
         $token = $provider->getAccessToken();
-        // ...
         return true;
     }
 }
 ```
 
-Pass the provider into your publisher class or use it directly when publishing.
-
 ---
 
 ## 📁 Files Involved
 
-- `OAuthTokenProviderFactory.php` – resolves the correct provider
-- `OAuthController.php` – handles REST API logic
-- `AbstractOAuthTokenProvider.php` – base class with token logic
-- Provider classes (e.g. `MastodonOAuthTokenProvider.php`) – implement logic for each platform
-
----
+- `OAuthTokenProviderFactory.php`
+- `OAuthController.php`
+- `AbstractOAuthTokenProvider.php`
+- Custom provider classes (e.g. `MyCustomOAuthProvider.php`)
