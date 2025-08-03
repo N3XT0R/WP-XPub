@@ -1,0 +1,11 @@
+<?php
+
+declare(strict_types=1);
+
+namespace N3XT0R\XPub\Application\Cache;
+
+
+interface ClearContainerCacheInterface
+{
+    public function clear(): void;
+}

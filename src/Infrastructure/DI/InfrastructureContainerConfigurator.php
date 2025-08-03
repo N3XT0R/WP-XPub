@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\DI;
 
 use DI\ContainerBuilder;
+use N3XT0R\XPub\Application\Cache\ClearContainerCacheInterface;
 use N3XT0R\XPub\Application\Update\ReleaseService;
 use N3XT0R\XPub\Domain\Contracts\Factory\ArticleFactoryInterface;
 use N3XT0R\XPub\Domain\Contracts\Factory\WordpressArticleFactoryInterface;
@@ -19,6 +20,7 @@ use N3XT0R\XPub\Domain\Hook\HookDispatcherInterface;
 use N3XT0R\XPub\Domain\Repository\PostStatusRepositoryInterface;
 use N3XT0R\XPub\Domain\Repository\PublisherRepositoryInterface;
 use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
+use N3XT0R\XPub\Infrastructure\DI\Cache\ContainerCacheCleaner;
 use N3XT0R\XPub\Infrastructure\Markdown\HtmlToMarkdownRendererFactory;
 use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactoryService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\MetaBox;
@@ -88,6 +90,9 @@ final readonly class InfrastructureContainerConfigurator implements ContainerCon
             MetaBox::class => autowire(MetaBox::class),
             LoggerInterface::class => factory(fn() => LoggerFactory::create()),
             OAuthController::class => autowire(OAuthController::class),
+            ClearContainerCacheInterface::class => static function () {
+                return new ContainerCacheCleaner($this->pluginContext);
+            },
         ]);
     }
 }

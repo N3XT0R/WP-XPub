@@ -35,6 +35,9 @@
   "scripts": {
     "generate-header": [
       "php build/header-generator.php"
+    ],
+    "post-install-cmd": [
+      "rm -rf cache/container/compiled/*.php"
     ]
   },
   "extra": {
