@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Updater;
 
-use DI\Container;
 use N3XT0R\XPub\Application\Cache\ClearContainerCacheInterface;
 use N3XT0R\XPub\Domain\Contracts\ReleaseProviderInterface;
 use N3XT0R\XPub\Shared\Plugin\PluginContext;
@@ -32,15 +31,6 @@ class PluginUpdateManager
         $this->clearContainerCache = $clearContainerCache;
     }
 
-    public static function boot(string $pluginFile, Container $container): void
-    {
-        $container->make(self::class, [
-            'pluginFile' => plugin_basename($pluginFile),
-            'pluginSlug' => 'xpub-multi-channel-publisher',
-            'pluginInfoUrl' => 'https://github.com/N3XT0R/WP-XPub',
-        ])->register();
-    }
-
     public function register(): void
     {
         add_filter('pre_set_site_transient_update_plugins', [$this, 'injectUpdateMetadata']);
@@ -48,6 +38,15 @@ class PluginUpdateManager
         add_filter('plugins_api', [$this, 'injectPluginDetails'], 10, 3);
         add_action('admin_init', [$this, 'handleManualUpdateRequest']);
         add_action('admin_notices', [$this, 'showUpdateNotice']);
+    }
+
+    public function increaseDownloadTimeout(array $args, string $url): array
+    {
+        if (str_contains($url, 'github.com')) {
+            $args['timeout'] = 300;
+        }
+
+        return $args;
     }
 
     public function addManualUpdateLink(array $actions): array
