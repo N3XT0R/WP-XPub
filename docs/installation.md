@@ -94,8 +94,6 @@ OAuth tokens are stored securely via your configured `SettingsRepository`.
 
 ### Available Publishers (OAuth)
 
-### Available Publishers (OAuth)
-
 | Publisher Slug | Platform | Grant Type           | Scopes Example                           | Setup Link                             |
 |----------------|----------|----------------------|------------------------------------------|----------------------------------------|
 | `linkedin`     | LinkedIn | `authorization_code` | `w_member_social`, `r_liteprofile`, etc. | [setup/linkedin.md](setup/linkedin.md) |
