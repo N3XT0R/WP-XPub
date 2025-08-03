@@ -211,25 +211,26 @@ attacks.
 ```php
 use N3XT0R\XPub\Infrastructure\OAuth\AbstractOAuthTokenProvider;
 
+<?php
+
+declare(strict_types=1);
+
+namespace N3XT0R\XPub\Infrastructure\OAuth\Provider;
+
+use League\OAuth2\Client\Provider\GenericProvider;
+use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
+
 class MyCustomOAuthProvider extends AbstractOAuthTokenProvider
 {
-    protected function getProviderInstance(array $options): AbstractProvider
-    {
-        return new \League\OAuth2\Client\Provider\GenericProvider([
-            'clientId' => $options['clientId'],
-            'clientSecret' => $options['clientSecret'],
-            'redirectUri' => $options['redirectUri'],
-            'urlAuthorize' => $options['urlAuthorize'],
-            'urlAccessToken' => $options['urlAccessToken'],
-            'urlResourceOwnerDetails' => $options['urlResourceOwnerDetails'],
-        ]);
-    }
-
-    public function getSlug(): string
-    {
-        return 'mycustom';
+    public function __construct(
+        GenericProvider $provider,
+        SettingsRepositoryInterface $settings,
+        string $grantType = 'authorization_code',
+    ) {
+        parent::__construct($provider, $settings, 'MyCustomOAuth', $grantType);
     }
 }
+
 ```
 
 ### 2. Register the Provider
