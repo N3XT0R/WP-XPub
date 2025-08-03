@@ -90,7 +90,7 @@ To enable an OAuth-based publisher:
 
 OAuth tokens are stored securely via your configured `SettingsRepository`.
 
-> 📄 See [`setup/linkedin.md`](setup/linkedin.md) for a full example on how to configure the LinkedIn Publisher.
+--- 
 
 ### Available Publishers (OAuth)
 
