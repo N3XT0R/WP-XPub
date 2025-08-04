@@ -32,4 +32,17 @@ final class PublisherSettingsService
             'activePublisherSlugs' => $active
         ];
     }
+
+    public function saveSettings(array $activePublisherSlugs, array $publisherConfigs): void
+    {
+        $this->settingsRepo->set('xpub_publisher_targets', $activePublisherSlugs);
+
+        foreach ($publisherConfigs as $slug => $configs) {
+            if (!is_array($configs) || $slug === '') {
+                continue;
+            }
+
+            $this->publisherRepo->updateConfig($slug, $configs);
+        }
+    }
 }

@@ -39,6 +39,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Repository\PublisherRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\WPDBQueueRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Repository\WpPostStatusRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Rest\OAuthController;
+use N3XT0R\XPub\Infrastructure\Wordpress\Rest\SettingsController;
 use N3XT0R\XPub\Infrastructure\Wordpress\Settings\WordpressSettingsRepository;
 use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
 use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
@@ -86,6 +87,7 @@ final readonly class InfrastructureContainerConfigurator implements ContainerCon
             MetaBox::class => autowire(MetaBox::class),
             LoggerInterface::class => factory(fn() => LoggerFactory::create()),
             OAuthController::class => autowire(OAuthController::class),
+            SettingsController::class => autowire(SettingsController::class),
             ClearContainerCacheInterface::class => create(ContainerCacheCleaner::class)
                 ->constructor(get(PluginContext::class)),
             PluginUpdateManager::class => create()->constructor(

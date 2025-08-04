@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { __ } from '@wordpress/i18n';
 
 export function SettingsPage({
   publishers = [],
@@ -61,12 +62,12 @@ export function SettingsPage({
             `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
           );
         } else {
-          alert('No redirect URL received.');
+          alert(__('No redirect URL received.', 'xpub-multi-channel-publisher'));
         }
       })
       .catch(err => {
         console.error('OAuth error:', err);
-        alert('OAuth start failed.');
+        alert(__('OAuth start failed.', 'xpub-multi-channel-publisher'));
       });
 
     const interval = setInterval(() => {
@@ -75,7 +76,7 @@ export function SettingsPage({
         .then(data => {
           if (data.connected) {
             clearInterval(interval);
-            alert('OAuth erfolgreich!');
+            alert(__('OAuth erfolgreich!', 'xpub-multi-channel-publisher'));
             location.reload();
           }
         });
@@ -85,8 +86,10 @@ export function SettingsPage({
   const renderGroup = (publisher, purposeType, group) => {
     const heading =
       purposeType === 'oauth'
-        ? 'OAuth Settings'
-        : `${purposeType.charAt(0).toUpperCase() + purposeType.slice(1)} Settings`;
+        ? `${__('OAuth', 'xpub-multi-channel-publisher')} ${__('Settings', 'xpub-multi-channel-publisher')}`
+        : `${
+            purposeType.charAt(0).toUpperCase() + purposeType.slice(1)
+          } ${__('Settings', 'xpub-multi-channel-publisher')}`;
 
     return (
       <div key={purposeType} className="mt-6">
@@ -103,7 +106,7 @@ export function SettingsPage({
           return (
             <div key={key} className="mb-4">
               <label htmlFor={inputId} className="block font-bold mb-1">
-                {key}
+                {__(key, 'xpub-multi-channel-publisher')}
               </label>
               <input
                 type={type}
@@ -124,7 +127,7 @@ export function SettingsPage({
               className="button button-secondary"
               onClick={() => startOAuth(publisher.slug)}
             >
-              Authenticate with {publisher.name}
+              {`${__('Authenticate with', 'xpub-multi-channel-publisher')} ${publisher.name}`}
             </button>
           </div>
         )}
@@ -137,9 +140,9 @@ export function SettingsPage({
       <input type="hidden" name="action" value="xpub_save_settings" />
       <input type="hidden" name="_wpnonce" value={nonce} />
 
-      <h2 className="text-xl font-bold mb-4">Activate Publisher</h2>
+      <h2 className="text-xl font-bold mb-4">{__('Activate Publisher', 'xpub-multi-channel-publisher')}</h2>
       <fieldset className="mb-8">
-        <legend className="mb-2">Select active publishers:</legend>
+        <legend className="mb-2">{__('Select active publishers:', 'xpub-multi-channel-publisher')}</legend>
         {publishers.map(publisher => {
           const id = `publisher_${publisher.slug}`;
           return (
@@ -159,7 +162,7 @@ export function SettingsPage({
         })}
       </fieldset>
 
-      <h2 className="text-xl font-bold mb-4">Configuration</h2>
+      <h2 className="text-xl font-bold mb-4">{__('Configuration', 'xpub-multi-channel-publisher')}</h2>
       {publishers
         .filter(publisher => active.has(publisher.slug))
         .map(publisher => (
@@ -168,7 +171,7 @@ export function SettingsPage({
             className="mt-8 p-4 border border-gray-300"
           >
             <legend className="font-bold">
-              {publisher.name} Configuration
+              {`${publisher.name} ${__('Configuration', 'xpub-multi-channel-publisher')}`}
             </legend>
             {Object.entries(publisher.config || {}).map(([purposeType, group]) =>
               renderGroup(publisher, purposeType, group)
@@ -178,7 +181,7 @@ export function SettingsPage({
 
       <p className="mt-8">
         <button type="submit" className="button button-primary">
-          Save settings
+          {__('Save settings', 'xpub-multi-channel-publisher')}
         </button>
       </p>
     </form>
