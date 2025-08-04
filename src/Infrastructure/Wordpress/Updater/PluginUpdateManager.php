@@ -84,15 +84,16 @@ class PluginUpdateManager
             require_once ABSPATH.'wp-admin/includes/plugin.php';
         }
 
-        $pluginPath = WP_PLUGIN_DIR.'/'.$this->pluginFile;
+        $pluginFile = plugin_basename($this->pluginFile);
+        $pluginPath = WP_PLUGIN_DIR.'/'.plugin_basename($pluginFile);
         $pluginData = get_plugin_data($pluginPath, false, false);
         $currentVersion = $pluginData['Version'] ?? '0.0.0';
 
         $release = $this->releaseService->fetchLatestRelease();
         if ($release && version_compare($release['version'], $currentVersion, '>')) {
-            $transient->response[$this->pluginFile] = (object)[
+            $transient->response[$pluginFile] = (object)[
                 'slug' => $this->pluginSlug,
-                'plugin' => $this->pluginFile,
+                'plugin' => $pluginFile,
                 'new_version' => $release['version'],
                 'url' => $this->pluginInfoUrl,
                 'package' => $release['download_url'],
@@ -112,7 +113,7 @@ class PluginUpdateManager
             require_once ABSPATH.'wp-admin/includes/plugin.php';
         }
 
-        $pluginPath = WP_PLUGIN_DIR.'/'.$this->pluginFile;
+        $pluginPath = WP_PLUGIN_DIR.'/'.plugin_basename($this->pluginFile);
         $pluginData = get_plugin_data($pluginPath, false, false);
 
         $release = $this->releaseService->fetchLatestRelease();
