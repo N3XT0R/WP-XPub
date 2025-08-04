@@ -38,7 +38,7 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
     {
         View::render('layouts.admin', [
             'title' => 'XPUB Einstellungen',
-            'content' => fn() => View::render('admin.settings-page', $this->service->getSettingsViewData()),
+            'content' => fn() => View::render('admin.react-settings-page', $this->service->getSettingsViewData()),
         ]);
     }
 
@@ -72,13 +72,13 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
             return;
         }
 
-        $manifestPath = plugin_dir_path($this->pluginContext->pluginFile).'dist/manifest.json';
-
+        $manifestPath = plugin_dir_path($this->pluginContext->pluginFile).'dist/.vite/manifest.json';
         if (!file_exists($manifestPath)) {
             return;
         }
 
-        $manifest = json_decode((string) file_get_contents($manifestPath), true);
+        $manifest = json_decode((string)file_get_contents($manifestPath), true);
+
 
         if (!is_array($manifest) || $manifest === []) {
             return;
@@ -86,11 +86,13 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
 
         $entry = reset($manifest);
 
+
         if (!is_array($entry) || !isset($entry['file'])) {
             return;
         }
 
         $baseUrl = plugins_url('dist/', $this->pluginContext->pluginFile);
+
 
         wp_enqueue_script(
             'xpub-settings-app',

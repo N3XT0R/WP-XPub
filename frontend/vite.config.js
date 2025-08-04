@@ -1,14 +1,24 @@
-import { defineConfig } from 'vite';
+import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  plugins: [react()],
-  build: {
-    manifest: true,
-    outDir: '../dist',
-    emptyOutDir: true,
-    rollupOptions: {
-      input: './main.jsx',
+    plugins: [react()],
+    build: {
+        manifest: true,
+        outDir: '../dist',
+        emptyOutDir: true,
+        rollupOptions: {
+            input: './main.jsx',
+            output: {
+                entryFileNames: '[name].js',
+                assetFileNames: '[name].[ext]',
+                chunkFileNames: '[name].js',
+            },
+        },
     },
-  },
+    server: {
+        host: '0.0.0.0',
+        port: 5173,
+        strictPort: true,
+    },
 });
