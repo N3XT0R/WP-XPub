@@ -125,8 +125,7 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
             'xpub-multi-channel-publisher',
             $basePath.'languages'
         );
-
-        error_log($baseUrl.$entry['css'][0]);
+        
 
         if (!empty($entry['css'][0])) {
             wp_enqueue_style(

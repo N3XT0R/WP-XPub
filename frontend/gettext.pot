@@ -1,0 +1,49 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"X-Generator: babel-plugin-makepot\n"
+
+#: components/SettingsPage.jsx:132
+msgid "Authenticate with"
+msgstr ""
+
+#: components/SettingsPage.jsx:145
+msgid "Activate Publisher"
+msgstr ""
+
+#: components/SettingsPage.jsx:147
+msgid "Select active publishers:"
+msgstr ""
+
+#: components/SettingsPage.jsx:176
+msgid "Configuration"
+msgstr ""
+
+#: components/SettingsPage.jsx:186
+msgid "Save settings"
+msgstr ""
+
+#: components/SettingsPage.jsx:67
+msgid "No redirect URL received."
+msgstr ""
+
+#: components/SettingsPage.jsx:72
+msgid "OAuth start failed."
+msgstr ""
+
+#: components/SettingsPage.jsx:81
+msgid "OAuth erfolgreich!"
+msgstr ""
+
+#: components/SettingsPage.jsx:91
+msgid "OAuth"
+msgstr ""
+
+#: components/SettingsPage.jsx:94
+msgid "Settings"
+msgstr ""
+
+#: components/SettingsPage.jsx:13
+msgctxt "JavaScript"
+msgid "OAuth start failed."
+msgstr ""
