@@ -12,7 +12,7 @@ This guide describes how to configure OAuth authentication for the Mastodon publ
     - **Application Name**: WP-XPub
     - **Redirect URI**:
       ```
-      https://yourdomain.com/wp-json/xpub/oauth/callback
+      https://yourdomain.com/wp-json/xpub/v1/oauth/mastodon/callback
       ```
     - **Scopes** (at minimum):
       ```
@@ -35,8 +35,8 @@ Go to your WordPress admin dashboard:
 4. Fill in:
     - **Client ID**: *(from previous step)*
     - **Client Secret**: *(from previous step)*
-    - **Instance Domain**: e.g. `mastodon.social`
-    - **Redirect URI**: (read-only, shown for convenience)
+    - **Instance Domain**: the domain of the server where you created the app (e.g. `mastodon.social`)
+    - **Redirect URI**: (read-only, shown for reference)
 
 Click **Save**.
 
@@ -54,6 +54,6 @@ WP-XPub will refresh tokens and publish posts automatically.
 ## 📌 Notes
 
 - Mastodon is a decentralized platform. This means every user belongs to an **instance** (server).
-- WP-XPub supports custom instances (e.g. `chaos.social`, `fosstodon.org`, etc.)
+- WP-XPub uses your instance's `/api/v1/statuses` endpoint to post the article title and URL.
 - Only `write:statuses` is required for publishing. Read scopes are optional.
 
