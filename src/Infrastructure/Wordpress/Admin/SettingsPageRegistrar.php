@@ -48,6 +48,8 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
             return;
         }
 
+        $handle = 'xpub-settings-app';
+
         $env = function_exists('wp_get_environment_type')
             ? wp_get_environment_type()
             : 'production';
@@ -68,42 +70,35 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
             return;
         }
 
+        // Prod-Modus: Manifest auslesen und Skripte regulär einbinden
         $manifestPath = plugin_dir_path($this->pluginContext->pluginFile).'dist/.vite/manifest.json';
         if (!file_exists($manifestPath)) {
             return;
         }
 
         $manifest = json_decode((string)file_get_contents($manifestPath), true);
-
-
         if (!is_array($manifest) || $manifest === []) {
             return;
         }
 
         $entry = reset($manifest);
-
-
         if (!is_array($entry) || !isset($entry['file'])) {
             return;
         }
 
         $baseUrl = plugins_url('dist/', $this->pluginContext->pluginFile);
 
-
         wp_enqueue_script(
-            'xpub-settings-app',
+            $handle,
             $baseUrl.$entry['file'],
-            ['wp-element'],
-            null,
-            true
+            ['wp-i18n', 'wp-element']
         );
 
         if (!empty($entry['css'][0])) {
             wp_enqueue_style(
                 'xpub-settings-style',
                 $baseUrl.$entry['css'][0],
-                [],
-                null
+                ['wp-i18n', 'wp-element']
             );
         }
     }

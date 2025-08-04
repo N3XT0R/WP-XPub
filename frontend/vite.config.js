@@ -8,12 +8,13 @@ export default defineConfig({
         outDir: '../dist',
         emptyOutDir: true,
         rollupOptions: {
+            external: ['@wordpress/i18n'],
             input: './main.jsx',
             output: {
                 entryFileNames: '[name].js',
                 assetFileNames: '[name].[ext]',
                 chunkFileNames: '[name].js',
-            },
+            }
         },
     },
     server: {
