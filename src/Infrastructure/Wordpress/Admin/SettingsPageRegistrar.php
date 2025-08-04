@@ -53,21 +53,17 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
             : 'production';
 
         if (in_array($env, ['local', 'development'], true)) {
-            wp_enqueue_script(
-                'xpub-vite-client',
-                'http://localhost:5173/@vite/client',
-                [],
-                null,
-                true
-            );
-
-            wp_enqueue_script(
-                'xpub-settings-app',
-                'http://localhost:5173/main.jsx',
-                ['wp-element'],
-                null,
-                true
-            );
+            add_action('admin_head', function () {
+                echo '<script type="module" src="http://localhost:5173/@vite/client"></script>'.PHP_EOL;
+                echo '<script type="module">
+                        import RefreshRuntime from "http://localhost:5173/@react-refresh";
+                        RefreshRuntime.injectIntoGlobalHook(window);
+                        window.$RefreshReg$ = () => {};
+                        window.$RefreshSig$ = () => (type) => type;
+                        window.__vite_plugin_react_preamble_installed__ = true;
+                    </script>'.PHP_EOL;
+                echo '<script type="module" src="http://localhost:5173/main.jsx"></script>'.PHP_EOL;
+            });
 
             return;
         }
