@@ -2,4 +2,3 @@
 .phpunit.result.cache
 /dist/*
 !/dist/.gitkeep
-/node_modules/
