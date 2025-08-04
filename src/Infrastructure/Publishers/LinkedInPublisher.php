@@ -39,9 +39,19 @@ class LinkedInPublisher extends PublisherAbstract implements SupportsOAuthFactor
             'specificContent' => [
                 'com.linkedin.ugc.ShareContent' => [
                     'shareCommentary' => [
-                        'text' => $article->title."\n\n".$article->url,
+                        'text' => $article->excerpt,
                     ],
-                    'shareMediaCategory' => 'NONE',
+                    'shareMediaCategory' => 'ARTICLE',
+                    'media' => [
+                        [
+                            'status' => 'READY',
+                            'description' => ['text' => $article->excerpt],
+                            'originalUrl' => $article->url,
+                            'title' => [
+                                'text' => $article->title,
+                            ],
+                        ],
+                    ],
                 ],
             ],
             'visibility' => [
