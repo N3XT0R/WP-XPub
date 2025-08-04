@@ -170,6 +170,7 @@ class WPDBQueueRepository implements QueueRepositoryInterface
             "{$this->db->prefix}xpub_queue",
             [
                 'status' => 'done',
+                'last_error' => null,
                 'updated_at' => current_time('mysql', 1),
             ],
             ['id' => $job->id]
