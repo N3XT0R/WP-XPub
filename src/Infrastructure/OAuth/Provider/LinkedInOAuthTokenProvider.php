@@ -43,7 +43,7 @@ class LinkedInOAuthTokenProvider extends AbstractOAuthTokenProvider implements L
         return $data['author_urn'] ?? null;
     }
 
-    private function fetchAuthorUrn(AccessTokenInterface $accessToken): ?string
+    public function fetchAuthorUrn(AccessTokenInterface $accessToken): ?string
     {
         try {
             $request = $this->provider->getAuthenticatedRequest(
@@ -55,11 +55,11 @@ class LinkedInOAuthTokenProvider extends AbstractOAuthTokenProvider implements L
             $response = $this->provider->getResponse($request);
             $body = json_decode((string)$response->getBody(), true);
 
-            if (!empty($body['id'])) {
-                return 'urn:li:person:'.$body['id'];
+            if (!empty($body['sub'])) {
+                return 'urn:li:person:'.$body['sub'];
             }
         } catch (\Throwable $e) {
-            $this->logger->error('LinkedIn /me fetch failed: '.$e->getMessage(), ['exception' => $e]);
+            $this->logger->error('LinkedIn fetch failed: '.$e->getMessage(), ['exception' => $e]);
         }
 
         return null;

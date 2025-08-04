@@ -17,8 +17,8 @@ class Migration_5 extends AbstractMigration
             'clientSecret' => '',
             'urlAccessToken' => 'https://www.linkedin.com/oauth/v2/accessToken',
             'urlAuthorize' => 'https://www.linkedin.com/oauth/v2/authorization',
-            'urlResourceOwnerDetails' => 'https://api.linkedin.com/v2/me',
-            'scopes' => 'w_member_social profile',
+            'urlResourceOwnerDetails' => 'https://api.linkedin.com/v2/userinfo',
+            'scopes' => 'w_member_social profile openid',
             'redirectUri' => get_rest_url(null, '/xpub/v1/oauth/linkedin/callback'),
         ]);
     }

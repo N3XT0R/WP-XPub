@@ -18,22 +18,19 @@ class LinkedInPublisher extends PublisherAbstract implements SupportsOAuthFactor
     {
         $factory = $this->getOAuthTokenProviderFactory();
         if (!$factory) {
-            $this->error('OAuthTokenProviderFactory not available for LinkedIn.');
-            return false;
+            throw new \RuntimeException('OAuthTokenProviderFactory not available for LinkedIn.');
         }
 
         $provider = $factory->createFromPublisherSlug('linkedin');
         $accessToken = $provider->getAccessToken();
 
         if (empty($accessToken)) {
-            $this->error('Missing or invalid access token for LinkedIn.');
-            return false;
+            throw new \RuntimeException('Missing or invalid access token for LinkedIn.');
         }
 
         $author = $this->getLinkedInAuthorUrn($accessToken);
         if (!$author) {
-            $this->error('Could not determine LinkedIn author URN.');
-            return false;
+            throw new \RuntimeException('Could not determine LinkedIn author URN.');
         }
 
         $payload = [
@@ -63,16 +60,14 @@ class LinkedInPublisher extends PublisherAbstract implements SupportsOAuthFactor
         ]);
 
         if (is_wp_error($response)) {
-            $this->error('LinkedIn request failed: '.$response->get_error_message());
-            return false;
+            throw new \RuntimeException('LinkedIn request failed: '.$response->get_error_message());
         }
 
         $code = wp_remote_retrieve_response_code($response);
         if ($code !== 201) {
             $body = wp_remote_retrieve_body($response);
             $errorMsg = json_decode($body, true)['message'] ?? $body;
-            $this->error("LinkedIn response ($code): $errorMsg");
-            return false;
+            throw new \RuntimeException("LinkedIn response: ".$errorMsg, $code);
         }
 
         $this->log('Article successfully published to LinkedIn.');
@@ -81,19 +76,19 @@ class LinkedInPublisher extends PublisherAbstract implements SupportsOAuthFactor
 
     private function getLinkedInAuthorUrn(string $accessToken): ?string
     {
-        $response = wp_remote_get('https://api.linkedin.com/v2/me', [
+        $response = wp_remote_get('https://api.linkedin.com/v2/userinfo', [
             'headers' => [
                 'Authorization' => 'Bearer '.$accessToken,
             ],
             'timeout' => 10,
         ]);
 
+
         if (is_wp_error($response)) {
-            $this->error('Failed to retrieve LinkedIn profile: '.$response->get_error_message());
-            return null;
+            throw new \RuntimeException('Failed to retrieve LinkedIn profile: '.$response->get_error_message());
         }
 
         $body = json_decode(wp_remote_retrieve_body($response), true);
-        return isset($body['id']) ? 'urn:li:person:'.$body['id'] : null;
+        return isset($body['sub']) ? 'urn:li:person:'.$body['sub'] : null;
     }
 }
