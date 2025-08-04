@@ -39,7 +39,7 @@ class LinkedInPublisher extends PublisherAbstract implements SupportsOAuthFactor
             'specificContent' => [
                 'com.linkedin.ugc.ShareContent' => [
                     'shareCommentary' => [
-                        'text' => $article->excerpt,
+                        'text' => $this->buildShareText($article),
                     ],
                     'shareMediaCategory' => 'ARTICLE',
                     'media' => [
@@ -101,4 +101,20 @@ class LinkedInPublisher extends PublisherAbstract implements SupportsOAuthFactor
         $body = json_decode(wp_remote_retrieve_body($response), true);
         return isset($body['sub']) ? 'urn:li:person:'.$body['sub'] : null;
     }
+
+    private function buildShareText(Article $article): string
+    {
+        $text = $article->excerpt;
+
+        if (!empty($article->tags)) {
+            $hashtags = array_map(
+                fn(string $tag) => '#'.preg_replace('/[^A-Za-z0-9_]/', '', $tag),
+                $article->tags
+            );
+            $text .= "\n\n".implode(' ', $hashtags);
+        }
+
+        return $text;
+    }
+
 }
