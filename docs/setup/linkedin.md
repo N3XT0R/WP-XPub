@@ -1,34 +1,61 @@
-# LinkedIn Publisher Setup
+# LinkedIn Publisher Setup Guide
 
-This guide explains how to configure the LinkedIn Publisher to automatically post articles to your LinkedIn personal
-profile or an organization page.
-
-## Requirements
-
-- A LinkedIn account
-- Admin access to a LinkedIn organization page (if posting as a company)
-- A configured redirect endpoint at `/xpub/v1/oauth/linkedin/callback`
-- Access to your WordPress admin area
+This guide explains how to configure the LinkedIn publisher in WP-XPub. The implementation uses LinkedIn's v2 API.
 
 ---
 
-## Step 1: Register a LinkedIn App
+## 🔐 Step 1: Register a LinkedIn App
 
 1. Visit: [https://www.linkedin.com/developers/apps](https://www.linkedin.com/developers/apps)
-2. Click **"Create App"**
-3. Fill out the required details:
-    - **App Name** (e.g., "WordPress Publisher")
-    - **Company/Organization**: Your personal name or an organization
-    - **App Logo**: Required (at least 100×100 PNG)
-    - **Privacy Policy URL**: Required (e.g., your site’s privacy or legal page)
-
-4. After creation, copy the following:
-    - `Client ID`
-    - `Client Secret`
+2. Click **"Create App"** and provide the required details:
+   - **App Name** (e.g., "WordPress Publisher")
+   - **Company/Organization**
+   - **App Logo** (at least 100×100 PNG)
+   - **Privacy Policy URL**
+3. In the app's **Auth** tab:
+   - Add the following **OAuth 2.0 scopes**:
+     - `w_member_social`
+     - `profile`
+     - `openid`
+   - Add the authorized redirect URL:
+     ```
+     https://yourdomain.com/wp-json/xpub/v1/oauth/linkedin/callback
+     ```
+4. Copy the generated `Client ID` and `Client Secret` for later use.
 
 ---
 
-## Step 2: Set Redirect URL
+## ⚙️ Step 2: Configure WP-XPub
 
-In the app's **"Auth"** tab, add this as an authorized redirect URL:
+In your WordPress admin dashboard:
+
+1. Navigate to **WP-XPub → OAuth Providers**
+2. Click **Add Provider**
+3. Select **Platform**: `LinkedIn`
+4. Fill in:
+   - **Client ID**
+   - **Client Secret**
+   - **Redirect URI**: (read-only, displayed for reference)
+
+Click **Save** when finished.
+
+---
+
+## 🔄 Step 3: Authorize the Account
+
+After saving the provider:
+
+1. Click **Connect** to start the LinkedIn OAuth flow.
+2. Sign in to LinkedIn and authorize the app.
+3. On success, WP-XPub stores the access token and author URN.
+
+The plugin can now publish posts to your LinkedIn profile.
+
+---
+
+## 📌 Notes
+
+- The publisher posts to the authenticated user's personal profile using the LinkedIn v2 API.
+- Required scopes: `w_member_social`, `profile`, `openid`.
+- Publishing to organization pages is not currently supported.
 
