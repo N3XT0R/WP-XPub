@@ -39,7 +39,10 @@ class JobRunner
                 }
 
 
-                $publisher->publish($article);
+                $result = $publisher->publish($article);
+                if ($result === false) {
+                    throw new \RuntimeException('anything went wrong - no error message for '.$job->publisherKey);
+                }
                 $this->queue->markAsDone($job);
             } catch (\Throwable $e) {
                 $this->logger?->error(
@@ -58,13 +61,11 @@ class JobRunner
 
         foreach ($publishers as $slug => $publisher) {
             if (!$publisher instanceof SupportsOAuthFactoryInterface) {
-                error_log('no support oauth interface'.$slug);
                 continue;
             }
 
             $factory = $publisher->getOAuthTokenProviderFactory();
             if (!$factory) {
-                error_log('no factory'.$slug);
                 continue;
             }
 
