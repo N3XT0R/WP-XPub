@@ -3,13 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
     plugins: [
-        react({
-            babel: {
-                plugins: [
-                    ['@wordpress/babel-plugin-makepot', {domain: 'xpub-multi-channel-publisher'}]
-                ]
-            }
-        }),
+        react(),
     ],
     define: {
         'process.env.NODE_ENV': JSON.stringify('production'),
