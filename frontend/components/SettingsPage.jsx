@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {__} from '@wordpress/i18n';
+import {__, _x} from '@wordpress/i18n';
 
 
 export function SettingsPage({
@@ -10,6 +10,7 @@ export function SettingsPage({
                                  restUrl = ''
                              }) {
     const [active, setActive] = useState(new Set(activePublisherSlugs));
+    console.log(_x('OAuth start failed.', 'JavaScript', 'xpub-multi-channel-publisher'));
     const [config, setConfig] = useState(() => {
         const initial = {};
         publishers.forEach(pub => {

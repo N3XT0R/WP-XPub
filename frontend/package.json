@@ -1,5 +1,5 @@
 {
-  "name": "xpub-frontend",
+  "name": "xpub-multi-channel-publisher",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,11 +9,14 @@
     "make-pot": "wp i18n make-pot . ../languages/xpub-settings-app.pot --domain=xpub-multi-channel-publisher --allow-root"
   },
   "dependencies": {
+    "@wordpress/i18n": "^6.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.27.1",
     "@vitejs/plugin-react": "^4.0.0",
+    "@wordpress/babel-plugin-makepot": "^6.27.0",
     "autoprefixer": "^10.4.0",
     "postcss": "^8.4.0",
     "tailwindcss": "^3.3.0",
