@@ -1,2 +1,5 @@
 /vendor/
 .phpunit.result.cache
+/dist/*
+!/dist/.gitkeep
+/frontend/node_modules/
