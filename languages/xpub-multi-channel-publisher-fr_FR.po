@@ -41,3 +41,39 @@ msgstr "ID client"
 #: resources/views/admin/metabox.php
 msgid "Custom Text for Social Sharing"
 msgstr "Texte personnalisé pour le partage social"
+
+# JavaScript translations
+#: frontend/App.jsx
+msgctxt "JavaScript"
+msgid "Activate Publisher"
+msgstr "Aktiver l’éditeur\"  ; ← für fr_FR (bzw. andere Zielübersetzung"
+
+#: frontend/App.jsx
+msgctxt "JavaScript"
+msgid "Select active publishers:"
+msgstr "Sélectionner les éditeurs actifs :"
+
+#: frontend/App.jsx
+msgctxt "JavaScript"
+msgid "Configuration"
+msgstr "Configuration"
+
+#: frontend/App.jsx
+msgctxt "JavaScript"
+msgid "Save settings"
+msgstr "Enregistrer les paramètres"
+
+#: frontend/App.jsx
+msgctxt "JavaScript"
+msgid "api_key"
+msgstr "Clé API"
+
+#: frontend/App.jsx
+msgctxt "JavaScript"
+msgid "client_id"
+msgstr "ID client"
+
+#: frontend/App.jsx
+msgctxt "JavaScript"
+msgid "Custom Text for Social Sharing"
+msgstr "Texte personnalisé pour le partage social"

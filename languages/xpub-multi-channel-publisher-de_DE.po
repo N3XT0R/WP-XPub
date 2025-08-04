@@ -41,3 +41,54 @@ msgstr "Client-ID"
 #: resources/views/admin/metabox.php
 msgid "Custom Text for Social Sharing"
 msgstr "Individueller Text für Social Media"
+
+# JavaScript translations
+#: frontend/components/SettingsPage.jsx:12
+msgctxt "JavaScript"
+msgid "Activate Publisher"
+msgstr "Publisher aktivieren"
+
+#: frontend/components/SettingsPage.jsx:18
+msgctxt "JavaScript"
+msgid "Select active publishers:"
+msgstr "Wähle aktive Publisher:"
+
+#: frontend/components/SettingsPage.jsx:23
+msgctxt "JavaScript"
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: frontend/components/SettingsPage.jsx:40
+msgctxt "JavaScript"
+msgid "Save settings"
+msgstr "Einstellungen speichern"
+
+#: frontend/components/SettingsPage.jsx:48
+msgctxt "JavaScript"
+msgid "api_key"
+msgstr "API-Schlüssel"
+
+#: frontend/components/SettingsPage.jsx:49
+msgctxt "JavaScript"
+msgid "client_id"
+msgstr "Client-ID"
+
+#: frontend/components/SettingsPage.jsx:60
+msgctxt "JavaScript"
+msgid "Custom Text for Social Sharing"
+msgstr "Individueller Text für Social Media"
+
+#: frontend/components/SettingsPage.jsx:66
+msgctxt "JavaScript"
+msgid "Changes saved successfully."
+msgstr "Änderungen erfolgreich gespeichert."
+
+#: frontend/components/SettingsPage.jsx:70
+msgctxt "JavaScript"
+msgid "Saving..."
+msgstr "Wird gespeichert..."
+
+#: frontend/components/SettingsPage.jsx:80
+msgctxt "JavaScript"
+msgid "Publisher settings"
+msgstr "Publisher-Einstellungen"
