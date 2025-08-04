@@ -48,7 +48,7 @@ class LinkedInOAuthTokenProvider extends AbstractOAuthTokenProvider implements L
         try {
             $request = $this->provider->getAuthenticatedRequest(
                 'GET',
-                'https://api.linkedin.com/v2/me',
+                $this->provider->getResourceOwnerDetailsUrl($accessToken),
                 $accessToken
             );
 
