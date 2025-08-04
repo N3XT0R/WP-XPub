@@ -18,6 +18,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressHookRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Logging\LoggerFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Presentation\AdminNoticePresenter;
 use N3XT0R\XPub\Infrastructure\Wordpress\Rest\OAuthController;
+use N3XT0R\XPub\Infrastructure\Wordpress\Rest\SettingsController;
 use N3XT0R\XPub\Infrastructure\Wordpress\Service\Plugin\PluginBootstrapService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Setup\SetupRunner;
 use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
@@ -62,6 +63,7 @@ final class WordpressPlugin
             'saveHandler' => self::container()->get(SettingsSaveHandler::class),
             'oauthController' => self::container()->get(OAuthController::class),
             'updateManager' => $updateManager,
+            'settingsController' => self::container()->get(SettingsController::class),
         ]);
 
         $registrar = new WordpressHookRegistrar(

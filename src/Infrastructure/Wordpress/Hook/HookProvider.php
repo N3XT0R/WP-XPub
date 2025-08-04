@@ -8,6 +8,7 @@ use N3XT0R\XPub\Adapter\WordpressPlugin;
 use N3XT0R\XPub\Domain\Hook\HookDefinition;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
 use N3XT0R\XPub\Infrastructure\Wordpress\Rest\OAuthController;
+use N3XT0R\XPub\Infrastructure\Wordpress\Rest\SettingsController;
 use N3XT0R\XPub\Infrastructure\Wordpress\Updater\PluginUpdateManager;
 
 final class HookProvider
@@ -16,6 +17,7 @@ final class HookProvider
         private readonly SettingsSaveHandler $saveHandler,
         private readonly OAuthController $oauthController,
         private readonly PluginUpdateManager $updateManager,
+        private readonly SettingsController $settingsController,
     ) {
     }
 
@@ -38,6 +40,7 @@ final class HookProvider
             ),
             new HookDefinition('init', fn() => $this->updateManager->register()),
             new HookDefinition('rest_api_init', [$this->oauthController, 'register']),
+            new HookDefinition('rest_api_init', [$this->settingsController, 'register']),
         ];
     }
 }

@@ -45,4 +45,20 @@ final class PublisherSettingsServiceTest extends TestCase
 
         $this->assertSame(['devto'], $result['activePublisherSlugs']);
     }
+
+    public function testSaveSettingsPersistsData(): void
+    {
+        $publisherRepo = $this->createMock(PublisherRepositoryInterface::class);
+        $settingsRepo = $this->createMock(SettingsRepositoryInterface::class);
+
+        $publisherRepo->expects($this->once())
+            ->method('updateConfig')
+            ->with('devto', ['api_key' => 'secret']);
+        $settingsRepo->expects($this->once())
+            ->method('set')
+            ->with('xpub_publisher_targets', ['devto']);
+
+        $service = new PublisherSettingsService($publisherRepo, $settingsRepo);
+        $service->saveSettings(['devto'], ['devto' => ['api_key' => 'secret']]);
+    }
 }
