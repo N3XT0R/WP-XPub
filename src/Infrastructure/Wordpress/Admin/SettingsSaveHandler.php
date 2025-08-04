@@ -25,20 +25,18 @@ final class SettingsSaveHandler
         $activePublisherSlugs = array_map('sanitize_text_field', $activePublisherSlugs);
 
         $publisherConfigs = isset($_POST['config']) ? wp_unslash($_POST['config']) : [];
-
-        $this->settingsRepo->set('xpub_publisher_targets', $activePublisherSlugs);
-
-        $this->persistPublisherConfigs($publisherConfigs);
-
+        $this->saveSettings($activePublisherSlugs, $publisherConfigs);
+        
         wp_redirect(admin_url('options-general.php?page=xpub-settings&updated=true'));
         exit;
     }
 
-
-    private function persistPublisherConfigs(array $publisherConfigs): void
+    public function saveSettings(array $activePublisherSlugs, array $publisherConfigs): void
     {
+        $this->settingsRepo->set('xpub_publisher_targets', $activePublisherSlugs);
+
         foreach ($publisherConfigs as $slug => $configs) {
-            if (!is_array($configs) || empty($slug)) {
+            if (!is_array($configs) || $slug === '') {
                 continue;
             }
 
