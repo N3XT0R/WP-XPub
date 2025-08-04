@@ -7,6 +7,7 @@ namespace N3XT0R\XPub\Infrastructure\DI;
 use DI\ContainerBuilder;
 use N3XT0R\XPub\Application\Cache\ClearContainerCacheInterface;
 use N3XT0R\XPub\Application\Publisher\PublisherSelector;
+use N3XT0R\XPub\Application\Service\Admin\PublisherSettingsService;
 use N3XT0R\XPub\Application\Update\ReleaseService;
 use N3XT0R\XPub\Domain\Contracts\Factory\ArticleFactoryInterface;
 use N3XT0R\XPub\Domain\Contracts\Factory\WordpressArticleFactoryInterface;
@@ -78,7 +79,10 @@ final readonly class InfrastructureContainerConfigurator implements ContainerCon
             FilterDispatcherInterface::class => autowire(WordpressFilterDispatcher::class),
             HookDispatcherInterface::class => autowire(WordpressHookDispatcher::class),
             SettingsSaveHandler::class => autowire(SettingsSaveHandler::class),
-            SettingsPageRegistrar::class => autowire(SettingsPageRegistrar::class),
+            SettingsPageRegistrar::class => create()->constructor(
+                get(PublisherSettingsService::class),
+                get(PluginContext::class)
+            ),
             MetaBox::class => autowire(MetaBox::class),
             LoggerInterface::class => factory(fn() => LoggerFactory::create()),
             OAuthController::class => autowire(OAuthController::class),
