@@ -6,6 +6,7 @@ namespace N3XT0R\XPub\Infrastructure\DI;
 
 use DI\ContainerBuilder;
 use N3XT0R\XPub\Application\Cache\ClearContainerCacheInterface;
+use N3XT0R\XPub\Application\Publisher\PublisherSelector;
 use N3XT0R\XPub\Application\Update\ReleaseService;
 use N3XT0R\XPub\Domain\Contracts\Factory\ArticleFactoryInterface;
 use N3XT0R\XPub\Domain\Contracts\Factory\WordpressArticleFactoryInterface;
@@ -19,6 +20,7 @@ use N3XT0R\XPub\Domain\Hook\FilterDispatcherInterface;
 use N3XT0R\XPub\Domain\Hook\HookDispatcherInterface;
 use N3XT0R\XPub\Domain\Repository\PostStatusRepositoryInterface;
 use N3XT0R\XPub\Domain\Repository\PublisherRepositoryInterface;
+use N3XT0R\XPub\Domain\Service\Publishing\PublisherTargetProvider;
 use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
 use N3XT0R\XPub\Infrastructure\DI\Cache\ContainerCacheCleaner;
 use N3XT0R\XPub\Infrastructure\Markdown\HtmlToMarkdownRendererFactory;
@@ -87,6 +89,13 @@ final readonly class InfrastructureContainerConfigurator implements ContainerCon
                 autowire(ReleaseService::class),
                 get(ClearContainerCacheInterface::class)
             ),
+            PublisherSelector::class => create()->constructor(
+                get(PublisherRepositoryInterface::class),
+                get(PublisherTargetProvider::class),
+                get(PublisherFactoryInterface::class),
+                get(LoggerInterface::class)
+            ),
+
         ]);
     }
 }

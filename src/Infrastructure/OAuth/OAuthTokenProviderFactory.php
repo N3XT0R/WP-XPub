@@ -22,10 +22,10 @@ final class OAuthTokenProviderFactory
      * @param  array<string, class-string<OAuthTokenProviderInterface>>  $providerMap
      */
     public function __construct(
-        private PublisherRepository $repository,
-        private WordpressSettingsRepository $settingsRepo,
-        private LoggerInterface $logger,
-        private array $providerMap = [
+        private readonly PublisherRepository $repository,
+        private readonly WordpressSettingsRepository $settingsRepo,
+        private readonly LoggerInterface $logger,
+        private readonly array $providerMap = [
             'mastodon' => MastodonOAuthTokenProvider::class,
             'linkedin' => LinkedInOAuthTokenProvider::class,
         ],
