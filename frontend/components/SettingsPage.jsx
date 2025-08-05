@@ -124,10 +124,24 @@ export function SettingsPage({
                             type = 'url';
                         }
                     }
+                    const labels = {
+                        api_key: __('API Key', 'xpub-multi-channel-publisher'),
+                        clientId: __('Client ID', 'xpub-multi-channel-publisher'),
+                        clientSecret: __('Client Secret', 'xpub-multi-channel-publisher'),
+                        redirectUri: __('Redirect URI', 'xpub-multi-channel-publisher'),
+                        urlAccessToken: __('Access Token URL', 'xpub-multi-channel-publisher'),
+                        urlAuthorize: __('Authorize URL', 'xpub-multi-channel-publisher'),
+                        urlResourceOwnerDetails: __('Resource Owner URL', 'xpub-multi-channel-publisher'),
+                        scopes: __('Scopes', 'xpub-multi-channel-publisher'),
+                        grant_type: __('Grant Type', 'xpub-multi-channel-publisher'),
+                        // usw.
+                    };
+
+
                     return (
                         <div key={key} className="mb-4">
                             <label htmlFor={inputId} className="block font-bold mb-1">
-                                {__(key, 'xpub-multi-channel-publisher')}
+                                {labels[key] || key}
                             </label>
                             <input
                                 type={type}
