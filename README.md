@@ -28,6 +28,7 @@ external platforms – either instantly or via scheduled jobs.
 - ⏱️ Publish immediately or schedule for later
 - 🧵 Custom pre- and post-publish hooks
 - 📦 Composer-ready (PSR-4 autoloading, modern structure)
+- ⚛️ React-based admin interface bundled with Vite for fast builds
 - 🐘 Local logging via Monolog – no external tracking or APIs
 - 🔄 GitHub update integration with custom updater hooks
 
