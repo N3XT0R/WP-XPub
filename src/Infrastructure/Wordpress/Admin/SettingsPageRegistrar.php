@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Admin;
 
-use N3XT0R\XPub\Application\Service\Admin\PublisherSettingsService;
+use N3XT0R\XPub\Domain\Service\Admin\PublisherSettingsServiceInterface;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\HookRegistrableInterface;
 use N3XT0R\XPub\Infrastructure\Wordpress\React\Components\XPubSettingsAppLoader;
 use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
@@ -12,7 +12,7 @@ use N3XT0R\XPub\Infrastructure\Wordpress\View\View;
 final class SettingsPageRegistrar implements HookRegistrableInterface
 {
     public function __construct(
-        private PublisherSettingsService $service,
+        private PublisherSettingsServiceInterface $service,
         private XPubSettingsAppLoader $appLoader,
     ) {
     }

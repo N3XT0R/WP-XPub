@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Application\Service\Admin;
 
 use N3XT0R\XPub\Domain\Repository\PublisherRepositoryInterface;
+use N3XT0R\XPub\Domain\Service\Admin\PublisherSettingsServiceInterface;
 use N3XT0R\XPub\Domain\Settings\SettingsRepositoryInterface;
 
-final class PublisherSettingsService
+final class PublisherSettingsService implements PublisherSettingsServiceInterface
 {
     public function __construct(
         private PublisherRepositoryInterface $publisherRepo,

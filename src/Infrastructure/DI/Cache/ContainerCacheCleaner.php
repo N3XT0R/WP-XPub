@@ -2,7 +2,7 @@
 
 namespace N3XT0R\XPub\Infrastructure\DI\Cache;
 
-use N3XT0R\XPub\Application\Cache\ClearContainerCacheInterface;
+use N3XT0R\XPub\Domain\Contracts\ClearContainerCacheInterface;
 use N3XT0R\XPub\Shared\Plugin\PluginContext;
 
 final readonly class ContainerCacheCleaner implements ClearContainerCacheInterface

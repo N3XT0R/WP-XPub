@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Rest;
 
-use N3XT0R\XPub\Application\Service\Admin\PublisherSettingsService;
+use N3XT0R\XPub\Domain\Service\Admin\PublisherSettingsServiceInterface;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
 use WP_Error;
 use WP_REST_Request;
@@ -12,7 +12,7 @@ use WP_REST_Response;
 
 class SettingsController
 {
-    public function __construct(private PublisherSettingsService $service, private SettingsSaveHandler $handler)
+    public function __construct(private PublisherSettingsServiceInterface $service, private SettingsSaveHandler $handler)
     {
     }
 
