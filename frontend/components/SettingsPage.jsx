@@ -63,7 +63,7 @@ export function SettingsPage({
         }));
     };
 
-    const startOAuth = (slug) => {
+    const startOAuth = async (slug) => {
         const base = restUrl.replace(/\/$/, '');
         const popup = window.open('', '_blank', 'width=600,height=700');
 
@@ -72,46 +72,67 @@ export function SettingsPage({
             return;
         }
 
-        fetch(`${base}/xpub/v1/oauth/${encodeURIComponent(slug)}/start`, {
-            headers: {
-                'X-WP-Nonce': restNonce,
-            },
-        })
-            .then((res) => {
-                if (!res.ok) throw new Error(`OAuth start failed: ${res.status}`);
-                return res.json();
-            })
-            .then((data) => {
-                if (data.url) {
-                    popup.location.href = data.url;
-                } else {
-                    popup.document.write(`<p>${__('No redirect URL received.', 'xpub-multi-channel-publisher')}</p>`);
-                }
-            })
-            .catch((err) => {
-                console.error('OAuth error:', err);
-                popup.document.write(`<p>${__('OAuth start failed.', 'xpub-multi-channel-publisher')}</p>`);
+        popup.document.write(`<p>${__('Saving configuration and starting OAuth…', 'xpub-multi-channel-publisher')}</p>`);
+
+        // 1. Konfig speichern
+        const formData = new FormData();
+        formData.append('action', 'xpub_save_settings');
+        formData.append('_wpnonce', nonce);
+        active.forEach(slug => formData.append('active_publishers[]', slug));
+        Object.entries(config).forEach(([slug, values]) => {
+            Object.entries(values).forEach(([key, value]) => {
+                formData.append(`config[${slug}][${key}]`, value);
+            });
+        });
+
+        try {
+            const saveRes = await fetch(actionUrl, {
+                method: 'POST',
+                body: formData,
             });
 
-        const pollInterval = setInterval(() => {
-            fetch(`${base}/xpub/v1/oauth/${encodeURIComponent(slug)}/status`, {
-                headers: {'X-WP-Nonce': restNonce}
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.connected) {
-                        clearInterval(pollInterval);
-                        setOauthStatus(prev => ({
-                            ...prev,
-                            [slug]: true
-                        }));
-                        alert(__('OAuth successful!', 'xpub-multi-channel-publisher'));
-                        popup.close();
-                    }
-                });
-        }, 1000);
+            if (!saveRes.ok) {
+                throw new Error(`Settings save failed: ${saveRes.status}`);
+            }
 
-        setTimeout(() => clearInterval(pollInterval), 5 * 60 * 1000);
+            // 2. OAuth starten
+            const res = await fetch(`${base}/xpub/v1/oauth/${encodeURIComponent(slug)}/start`, {
+                headers: {'X-WP-Nonce': restNonce},
+            });
+
+            if (!res.ok) throw new Error(`OAuth start failed: ${res.status}`);
+            const data = await res.json();
+
+            if (data.url) {
+                popup.location.href = data.url;
+            } else {
+                popup.document.write(`<p>${__('No redirect URL received.', 'xpub-multi-channel-publisher')}</p>`);
+            }
+
+            // 3. Polling starten
+            const pollInterval = setInterval(() => {
+                fetch(`${base}/xpub/v1/oauth/${encodeURIComponent(slug)}/status`, {
+                    headers: {'X-WP-Nonce': restNonce},
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.connected) {
+                            clearInterval(pollInterval);
+                            setOauthStatus(prev => ({
+                                ...prev,
+                                [slug]: true
+                            }));
+                            alert(__('OAuth successful!', 'xpub-multi-channel-publisher'));
+                            popup.close();
+                        }
+                    });
+            }, 1000);
+
+            setTimeout(() => clearInterval(pollInterval), 5 * 60 * 1000);
+        } catch (err) {
+            console.error('OAuth error:', err);
+            popup.document.write(`<p>${__('OAuth process failed. See console for details.', 'xpub-multi-channel-publisher')}</p>`);
+        }
     };
 
 
