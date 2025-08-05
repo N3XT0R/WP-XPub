@@ -36,6 +36,12 @@
     "generate-header": [
       "php build/header-generator.php"
     ],
+    "generate-translations": [
+      "wp i18n make-json languages/ --domain=xpub-multi-channel-publisher --allow-root --extensions=jsx"
+    ],
+    "move-translations": [
+      "bash build/move_translations.sh"
+    ],
     "post-install-cmd": [
       "rm -rf cache/container/compiled/*.php"
     ]
