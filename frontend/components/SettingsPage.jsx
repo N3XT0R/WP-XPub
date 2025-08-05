@@ -100,7 +100,7 @@ export function SettingsPage({
                             ...prev,
                             [slug]: true
                         }));
-                        alert(__('OAuth erfolgreich!', 'xpub-multi-channel-publisher'));
+                        alert(__('OAuth successful!', 'xpub-multi-channel-publisher'));
                     }
                 });
         }, 1000);

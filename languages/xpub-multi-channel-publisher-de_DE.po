@@ -62,3 +62,31 @@ msgstr "Wird gespeichert..."
 #: frontend/components/SettingsPage.jsx:80
 msgid "Publisher settings"
 msgstr "Publisher-Einstellungen"
+
+#: frontend/components/SettingsPage.jsx
+msgid "OAuth"
+msgstr "OAuth"
+
+#: frontend/components/SettingsPage.jsx
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: frontend/components/SettingsPage.jsx
+msgid "Authenticate with"
+msgstr "Authentifizieren mit"
+
+#: frontend/components/SettingsPage.jsx
+msgid "Connected"
+msgstr "Verbunden"
+
+#: frontend/components/SettingsPage.jsx
+msgid "No redirect URL received."
+msgstr "Keine Weiterleitungs-URL erhalten."
+
+#: frontend/components/SettingsPage.jsx
+msgid "OAuth start failed."
+msgstr "OAuth-Start fehlgeschlagen."
+
+#: frontend/components/SettingsPage.jsx
+msgid "OAuth successful!"
+msgstr "OAuth erfolgreich!"

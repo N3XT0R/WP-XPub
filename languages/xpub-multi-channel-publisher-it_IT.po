@@ -49,3 +49,31 @@ msgstr "ID client"
 #: frontend/components/SettingsPage.jsx
 msgid "Custom Text for Social Sharing"
 msgstr "Testo personalizzato per la condivisione sui social"
+
+#: frontend/components/SettingsPage.jsx
+msgid "OAuth"
+msgstr "OAuth"
+
+#: frontend/components/SettingsPage.jsx
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: frontend/components/SettingsPage.jsx
+msgid "Authenticate with"
+msgstr "Autenticati con"
+
+#: frontend/components/SettingsPage.jsx
+msgid "Connected"
+msgstr "Connesso"
+
+#: frontend/components/SettingsPage.jsx
+msgid "No redirect URL received."
+msgstr "Nessun URL di reindirizzamento ricevuto."
+
+#: frontend/components/SettingsPage.jsx
+msgid "OAuth start failed."
+msgstr "Avvio OAuth non riuscito."
+
+#: frontend/components/SettingsPage.jsx
+msgid "OAuth successful!"
+msgstr "OAuth completato con successo!"
