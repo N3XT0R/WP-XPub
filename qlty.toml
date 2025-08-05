@@ -1,0 +1,25 @@
+exclude_patterns = [
+      "**/vendor/**",
+      "**/dist/**",
+      "**/node_modules/**",
+]
+test_patterns = ["**/tests/**"]
+
+[project]
+name = "WP-XPub"
+language = "php"
+coverage = true
+
+[coverage]
+report = "coverage/clover.xml"
+tool = "phpunit"
+
+[analyze]
+enabled = true
+
+[similar_code]
+exclude_patterns = ["tests/**", "dist/**"]
+
+[files]
+include = ["src/"]
+exclude = ["vendor/", "tests/", "dist/"]
