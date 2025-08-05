@@ -13,7 +13,6 @@ const baseUrl = window?.xpubSettings?.translationsBaseUrl || '';
 
         const messages = json?.locale_data?.messages;
         if (messages) {
-            console.log('Setting locale data:', messages);
             setLocaleData(messages, domain);
         } else {
             console.warn('No locale_data.messages found!');
