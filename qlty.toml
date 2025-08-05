@@ -1,8 +1,9 @@
 exclude_patterns = [
-      "**/vendor/**",
-      "**/dist/**",
-      "**/node_modules/**",
+  "**/vendor/**",
+  "**/dist/**",
+  "**/node_modules/**"
 ]
+
 test_patterns = ["**/tests/**"]
 
 [project]
@@ -18,8 +19,17 @@ tool = "phpunit"
 enabled = true
 
 [similar_code]
-exclude_patterns = ["tests/**", "dist/**"]
+exclude_patterns = [
+  "**/tests/**",
+  "**/dist/**",
+  "**/vendor/**"
+]
 
 [files]
-include = ["src/"]
-exclude = ["vendor/", "tests/", "dist/"]
+include = ["src/**"]
+exclude = [
+  "vendor/**",
+  "tests/**",
+  "dist/**",
+  "node_modules/**"
+]
