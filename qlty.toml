@@ -1,7 +1,11 @@
 exclude_patterns = [
   "**/vendor/**",
   "**/dist/**",
-  "**/node_modules/**"
+  "**/node_modules/**",
+  "**/cache/**",
+  "*_min.*",
+  "*-min.*",
+  "*.min.*",
 ]
 
 test_patterns = ["**/tests/**"]
@@ -22,7 +26,8 @@ enabled = true
 exclude_patterns = [
   "**/tests/**",
   "**/dist/**",
-  "**/vendor/**"
+  "**/vendor/**",
+  "**/docs/**"
 ]
 
 [files]
