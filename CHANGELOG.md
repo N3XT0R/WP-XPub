@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.2] - 2025-08-05
+
+### Security
+
+- Patched a moderate severity vulnerability in
+  `@babel/runtime` ([GHSA-968p-4wvh-cqc8](https://github.com/advisories/GHSA-968p-4wvh-cqc8)) introduced via transitive
+  dependencies `@wordpress/hooks` and `@wordpress/i18n`.
+- Enforced safe version (`^7.28.2`) of `@babel/runtime` using the `overrides` field in `package.json`.
+
+### Changed
+
+- Cleaned up `node_modules` and regenerated lockfile to ensure dependency integrity.
+- Adjusted `devDependencies` to align with updated security requirements.
+
+### Notes for Developers
+
+- If you're extending or forking this plugin, be aware of the `overrides` section in `package.json`. It ensures secure
+  runtime versions even when transitive packages lag behind.
+
 ## [1.6.1] - 2025-08-05
 
 ### Fixed
