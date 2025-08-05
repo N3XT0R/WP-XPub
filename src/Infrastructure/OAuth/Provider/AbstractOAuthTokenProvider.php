@@ -91,9 +91,9 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
         ]);
     }
 
-    public function getAuthorizationUrl(): string
+    public function getAuthorizationUrl(array $options = []): string
     {
-        return $this->provider->getAuthorizationUrl();
+        return $this->provider->getAuthorizationUrl($options);
     }
 
     public function getState(): string

@@ -16,7 +16,7 @@ export default function App() {
             },
         })
             .then(res => res.json())
-            .then(data => setSettings({...data, restUrl}));
+            .then(data => setSettings({...data, restUrl, restNonce}));
     }, [restUrl, restNonce]);
 
     if (!settings) {

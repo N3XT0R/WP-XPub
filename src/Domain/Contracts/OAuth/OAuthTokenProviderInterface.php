@@ -14,7 +14,7 @@ interface OAuthTokenProviderInterface
 
     public function storeAccessToken(AccessTokenInterface $accessToken): void;
 
-    public function getAuthorizationUrl(): string;
+    public function getAuthorizationUrl(array $options = []): string;
 
     public function getState(): string;
 

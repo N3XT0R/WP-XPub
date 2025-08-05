@@ -21,7 +21,9 @@ class OAuthController
         register_rest_route('xpub/v1', '/oauth/(?P<provider>[a-z0-9_-]+)/start', [
             'methods' => 'GET',
             'callback' => [$this, 'start'],
-            'permission_callback' => '__return_true',
+            'permission_callback' => function () {
+                return current_user_can('manage_options'); // oder dein passendes Cap
+            }
         ]);
 
         register_rest_route('xpub/v1', '/oauth/(?P<provider>[a-z0-9_-]+)/callback', [
@@ -33,13 +35,17 @@ class OAuthController
         register_rest_route('xpub/v1', '/oauth/(?P<provider>[a-z0-9_-]+)/client-token', [
             'methods' => 'POST',
             'callback' => [$this, 'clientCredentialsToken'],
-            'permission_callback' => '__return_true',
+            'permission_callback' => function () {
+                return current_user_can('manage_options'); // oder dein passendes Cap
+            }
         ]);
 
         register_rest_route('xpub/v1', '/oauth/(?P<provider>[a-z0-9_-]+)/status', [
             'methods' => 'GET',
             'callback' => [$this, 'status'],
-            'permission_callback' => '__return_true',
+            'permission_callback' => function () {
+                return current_user_can('manage_options'); // oder dein passendes Cap
+            }
         ]);
     }
 
@@ -73,7 +79,7 @@ class OAuthController
             $accessToken = $provider->fetchAccessTokenByCode((string)$request->get_param('code'));
             $provider->storeAccessToken($accessToken);
 
-            update_user_meta(get_current_user_id(), 'xpub_oauth_'.$slug.'_connected', true);
+            update_option('xpub_oauth_'.$slug.'_connected', true);
 
             return new WP_REST_Response(['success' => true]);
         } catch (\Throwable $e) {
@@ -105,7 +111,7 @@ class OAuthController
     public function status(WP_REST_Request $request): WP_REST_Response
     {
         $slug = $request->get_param('provider');
-        $connected = get_user_meta(get_current_user_id(), 'xpub_oauth_'.$slug.'_connected', true);
+        $connected = get_option('xpub_oauth_'.$slug.'_connected', false);
 
         return new WP_REST_Response([
             'connected' => (bool)$connected,

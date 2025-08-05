@@ -6,7 +6,8 @@ export function SettingsPage({
                                  activePublisherSlugs = [],
                                  nonce = '',
                                  actionUrl = '',
-                                 restUrl = ''
+                                 restUrl = '',
+                                 restNonce = ''
                              }) {
     const [active, setActive] = useState(new Set(activePublisherSlugs));
     const [config, setConfig] = useState(() => {
@@ -45,7 +46,9 @@ export function SettingsPage({
         const base = restUrl.replace(/\/$/, '');
         const url = `${base}/xpub/v1/oauth/${encodeURIComponent(slug)}/start`;
 
-        fetch(url)
+        fetch(url, {
+            headers: {'X-WP-Nonce': restNonce}
+        })
             .then(res => {
                 if (!res.ok) throw new Error(`OAuth start failed: ${res.status}`);
                 return res.json();
@@ -71,7 +74,9 @@ export function SettingsPage({
             });
 
         const interval = setInterval(() => {
-            fetch(`${base}/xpub/v1/oauth/${encodeURIComponent(slug)}/status`)
+            fetch(`${base}/xpub/v1/oauth/${encodeURIComponent(slug)}/status`, {
+                headers: {'X-WP-Nonce': restNonce}
+            })
                 .then(res => res.json())
                 .then(data => {
                     if (data.connected) {
