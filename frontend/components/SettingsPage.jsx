@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {_x} from '@wordpress/i18n';
 
 export function SettingsPage({
@@ -22,6 +22,27 @@ export function SettingsPage({
         });
         return initial;
     });
+
+    const [oauthStatus, setOauthStatus] = useState({});
+
+    useEffect(() => {
+        const base = restUrl.replace(/\/$/, '');
+
+        publishers.forEach(publisher => {
+            fetch(`${base}/xpub/v1/oauth/${encodeURIComponent(publisher.slug)}/status`, {
+                headers: {
+                    'X-WP-Nonce': restNonce,
+                },
+            })
+                .then(res => res.json())
+                .then(data => {
+                    setOauthStatus(prev => ({
+                        ...prev,
+                        [publisher.slug]: data.connected
+                    }));
+                });
+        });
+    }, [publishers, restUrl]);
 
     const togglePublisher = slug => {
         setActive(prev => {
@@ -47,7 +68,9 @@ export function SettingsPage({
         const url = `${base}/xpub/v1/oauth/${encodeURIComponent(slug)}/start`;
 
         fetch(url, {
-            headers: {'X-WP-Nonce': restNonce}
+            headers: {
+                'X-WP-Nonce': restNonce,
+            },
         })
             .then(res => {
                 if (!res.ok) throw new Error(`OAuth start failed: ${res.status}`);
@@ -55,15 +78,7 @@ export function SettingsPage({
             })
             .then(data => {
                 if (data.url) {
-                    const width = 600;
-                    const height = 700;
-                    const left = (window.screen.width - width) / 2;
-                    const top = (window.screen.height - height) / 2;
-                    window.open(
-                        data.url,
-                        'xpubOAuthPopup',
-                        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
-                    );
+                    window.location.href = data.url;
                 } else {
                     alert(_x('No redirect URL received.', 'JavaScript', 'xpub-multi-channel-publisher'));
                 }
@@ -81,8 +96,11 @@ export function SettingsPage({
                 .then(data => {
                     if (data.connected) {
                         clearInterval(interval);
+                        setOauthStatus(prev => ({
+                            ...prev,
+                            [slug]: true
+                        }));
                         alert(_x('OAuth erfolgreich!', 'JavaScript', 'xpub-multi-channel-publisher'));
-                        location.reload();
                     }
                 });
         }, 1000);
@@ -124,14 +142,20 @@ export function SettingsPage({
                     );
                 })}
                 {purposeType === 'oauth' && group.clientId && (
-                    <div className="mt-4">
+                    <div className="mt-4 flex items-center gap-3">
                         <button
                             type="button"
                             className="button button-secondary"
                             onClick={() => startOAuth(publisher.slug)}
+                            disabled={oauthStatus[publisher.slug]}
                         >
                             {_x('Authenticate with', 'JavaScript', 'xpub-multi-channel-publisher')} {publisher.name}
                         </button>
+                        {oauthStatus[publisher.slug] && (
+                            <span className="text-green-600 font-semibold">
+                                ✓ {_x('Connected', 'JavaScript', 'xpub-multi-channel-publisher')}
+                            </span>
+                        )}
                     </div>
                 )}
             </div>
