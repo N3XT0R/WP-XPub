@@ -50,7 +50,7 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
 
         $this->enqueueWordPressDependencies();
 
-        if ($this->isDevelopmentEnvironment() && 1 === 2) {
+        if ($this->isDevelopmentEnvironment() && false) {
             $this->injectViteDevScripts();
         } else {
             $this->enqueueProductionAssets();
@@ -96,7 +96,7 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
             return;
         }
 
-        $entry = $manifest['main.jsx'] ?? reset($manifest);
+        $entry = $manifest['i18n-loader.js'] ?? $manifest['main.jsx'] ?? reset($manifest);
         if (!isset($entry['file'])) {
             return;
         }
@@ -112,6 +112,18 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
             null,
             true
         );
+        add_action('admin_head', function () {
+            echo '<script type="module">'
+                .'window.xpubSettings = {'
+                .'locale: '.json_encode(get_user_locale()).','
+                .'translationsBaseUrl: '.json_encode(
+                    plugins_url('frontend/translations', $this->pluginContext->pluginFile)
+                ).','
+                .'restUrl: '.json_encode(rest_url()).','
+                .'restNonce: '.json_encode(wp_create_nonce('wp_rest'))
+                .'};'
+                .'</script>';
+        });
 
         add_filter('script_loader_tag', function ($tag, $handleFromFilter, $src) use ($handle) {
             if ($handleFromFilter === $handle) {
@@ -120,17 +132,10 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
             return $tag;
         }, 10, 3);
 
-        wp_set_script_translations(
-            $handle,
-            'xpub-multi-channel-publisher',
-            $basePath.'languages'
-        );
-        
-
         if (!empty($entry['css'][0])) {
             wp_enqueue_style(
                 'xpub-settings-style',
-                $baseUrl.$entry['css'][0],
+                $baseUrl.$entry['css'][0]
             );
         }
     }
@@ -148,6 +153,4 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
 
         return is_array($manifest) ? $manifest : null;
     }
-
 }
-

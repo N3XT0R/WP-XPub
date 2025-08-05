@@ -14,7 +14,9 @@ export default defineConfig({
         emptyOutDir: true,
         cssCodeSplit: true,
         rollupOptions: {
-            input: './main.jsx',
+            input: {
+                app: './i18n-loader.js',
+            },
             output: {
                 format: 'es',
                 entryFileNames: '[name].js',
@@ -28,6 +30,7 @@ export default defineConfig({
             },
         },
     },
+    assetsInclude: ['**/*.json'],
     server: {
         host: '0.0.0.0',
         port: 5173,
