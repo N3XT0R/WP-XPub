@@ -14,66 +14,38 @@ msgstr ""
 "X-Domain: xpub-multi-channel-publisher\n"
 "X-Generator: Poedit 3.6\n"
 
+# JavaScript translations
 #: resources/views/admin/settings-page.php:6
+#: frontend/components/SettingsPage.jsx
 msgid "Activate Publisher"
 msgstr "Activer l’éditeur"
 
 #: resources/views/admin/settings-page.php:8
+#: frontend/components/SettingsPage.jsx
 msgid "Select active publishers:"
 msgstr "Sélectionner les éditeurs actifs :"
 
 #: resources/views/admin/settings-page.php:36
+#: frontend/components/SettingsPage.jsx
 msgid "Configuration"
 msgstr "Configuration"
 
 #: resources/views/admin/settings-page.php:65
+#: frontend/components/SettingsPage.jsx
 msgid "Save settings"
 msgstr "Enregistrer les paramètres"
 
 #: resources/views/admin/settings-page.php
+#: frontend/components/SettingsPage.jsx
 msgid "api_key"
 msgstr "Clé API"
 
 #: resources/views/admin/settings-page.php
+#: frontend/components/SettingsPage.jsx
 msgid "client_id"
 msgstr "ID client"
 
 #: resources/views/admin/metabox.php
-msgid "Custom Text for Social Sharing"
-msgstr "Texte personnalisé pour le partage social"
-
-# JavaScript translations
-#: frontend/App.jsx
-msgctxt "JavaScript"
-msgid "Activate Publisher"
-msgstr "Aktiver l’éditeur\"  ; ← für fr_FR (bzw. andere Zielübersetzung"
-
-#: frontend/App.jsx
-msgctxt "JavaScript"
-msgid "Select active publishers:"
-msgstr "Sélectionner les éditeurs actifs :"
-
-#: frontend/App.jsx
-msgctxt "JavaScript"
-msgid "Configuration"
-msgstr "Configuration"
-
-#: frontend/App.jsx
-msgctxt "JavaScript"
-msgid "Save settings"
-msgstr "Enregistrer les paramètres"
-
-#: frontend/App.jsx
-msgctxt "JavaScript"
-msgid "api_key"
-msgstr "Clé API"
-
-#: frontend/App.jsx
-msgctxt "JavaScript"
-msgid "client_id"
-msgstr "ID client"
-
-#: frontend/App.jsx
-msgctxt "JavaScript"
+#: frontend/components/SettingsPage.jsx
 msgid "Custom Text for Social Sharing"
 msgstr "Texte personnalisé pour le partage social"

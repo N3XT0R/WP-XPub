@@ -14,81 +14,51 @@ msgstr ""
 "X-Domain: xpub-multi-channel-publisher\n"
 "X-Generator: Poedit 3.6\n"
 
+# JavaScript translations
 #: resources/views/admin/settings-page.php:6
+#: frontend/components/SettingsPage.jsx:12
 msgid "Activate Publisher"
 msgstr "Publisher aktivieren"
 
 #: resources/views/admin/settings-page.php:8
+#: frontend/components/SettingsPage.jsx:18
 msgid "Select active publishers:"
 msgstr "Wähle aktive Publisher:"
 
 #: resources/views/admin/settings-page.php:36
+#: frontend/components/SettingsPage.jsx:23
+#: resources/views/admin/SettingsPage.jsx:193
 msgid "Configuration"
 msgstr "Konfiguration"
 
 #: resources/views/admin/settings-page.php:65
+#: frontend/components/SettingsPage.jsx:40
 msgid "Save settings"
 msgstr "Einstellungen speichern"
 
 #: resources/views/admin/settings-page.php
+#: frontend/components/SettingsPage.jsx:48
 msgid "api_key"
 msgstr "API-Schlüssel"
 
 #: resources/views/admin/settings-page.php
+#: frontend/components/SettingsPage.jsx:49
 msgid "client_id"
 msgstr "Client-ID"
 
 #: resources/views/admin/metabox.php
-msgid "Custom Text for Social Sharing"
-msgstr "Individueller Text für Social Media"
-
-# JavaScript translations
-#: frontend/components/SettingsPage.jsx:12
-msgctxt "JavaScript"
-msgid "Activate Publisher"
-msgstr "Publisher aktivieren"
-
-#: frontend/components/SettingsPage.jsx:18
-msgctxt "JavaScript"
-msgid "Select active publishers:"
-msgstr "Wähle aktive Publisher:"
-
-#: frontend/components/SettingsPage.jsx:23
-msgctxt "JavaScript"
-msgid "Configuration"
-msgstr "Konfiguration"
-
-#: frontend/components/SettingsPage.jsx:40
-msgctxt "JavaScript"
-msgid "Save settings"
-msgstr "Einstellungen speichern"
-
-#: frontend/components/SettingsPage.jsx:48
-msgctxt "JavaScript"
-msgid "api_key"
-msgstr "API-Schlüssel"
-
-#: frontend/components/SettingsPage.jsx:49
-msgctxt "JavaScript"
-msgid "client_id"
-msgstr "Client-ID"
-
 #: frontend/components/SettingsPage.jsx:60
-msgctxt "JavaScript"
 msgid "Custom Text for Social Sharing"
 msgstr "Individueller Text für Social Media"
 
 #: frontend/components/SettingsPage.jsx:66
-msgctxt "JavaScript"
 msgid "Changes saved successfully."
 msgstr "Änderungen erfolgreich gespeichert."
 
 #: frontend/components/SettingsPage.jsx:70
-msgctxt "JavaScript"
 msgid "Saving..."
 msgstr "Wird gespeichert..."
 
 #: frontend/components/SettingsPage.jsx:80
-msgctxt "JavaScript"
 msgid "Publisher settings"
 msgstr "Publisher-Einstellungen"

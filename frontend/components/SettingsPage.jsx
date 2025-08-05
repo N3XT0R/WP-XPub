@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {_x} from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 
 export function SettingsPage({
                                  publishers = [],
@@ -80,12 +80,12 @@ export function SettingsPage({
                 if (data.url) {
                     window.location.href = data.url;
                 } else {
-                    alert(_x('No redirect URL received.', 'JavaScript', 'xpub-multi-channel-publisher'));
+                    alert(__('No redirect URL received.', 'xpub-multi-channel-publisher'));
                 }
             })
             .catch(err => {
                 console.error('OAuth error:', err);
-                alert(_x('OAuth start failed.', 'JavaScript', 'xpub-multi-channel-publisher'));
+                alert(__('OAuth start failed.', 'xpub-multi-channel-publisher'));
             });
 
         const interval = setInterval(() => {
@@ -100,7 +100,7 @@ export function SettingsPage({
                             ...prev,
                             [slug]: true
                         }));
-                        alert(_x('OAuth erfolgreich!', 'JavaScript', 'xpub-multi-channel-publisher'));
+                        alert(__('OAuth erfolgreich!', 'xpub-multi-channel-publisher'));
                     }
                 });
         }, 1000);
@@ -109,8 +109,8 @@ export function SettingsPage({
     const renderGroup = (publisher, purposeType, group) => {
         const heading =
             purposeType === 'oauth'
-                ? `${_x('OAuth', 'JavaScript', 'xpub-multi-channel-publisher')} ${_x('Settings', 'JavaScript', 'xpub-multi-channel-publisher')}`
-                : `${purposeType.charAt(0).toUpperCase() + purposeType.slice(1)} ${_x('Settings', 'JavaScript', 'xpub-multi-channel-publisher')}`;
+                ? `${__('OAuth', 'xpub-multi-channel-publisher')} ${__('Settings', 'xpub-multi-channel-publisher')}`
+                : `${purposeType.charAt(0).toUpperCase() + purposeType.slice(1)} ${__('Settings', 'xpub-multi-channel-publisher')}`;
 
         return (
             <div key={purposeType} className="mt-6">
@@ -127,7 +127,7 @@ export function SettingsPage({
                     return (
                         <div key={key} className="mb-4">
                             <label htmlFor={inputId} className="block font-bold mb-1">
-                                {_x(key, 'JavaScript', 'xpub-multi-channel-publisher')}
+                                {__(key, 'xpub-multi-channel-publisher')}
                             </label>
                             <input
                                 type={type}
@@ -149,11 +149,11 @@ export function SettingsPage({
                             onClick={() => startOAuth(publisher.slug)}
                             disabled={oauthStatus[publisher.slug]}
                         >
-                            {_x('Authenticate with', 'JavaScript', 'xpub-multi-channel-publisher')} {publisher.name}
+                            {__('Authenticate with', 'xpub-multi-channel-publisher')} {publisher.name}
                         </button>
                         {oauthStatus[publisher.slug] && (
                             <span className="text-green-600 font-semibold">
-                                ✓ {_x('Connected', 'JavaScript', 'xpub-multi-channel-publisher')}
+                                ✓ {__('Connected', 'xpub-multi-channel-publisher')}
                             </span>
                         )}
                     </div>
@@ -167,10 +167,9 @@ export function SettingsPage({
             <input type="hidden" name="action" value="xpub_save_settings"/>
             <input type="hidden" name="_wpnonce" value={nonce}/>
 
-            <h2 className="text-xl font-bold mb-4">{_x('Activate Publisher', 'JavaScript', 'xpub-multi-channel-publisher')}</h2>
+            <h2 className="text-xl font-bold mb-4">{__('Activate Publisher', 'xpub-multi-channel-publisher')}</h2>
             <fieldset className="mb-8">
-                <legend
-                    className="mb-2">{_x('Select active publishers:', 'JavaScript', 'xpub-multi-channel-publisher')}</legend>
+                <legend className="mb-2">{__('Select active publishers:', 'xpub-multi-channel-publisher')}</legend>
                 {publishers.map(publisher => {
                     const id = `publisher_${publisher.slug}`;
                     return (
@@ -190,13 +189,13 @@ export function SettingsPage({
                 })}
             </fieldset>
 
-            <h2 className="text-xl font-bold mb-4">{_x('Configuration', 'JavaScript', 'xpub-multi-channel-publisher')}</h2>
+            <h2 className="text-xl font-bold mb-4">{__('Configuration', 'xpub-multi-channel-publisher')}</h2>
             {publishers
                 .filter(publisher => active.has(publisher.slug))
                 .map(publisher => (
                     <fieldset key={publisher.slug} className="mt-8 p-4 border border-gray-300">
                         <legend className="font-bold">
-                            {publisher.name} {_x('Configuration', 'JavaScript', 'xpub-multi-channel-publisher')}
+                            {publisher.name} {__('Configuration', 'xpub-multi-channel-publisher')}
                         </legend>
                         {Object.entries(publisher.config || {}).map(([purposeType, group]) =>
                             renderGroup(publisher, purposeType, group)
@@ -206,7 +205,7 @@ export function SettingsPage({
 
             <p className="mt-8">
                 <button type="submit" className="button button-primary">
-                    {_x('Save settings', 'JavaScript', 'xpub-multi-channel-publisher')}
+                    {__('Save settings', 'xpub-multi-channel-publisher')}
                 </button>
             </p>
         </form>
