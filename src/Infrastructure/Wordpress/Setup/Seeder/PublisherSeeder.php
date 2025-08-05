@@ -68,4 +68,3 @@ final readonly class PublisherSeeder
         return $config;
     }
 }
-

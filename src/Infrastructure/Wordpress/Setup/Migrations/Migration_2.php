@@ -39,5 +39,4 @@ class Migration_2 extends AbstractMigration
         $prefix = $wpdb->prefix;
         $wpdb->query("DROP TABLE IF EXISTS {$prefix}xpub_queue");
     }
-
 }

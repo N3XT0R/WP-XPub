@@ -18,8 +18,7 @@ final class WpPostStatusRepository implements PostStatusRepositoryInterface
 
         $revisions = wp_get_post_revisions($postId);
         foreach ($revisions as $rev) {
-            if (
-                $rev->post_modified_gmt > $post->post_modified_gmt &&
+            if ($rev->post_modified_gmt > $post->post_modified_gmt &&
                 $rev->post_status !== 'publish'
             ) {
                 return false;

@@ -21,5 +21,4 @@ final class PurposeType
             self::OAUTH,
         ];
     }
-
 }

@@ -48,7 +48,8 @@ final class WordpressCron
         }
 
         if (!self::isRefreshRegistered()) {
-            wp_schedule_event(time(), 'xpub_every_ten_minutes', self::CRON_REFRESH_HOOK);;
+            wp_schedule_event(time(), 'xpub_every_ten_minutes', self::CRON_REFRESH_HOOK);
+            ;
         }
     }
 
@@ -107,6 +108,4 @@ final class WordpressCron
         $jobRunner = self::container()->get(JobRunner::class);
         $jobRunner->refreshTokens();
     }
-
-
 }

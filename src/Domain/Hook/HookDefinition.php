@@ -19,5 +19,4 @@ final readonly class HookDefinition
     ) {
         $this->callback = $callback;
     }
-
 }

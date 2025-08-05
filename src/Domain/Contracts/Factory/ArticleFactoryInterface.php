@@ -11,5 +11,4 @@ interface ArticleFactoryInterface
     public function fromArray(array $data): Article;
 
     public function toArray(Article $article): array;
-
 }

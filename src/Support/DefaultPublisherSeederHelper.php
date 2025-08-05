@@ -33,5 +33,4 @@ final class DefaultPublisherSeederHelper implements OAuthPublisherSeederHelperIn
     {
         return self::makeSeeder()->unregister($slug);
     }
-
 }

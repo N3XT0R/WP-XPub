@@ -36,5 +36,4 @@ final class PublisherConfig
             'purpose_type' => $this->purposeType,
         ];
     }
-
 }

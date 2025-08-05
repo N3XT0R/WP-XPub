@@ -85,9 +85,9 @@ final readonly class ReactAppLoader
 
         add_action('admin_head', function () use ($jsVarName, $dataToInject) {
             echo '<script type="module">window.'.$jsVarName.' = '.json_encode(
-                    $dataToInject,
-                    JSON_UNESCAPED_SLASHES
-                ).';</script>';
+                $dataToInject,
+                JSON_UNESCAPED_SLASHES
+            ).';</script>';
         });
 
         if (!empty($entry['css'][0])) {

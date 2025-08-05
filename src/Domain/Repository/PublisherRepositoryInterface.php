@@ -20,5 +20,4 @@ interface PublisherRepositoryInterface
     public function create(string $slug, string $name, array $config): bool;
 
     public function delete(string $slug): bool;
-
 }

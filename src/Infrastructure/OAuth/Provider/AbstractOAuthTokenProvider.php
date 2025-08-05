@@ -131,6 +131,4 @@ abstract class AbstractOAuthTokenProvider implements OAuthTokenProviderInterface
 
         return time() >= ((int)$expires - 60);
     }
-
-
 }

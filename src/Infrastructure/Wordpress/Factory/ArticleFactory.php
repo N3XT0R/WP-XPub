@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Infrastructure\Wordpress\Factory;
 
-
 use N3XT0R\XPub\Domain\Contracts\Factory\ArticleFactoryInterface;
 use N3XT0R\XPub\Domain\Contracts\Factory\WordpressArticleFactoryInterface;
 use N3XT0R\XPub\Domain\Contracts\RendersPostContentInterface;
@@ -78,5 +77,4 @@ final class ArticleFactory implements ArticleFactoryInterface, WordpressArticleF
             'scheduledAt' => $article->scheduledAt,
         ];
     }
-
 }

@@ -118,5 +118,4 @@ class OAuthController
             'connected' => (bool)$connected,
         ]);
     }
-
 }

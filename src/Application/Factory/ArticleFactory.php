@@ -38,5 +38,4 @@ class ArticleFactory implements ArticleFactoryInterface
             'scheduledAt' => $article->scheduledAt,
         ];
     }
-
 }

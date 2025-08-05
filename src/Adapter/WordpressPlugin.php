@@ -142,5 +142,4 @@ final class WordpressPlugin
     {
         return self::container()->get(AsyncPublishingDispatcher::class);
     }
-
 }

@@ -10,4 +10,3 @@ interface PublisherSettingsServiceInterface
 
     public function saveSettings(array $activePublisherSlugs, array $publisherConfigs): void;
 }
-

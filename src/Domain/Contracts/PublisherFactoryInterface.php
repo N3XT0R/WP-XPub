@@ -12,4 +12,3 @@ interface PublisherFactoryInterface
 
     public function createWithConfig(string $slug, array $config): PublisherInterface;
 }
-

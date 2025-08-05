@@ -6,7 +6,6 @@ namespace N3XT0R\XPub\Shared\DI;
 
 use DI\ContainerBuilder;
 
-
 interface ContainerConfiguratorInterface
 {
     public function configure(ContainerBuilder $builder): void;

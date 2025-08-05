@@ -19,4 +19,3 @@ final class PublisherFactoryService implements PublisherFactoryInterface
         return PublisherFactory::createWithConfig($slug, $config);
     }
 }
-
