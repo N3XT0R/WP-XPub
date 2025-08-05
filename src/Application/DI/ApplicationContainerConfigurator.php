@@ -8,6 +8,7 @@ use DI\ContainerBuilder;
 use N3XT0R\XPub\Application\Publisher\PublisherSelector;
 use N3XT0R\XPub\Application\Service\Admin\PublisherSettingsService;
 use N3XT0R\XPub\Application\Update\ReleaseService;
+use N3XT0R\XPub\Domain\Contracts\ReleaseProviderInterface;
 use N3XT0R\XPub\Domain\Service\Admin\PublisherSettingsServiceInterface;
 use N3XT0R\XPub\Shared\DI\ContainerConfiguratorInterface;
 
@@ -20,7 +21,7 @@ class ApplicationContainerConfigurator implements ContainerConfiguratorInterface
         $builder->addDefinitions([
             PublisherSettingsServiceInterface::class => autowire(PublisherSettingsService::class),
             PublisherSelector::class => autowire(PublisherSelector::class),
-            ReleaseService::class => autowire(ReleaseService::class),
+            ReleaseProviderInterface::class => autowire(ReleaseService::class),
         ]);
     }
 }

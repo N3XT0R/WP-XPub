@@ -66,7 +66,7 @@ final readonly class ReactAppLoader
         }
 
         $baseUrl = plugins_url('dist/', $this->pluginContext->pluginFile);
-        $handle = 'xpub-'.$jsVarName;
+        $handle = $this->pluginContext->handlePrefix.'-'.$jsVarName;
 
         wp_enqueue_script(
             $handle,

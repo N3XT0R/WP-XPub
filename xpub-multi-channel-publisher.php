@@ -27,7 +27,8 @@ ContainerProvider::setPluginContext(
     new PluginContext(
         __FILE__,
         'xpub-multi-channel-publisher',
-        'https://github.com/N3XT0R/WP-XPub'
+        'https://github.com/N3XT0R/WP-XPub',
+        'xpub'
     )
 );
 

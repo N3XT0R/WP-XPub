@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace N3XT0R\XPub\Tests\Infrastructure\Wordpress\Hook;
 
+use N3XT0R\XPub\Application\Service\Admin\PublisherSettingsService;
 use N3XT0R\XPub\Domain\Hook\HookDefinition;
 use N3XT0R\XPub\Infrastructure\DI\Cache\ContainerCacheCleaner;
-use N3XT0R\XPub\Application\Service\Admin\PublisherSettingsService;
 use N3XT0R\XPub\Infrastructure\OAuth\OAuthTokenProviderFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\Validator\SettingsFormRequestValidator;
@@ -53,6 +53,7 @@ class HookProviderTest extends TestCase
                     'plugin.php',
                     'xpub-multi-channel-publisher',
                     'https://example.com',
+                    'xpub'
                 ),
                 new \N3XT0R\XPub\Application\Update\ReleaseService(),
                 new ContainerCacheCleaner($context)
