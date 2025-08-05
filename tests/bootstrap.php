@@ -89,6 +89,40 @@ if (!function_exists('add_meta_box')) {
     {
     }
 }
+if (!function_exists('wp_enqueue_script')) {
+    function wp_enqueue_script()
+    {
+    }
+}
+if (!function_exists('wp_enqueue_style')) {
+    function wp_enqueue_style()
+    {
+    }
+}
+if (!function_exists('get_user_locale')) {
+    function get_user_locale()
+    {
+        return 'en_US';
+    }
+}
+if (!function_exists('plugins_url')) {
+    function plugins_url($path = '', $plugin = '')
+    {
+        return 'http://example.com/'.ltrim($path, '/');
+    }
+}
+if (!function_exists('rest_url')) {
+    function rest_url()
+    {
+        return 'http://example.com/wp-json/';
+    }
+}
+if (!function_exists('wp_create_nonce')) {
+    function wp_create_nonce($action = -1)
+    {
+        return md5((string)$action);
+    }
+}
 if (!function_exists('update_option')) {
     function update_option($key, $value)
     {
