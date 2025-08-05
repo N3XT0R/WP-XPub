@@ -50,7 +50,7 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
 
         $this->enqueueWordPressDependencies();
 
-        if ($this->isDevelopmentEnvironment() && false) {
+        if ($this->isDevelopmentEnvironment()) {
             $this->injectViteDevScripts();
         } else {
             $this->enqueueProductionAssets();
@@ -85,6 +85,14 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
                     window.__vite_plugin_react_preamble_installed__ = true;
                 </script>
                 <script type="module" src="http://localhost:5173/main.jsx"></script>
+                <script type="module">
+                    window.xpubSettings = {
+                        locale: JSON.stringify("{$this->getLocale()}"),
+                        translationsBaseUrl: JSON.stringify("{$this->getTranslationsBaseUrl()}"),
+                        restUrl: "{$this->getRestUrl()}",
+                        restNonce: "{$this->getRestNonce()}"
+                    };
+                </script>
             HTML;
         });
     }
@@ -102,7 +110,6 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
         }
 
         $baseUrl = plugins_url('dist/', $this->pluginContext->pluginFile);
-        $basePath = plugin_dir_path($this->pluginContext->pluginFile);
         $handle = 'xpub-settings-app';
 
         wp_enqueue_script(
@@ -112,18 +119,6 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
             null,
             true
         );
-        add_action('admin_head', function () {
-            echo '<script type="module">'
-                .'window.xpubSettings = {'
-                .'locale: '.json_encode(get_user_locale()).','
-                .'translationsBaseUrl: '.json_encode(
-                    plugins_url('frontend/translations', $this->pluginContext->pluginFile)
-                ).','
-                .'restUrl: '.json_encode(rest_url()).','
-                .'restNonce: '.json_encode(wp_create_nonce('wp_rest'))
-                .'};'
-                .'</script>';
-        });
 
         add_filter('script_loader_tag', function ($tag, $handleFromFilter, $src) use ($handle) {
             if ($handleFromFilter === $handle) {
@@ -131,6 +126,17 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
             }
             return $tag;
         }, 10, 3);
+
+        add_action('admin_head', function () {
+            echo '<script type="module">'
+                .'window.xpubSettings = {'
+                .'locale: '.json_encode(get_user_locale()).','
+                .'translationsBaseUrl: '.json_encode($this->getTranslationsBaseUrl()).','
+                .'restUrl: '.json_encode($this->getRestUrl()).','
+                .'restNonce: '.json_encode($this->getRestNonce())
+                .'};'
+                .'</script>';
+        });
 
         if (!empty($entry['css'][0])) {
             wp_enqueue_style(
@@ -143,7 +149,6 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
     private function loadViteManifest(): ?array
     {
         $path = plugin_dir_path($this->pluginContext->pluginFile).'dist/.vite/manifest.json';
-
         if (!file_exists($path)) {
             return null;
         }
@@ -152,5 +157,25 @@ final class SettingsPageRegistrar implements HookRegistrableInterface
         $manifest = json_decode((string)$json, true);
 
         return is_array($manifest) ? $manifest : null;
+    }
+
+    private function getRestNonce(): string
+    {
+        return wp_create_nonce('wp_rest');
+    }
+
+    private function getRestUrl(): string
+    {
+        return rest_url();
+    }
+
+    private function getLocale(): string
+    {
+        return get_user_locale();
+    }
+
+    private function getTranslationsBaseUrl(): string
+    {
+        return plugins_url('frontend/translations', $this->pluginContext->pluginFile);
     }
 }
