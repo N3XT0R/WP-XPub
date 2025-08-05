@@ -1,0 +1,11 @@
+{
+  "i18n-loader.js": {
+    "file": "app.js",
+    "name": "app",
+    "src": "i18n-loader.js",
+    "isEntry": true,
+    "css": [
+      "app.css"
+    ]
+  }
+}
