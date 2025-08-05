@@ -26,19 +26,22 @@ final class WordpressHookRegistrarTest extends TestCase
 {
     public function testItDispatchesAllHooksFromProvider(): void
     {
+        $settingsSaveHandler = new SettingsSaveHandler(
+            new SettingsFormRequestValidator(),
+            new WordpressSettingsRepository(),
+            new PublisherRepository(),
+        );
+
         $settingsController = new SettingsController(
             new PublisherSettingsService(
                 new PublisherRepository(),
                 new WordpressSettingsRepository()
-            )
+            ),
+            $settingsSaveHandler
         );
 
         $provider = new HookProvider(
-            new SettingsSaveHandler(
-                new SettingsFormRequestValidator(),
-                new WordpressSettingsRepository(),
-                new PublisherRepository(),
-            ),
+            $settingsSaveHandler,
             new OAuthController(
                 new OAuthTokenProviderFactory(
                     new PublisherRepository(),
