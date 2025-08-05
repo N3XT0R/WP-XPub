@@ -113,6 +113,8 @@ class OAuthController
         $slug = $request->get_param('provider');
         $connected = get_option('xpub_oauth_'.$slug.'_connected', false);
 
+        $connected = false;
+
         return new WP_REST_Response([
             'connected' => (bool)$connected,
         ]);

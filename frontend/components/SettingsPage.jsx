@@ -63,48 +63,57 @@ export function SettingsPage({
         }));
     };
 
-    const startOAuth = slug => {
+    const startOAuth = (slug) => {
         const base = restUrl.replace(/\/$/, '');
-        const url = `${base}/xpub/v1/oauth/${encodeURIComponent(slug)}/start`;
+        const popup = window.open('', '_blank', 'width=600,height=700');
 
-        fetch(url, {
+        if (!popup) {
+            alert(__('Popup blocked. Please allow popups and try again.', 'xpub-multi-channel-publisher'));
+            return;
+        }
+
+        fetch(`${base}/xpub/v1/oauth/${encodeURIComponent(slug)}/start`, {
             headers: {
                 'X-WP-Nonce': restNonce,
             },
         })
-            .then(res => {
+            .then((res) => {
                 if (!res.ok) throw new Error(`OAuth start failed: ${res.status}`);
                 return res.json();
             })
-            .then(data => {
+            .then((data) => {
                 if (data.url) {
-                    window.location.href = data.url;
+                    popup.location.href = data.url;
                 } else {
-                    alert(__('No redirect URL received.', 'xpub-multi-channel-publisher'));
+                    popup.document.write(`<p>${__('No redirect URL received.', 'xpub-multi-channel-publisher')}</p>`);
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error('OAuth error:', err);
-                alert(__('OAuth start failed.', 'xpub-multi-channel-publisher'));
+                popup.document.write(`<p>${__('OAuth start failed.', 'xpub-multi-channel-publisher')}</p>`);
             });
 
-        const interval = setInterval(() => {
+        const pollInterval = setInterval(() => {
             fetch(`${base}/xpub/v1/oauth/${encodeURIComponent(slug)}/status`, {
                 headers: {'X-WP-Nonce': restNonce}
             })
                 .then(res => res.json())
                 .then(data => {
                     if (data.connected) {
-                        clearInterval(interval);
+                        clearInterval(pollInterval);
                         setOauthStatus(prev => ({
                             ...prev,
                             [slug]: true
                         }));
                         alert(__('OAuth successful!', 'xpub-multi-channel-publisher'));
+                        popup.close();
                     }
                 });
         }, 1000);
+
+        setTimeout(() => clearInterval(pollInterval), 5 * 60 * 1000);
     };
+
 
     const renderGroup = (publisher, purposeType, group) => {
         const heading =
