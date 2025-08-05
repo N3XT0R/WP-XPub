@@ -16,64 +16,64 @@ msgstr ""
 
 # JavaScript translations
 #: resources/views/admin/settings-page.php:6
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Activate Publisher"
 msgstr "Активировать издателя"
 
 #: resources/views/admin/settings-page.php:8
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Select active publishers:"
 msgstr "Выберите активных издателей:"
 
 #: resources/views/admin/settings-page.php:36
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Configuration"
 msgstr "Конфигурация"
 
 #: resources/views/admin/settings-page.php:65
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Save settings"
 msgstr "Сохранить настройки"
 
 #: resources/views/admin/settings-page.php
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "api_key"
 msgstr "Ключ API"
 
 #: resources/views/admin/settings-page.php
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "client_id"
 msgstr "ID клиента"
 
 #: resources/views/admin/metabox.php
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Custom Text for Social Sharing"
 msgstr "Пользовательский текст для публикации в соцсетях"
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx:134
 msgid "OAuth"
 msgstr "OAuth"
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx:135
 msgid "Settings"
 msgstr "Настройки"
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx:169
 msgid "Authenticate with"
 msgstr "Аутентифицироваться через"
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx:172
 msgid "Connected"
 msgstr "Подключено"
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx:111
 msgid "No redirect URL received."
 msgstr "URL для перенаправления не получен."
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx:116
 msgid "OAuth start failed."
 msgstr "Ошибка при запуске OAuth."
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx:128
 msgid "OAuth successful!"
 msgstr "OAuth успешно выполнен!"

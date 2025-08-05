@@ -16,64 +16,64 @@ msgstr ""
 
 # JavaScript translations
 #: resources/views/admin/settings-page.php:6
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Activate Publisher"
 msgstr "Attiva l’editore"
 
 #: resources/views/admin/settings-page.php:8
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Select active publishers:"
 msgstr "Seleziona gli editori attivi:"
 
 #: resources/views/admin/settings-page.php:36
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Configuration"
 msgstr "Configurazione"
 
 #: resources/views/admin/settings-page.php:65
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Save settings"
 msgstr "Salva impostazioni"
 
 #: resources/views/admin/settings-page.php
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "api_key"
 msgstr "Chiave API"
 
 #: resources/views/admin/settings-page.php
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "client_id"
 msgstr "ID client"
 
 #: resources/views/admin/metabox.php
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Custom Text for Social Sharing"
 msgstr "Testo personalizzato per la condivisione sui social"
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "OAuth"
 msgstr "OAuth"
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Authenticate with"
 msgstr "Autenticati con"
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "Connected"
 msgstr "Connesso"
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "No redirect URL received."
 msgstr "Nessun URL di reindirizzamento ricevuto."
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "OAuth start failed."
 msgstr "Avvio OAuth non riuscito."
 
-#: frontend/components/SettingsPage.jsx
+#: resources/views/admin/SettingsPage.jsx
 msgid "OAuth successful!"
 msgstr "OAuth completato con successo!"
