@@ -29,6 +29,8 @@ use N3XT0R\XPub\Infrastructure\Publishers\PublisherFactoryService;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\MetaBox;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsPageRegistrar;
 use N3XT0R\XPub\Infrastructure\Wordpress\Admin\SettingsSaveHandler;
+use N3XT0R\XPub\Infrastructure\Wordpress\React\Components\XPubSettingsAppLoader;
+use N3XT0R\XPub\Infrastructure\Wordpress\React\ReactAppLoader;
 use N3XT0R\XPub\Infrastructure\Wordpress\Content\WpPostContentRenderer;
 use N3XT0R\XPub\Infrastructure\Wordpress\Factory\ArticleFactory;
 use N3XT0R\XPub\Infrastructure\Wordpress\Hook\WordpressFilterDispatcher;
@@ -80,9 +82,11 @@ final readonly class InfrastructureContainerConfigurator implements ContainerCon
             FilterDispatcherInterface::class => autowire(WordpressFilterDispatcher::class),
             HookDispatcherInterface::class => autowire(WordpressHookDispatcher::class),
             SettingsSaveHandler::class => autowire(SettingsSaveHandler::class),
+            ReactAppLoader::class => autowire(ReactAppLoader::class),
+            XPubSettingsAppLoader::class => autowire(XPubSettingsAppLoader::class),
             SettingsPageRegistrar::class => create()->constructor(
                 get(PublisherSettingsService::class),
-                get(PluginContext::class)
+                get(XPubSettingsAppLoader::class),
             ),
             MetaBox::class => autowire(MetaBox::class),
             LoggerInterface::class => factory(fn() => LoggerFactory::create()),

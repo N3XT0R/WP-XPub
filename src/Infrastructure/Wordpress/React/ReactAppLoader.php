@@ -6,23 +6,19 @@ namespace N3XT0R\XPub\Infrastructure\Wordpress\React;
 
 use N3XT0R\XPub\Shared\Plugin\PluginContext;
 
-final class ReactAppLoader
+final readonly class ReactAppLoader
 {
     public function __construct(
         private PluginContext $pluginContext,
-        private string $scriptName,               // e.g. main.jsx
-        private string $jsVarName,                // e.g. xpubSettings
-        private array $dataToInject               // e.g. ['locale' => ..., 'restUrl' => ...]
-    )
-    {
+    ) {
     }
 
-    public function load(): void
+    public function load(string $scriptName, string $jsVarName, array $dataToInject): void
     {
         if ($this->isDevelopmentEnvironment()) {
-            $this->injectDevScripts();
+            $this->injectDevScripts($scriptName, $jsVarName, $dataToInject);
         } else {
-            $this->injectProductionAssets();
+            $this->injectProductionAssets($scriptName, $jsVarName, $dataToInject);
         }
     }
 
@@ -35,11 +31,11 @@ final class ReactAppLoader
         return in_array($env, ['local', 'development'], true);
     }
 
-    private function injectDevScripts(): void
+    private function injectDevScripts(string $scriptName, string $jsVarName, array $dataToInject): void
     {
-        add_action('admin_head', function () {
-            $dataJs = json_encode($this->dataToInject, JSON_UNESCAPED_SLASHES);
-            $var = $this->jsVarName;
+        add_action('admin_head', function () use ($scriptName, $jsVarName, $dataToInject) {
+            $dataJs = json_encode($dataToInject, JSON_UNESCAPED_SLASHES);
+            $var = $jsVarName;
             $script = <<<HTML
                 <script type="module" src="http://localhost:5173/@vite/client"></script>
                 <script type="module">
@@ -49,7 +45,7 @@ final class ReactAppLoader
                     window.\$RefreshSig\$ = () => (type) => type;
                     window.__vite_plugin_react_preamble_installed__ = true;
                 </script>
-                <script type="module" src="http://localhost:5173/{$this->scriptName}"></script>
+                <script type="module" src="http://localhost:5173/{$scriptName}"></script>
                 <script type="module">window.{$var} = {$dataJs};</script>
             HTML;
 
@@ -57,20 +53,20 @@ final class ReactAppLoader
         });
     }
 
-    private function injectProductionAssets(): void
+    private function injectProductionAssets(string $scriptName, string $jsVarName, array $dataToInject): void
     {
         $manifest = $this->loadViteManifest();
         if (!$manifest) {
             return;
         }
 
-        $entry = $manifest[$this->scriptName] ?? reset($manifest);
+        $entry = $manifest[$scriptName] ?? reset($manifest);
         if (!isset($entry['file'])) {
             return;
         }
 
         $baseUrl = plugins_url('dist/', $this->pluginContext->pluginFile);
-        $handle = 'xpub-'.$this->jsVarName;
+        $handle = 'xpub-'.$jsVarName;
 
         wp_enqueue_script(
             $handle,
@@ -87,9 +83,9 @@ final class ReactAppLoader
             return $tag;
         }, 10, 3);
 
-        add_action('admin_head', function () {
-            echo '<script type="module">window.'.$this->jsVarName.' = '.json_encode(
-                    $this->dataToInject,
+        add_action('admin_head', function () use ($jsVarName, $dataToInject) {
+            echo '<script type="module">window.'.$jsVarName.' = '.json_encode(
+                    $dataToInject,
                     JSON_UNESCAPED_SLASHES
                 ).';</script>';
         });
