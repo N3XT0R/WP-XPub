@@ -15,11 +15,23 @@ final readonly class ReactAppLoader
 
     public function load(string $scriptName, string $jsVarName, array $dataToInject): void
     {
+        $this->injectWindowVariable($jsVarName, $dataToInject);
+
         if ($this->isDevelopmentEnvironment()) {
-            $this->injectDevScripts($scriptName, $jsVarName, $dataToInject);
+            $this->injectDevScripts($jsVarName, $dataToInject);
         } else {
             $this->injectProductionAssets($scriptName, $jsVarName, $dataToInject);
         }
+    }
+
+    private function injectWindowVariable(string $jsVarName, array $dataToInject): void
+    {
+        add_action('admin_head', function () use ($jsVarName, $dataToInject) {
+            echo '<script type="module">window.'.$jsVarName.' = '.json_encode(
+                    $dataToInject,
+                    JSON_UNESCAPED_SLASHES
+                ).';</script>';
+        });
     }
 
     private function isDevelopmentEnvironment(): bool
@@ -31,9 +43,9 @@ final readonly class ReactAppLoader
         return in_array($env, ['local', 'development'], true);
     }
 
-    private function injectDevScripts(string $scriptName, string $jsVarName, array $dataToInject): void
+    private function injectDevScripts(string $jsVarName, array $dataToInject): void
     {
-        add_action('admin_head', function () use ($scriptName, $jsVarName, $dataToInject) {
+        add_action('admin_head', function () use ($jsVarName, $dataToInject) {
             $dataJs = json_encode($dataToInject, JSON_UNESCAPED_SLASHES);
             $var = $jsVarName;
             $script = <<<HTML
@@ -45,7 +57,7 @@ final readonly class ReactAppLoader
                     window.\$RefreshSig\$ = () => (type) => type;
                     window.__vite_plugin_react_preamble_installed__ = true;
                 </script>
-                <script type="module" src="http://localhost:5173/{$scriptName}"></script>
+                <script type="module" src="http://localhost:5173/i18n-loader.js"></script>
                 <script type="module">window.{$var} = {$dataJs};</script>
             HTML;
 
@@ -82,13 +94,6 @@ final readonly class ReactAppLoader
             }
             return $tag;
         }, 10, 3);
-
-        add_action('admin_head', function () use ($jsVarName, $dataToInject) {
-            echo '<script type="module">window.'.$jsVarName.' = '.json_encode(
-                $dataToInject,
-                JSON_UNESCAPED_SLASHES
-            ).';</script>';
-        });
 
         if (!empty($entry['css'][0])) {
             wp_enqueue_style(
