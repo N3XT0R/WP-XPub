@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace N3XT0R\XPub\Infrastructure\DI;
 
 use DI\ContainerBuilder;
-use N3XT0R\XPub\Application\Cache\ClearContainerCacheInterface;
-use N3XT0R\XPub\Application\Publisher\PublisherSelector;
-use N3XT0R\XPub\Application\Service\Admin\PublisherSettingsService;
-use N3XT0R\XPub\Application\Update\ReleaseService;
+use N3XT0R\XPub\Domain\Contracts\ClearContainerCacheInterface;
 use N3XT0R\XPub\Domain\Contracts\Factory\ArticleFactoryInterface;
 use N3XT0R\XPub\Domain\Contracts\Factory\WordpressArticleFactoryInterface;
 use N3XT0R\XPub\Domain\Contracts\HtmlToMarkdownRendererInterface;
@@ -84,27 +81,13 @@ final readonly class InfrastructureContainerConfigurator implements ContainerCon
             SettingsSaveHandler::class => autowire(SettingsSaveHandler::class),
             ReactAppLoader::class => autowire(ReactAppLoader::class),
             XPubSettingsAppLoader::class => autowire(XPubSettingsAppLoader::class),
-            SettingsPageRegistrar::class => create()->constructor(
-                get(PublisherSettingsService::class),
-                get(XPubSettingsAppLoader::class),
-            ),
+            SettingsPageRegistrar::class => autowire(SettingsPageRegistrar::class),
             MetaBox::class => autowire(MetaBox::class),
             LoggerInterface::class => factory(fn() => LoggerFactory::create()),
             OAuthController::class => autowire(OAuthController::class),
             SettingsController::class => autowire(SettingsController::class),
-            ClearContainerCacheInterface::class => create(ContainerCacheCleaner::class)
-                ->constructor(get(PluginContext::class)),
-            PluginUpdateManager::class => create()->constructor(
-                get(PluginContext::class),
-                autowire(ReleaseService::class),
-                get(ClearContainerCacheInterface::class)
-            ),
-            PublisherSelector::class => create()->constructor(
-                get(PublisherRepositoryInterface::class),
-                get(PublisherTargetProvider::class),
-                get(PublisherFactoryInterface::class),
-                get(LoggerInterface::class)
-            ),
+            ClearContainerCacheInterface::class => autowire(ContainerCacheCleaner::class),
+            PluginUpdateManager::class => autowire(PluginUpdateManager::class),
 
         ]);
     }
