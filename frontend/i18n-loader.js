@@ -1,8 +1,6 @@
 import {setLocaleData} from '@wordpress/i18n';
-// Starte sofort die App (synchroner Import)
 import './main.jsx';
 
-// Locale & Pfad aus globalem WP-Objekt
 const locale = window?.xpubSettings?.locale || 'en_US';
 const domain = 'xpub-multi-channel-publisher';
 const baseUrl = window?.xpubSettings?.translationsBaseUrl || '';
@@ -12,9 +10,15 @@ const baseUrl = window?.xpubSettings?.translationsBaseUrl || '';
         const response = await fetch(`${baseUrl}/${locale}.json`);
         if (!response.ok) throw new Error(`Translation for ${locale} not found`);
         const json = await response.json();
-        setLocaleData(json, domain);
+
+        const messages = json?.locale_data?.messages;
+        if (messages) {
+            console.log('Setting locale data:', messages);
+            setLocaleData(messages, domain);
+        } else {
+            console.warn('No locale_data.messages found!');
+        }
     } catch (err) {
         console.warn(`Could not load translation for locale "${locale}".`, err);
     }
 })();
-
